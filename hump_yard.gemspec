@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sven G. Broenstrup"]
-  s.date = %q{2010-03-11}
+  s.date = %q{2010-03-12}
   s.description = %q{HumpYard is a Rails CMS}
   s.email = %q{broenstrup@spom.net}
   s.extra_rdoc_files = [
@@ -22,12 +22,18 @@ Gem::Specification.new do |s|
      "app/models/hump_yard/page.rb",
      "app/views/hump_yard/pages/index.html.erb",
      "app/views/hump_yard/pages/show.html.haml",
+     "config/database.yml",
      "config/locales/en.yml",
      "config/routes.rb",
      "db/migrate/20100311130037_pages.rb",
      "features/hump_yard.feature",
      "features/step_definitions/hump_yard_steps.rb",
+     "features/step_definitions/pages_steps.rb",
+     "features/step_definitions/pickle_steps.rb",
+     "features/step_definitions/web_steps.rb",
      "features/support/env.rb",
+     "features/support/paths.rb",
+     "features/support/pickle.rb",
      "lib/extensions/action_controller/base.rb",
      "lib/hump_yard.rb",
      "lib/hump_yard/config.rb",
@@ -40,7 +46,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.6}
   s.summary = %q{HumpYard is a Rails CMS}
   s.test_files = [
-    "spec/hump_yard_spec.rb",
+    "spec/factories/pages.rb",
+     "spec/hump_yard_spec.rb",
      "spec/spec_helper.rb"
   ]
 
