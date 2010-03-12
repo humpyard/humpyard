@@ -29,8 +29,6 @@ TestHumpYard::Application.initialize!
 
 require 'hump_yard'
 require 'spec/expectations'
-#require 'spec/rails'
-#require 'webrat'
 require 'cucumber/formatter/unicode' # Remove this line if you don't want Cucumber Unicode support
 require 'rails/test_help'
 require 'cucumber/rails/world'
@@ -41,10 +39,6 @@ require 'capybara/rails'
 require 'capybara/cucumber'
 require 'capybara/session'
 require 'cucumber/rails/capybara_javascript_emulation'
-
-#Webrat.configure do |config|
-#  config.mode = :rack
-#end
 
 Before do
   require 'factory_girl'
