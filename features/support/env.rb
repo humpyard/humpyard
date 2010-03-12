@@ -2,7 +2,7 @@ $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 
 require 'test/fake_rails'
 
-require 'hump_yard'
+require 'humpyard'
 require 'spec/expectations'
 require 'cucumber/formatter/unicode' # Remove this line if you don't want Cucumber Unicode support
 require 'rails/test_help'

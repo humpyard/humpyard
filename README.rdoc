@@ -1,11 +1,11 @@
-= hump_yard
+= humpyard
 
-HumpYard is a CMS in a gem for Rails 3
+Humpyard is a CMS in a gem for Rails 3
 
 == Installation
 
-* Add hump_yard to your Rails Gemfile
-* rake hump_yard:db:migrate
+* Add humpyard to your Rails Gemfile
+* rake humpyard:db:migrate
 
 == Note on Patches/Pull Requests
  

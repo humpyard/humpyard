@@ -4,11 +4,11 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = 'hump_yard'
-    gem.summary = %Q{HumpYard is a Rails CMS}
-    gem.description = %Q{HumpYard is a Rails CMS}
+    gem.name = 'humpyard'
+    gem.summary = %Q{Humpyard is a Rails CMS}
+    gem.description = %Q{Humpyard is a Rails CMS}
     gem.email = 'broenstrup@spom.net'
-    gem.homepage = 'http://github.com/starpeak/hump_yard'
+    gem.homepage = 'http://github.com/humpyard/humpyard'
     gem.authors = ['Sven G. Broenstrup']
     gem.add_development_dependency 'rspec', '>= 1.2.9'
     gem.add_development_dependency 'cucumber', '>= 0.6.3'
@@ -57,7 +57,7 @@ Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "hump_yard #{version}"
+  rdoc.title = "humpyard #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
@@ -65,10 +65,30 @@ end
 namespace :db do
   desc "Migrate the test database through scripts in db/migrate. Target specific version with VERSION=x. Turn off output with VERBOSE=false."
   task :migrate do
-    require 'lib/test/fake_rails'
-    require 'lib/hump_yard'
-    ActiveRecord::Base.table_name_prefix = HumpYard::config.table_name_prefix
+    require 'test/fake_rails'
+    #require 'lib/humpyard'
+    ActiveRecord::Base.table_name_prefix = #{Humpyard::config.table_name_prefix}
     ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
     ActiveRecord::Migrator.migrate("#{File.dirname(__FILE__)}/db/migrate/", ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
+  end
+end
+
+desc 'Print out all defined routes in match order, with names. Target specific controller with CONTROLLER=x.'
+task :routes do
+  require 'test/fake_rails'
+  #require 'lib/humpyard'
+  Rails::Application.reload_routes!
+  all_routes = ENV['CONTROLLER'] ? ActionController::Routing::Routes.routes.select { |route| route.defaults[:controller] == ENV['CONTROLLER'] } : ActionController::Routing::Routes.routes
+  routes = all_routes.collect do |route|
+    name = ActionController::Routing::Routes.named_routes.routes.index(route).to_s
+    reqs = route.requirements.empty? ? "" : route.requirements.inspect
+    {:name => name, :verb => route.verb.to_s, :path => route.path, :reqs => reqs}
+  end
+  routes.reject!{ |r| r[:path] == "/rails/info/properties" } # skip the route if it's internal info route
+  name_width = routes.collect {|r| r[:name]}.collect {|n| n.length}.max
+  verb_width = routes.collect {|r| r[:verb]}.collect {|v| v.length}.max
+  path_width = routes.collect {|r| r[:path]}.collect {|s| s.length}.max
+  routes.each do |r|
+    puts "#{r[:name].rjust(name_width)} #{r[:verb].ljust(verb_width)} #{r[:path].ljust(path_width)} #{r[:reqs]}"
   end
 end

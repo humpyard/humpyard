@@ -4,38 +4,39 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{hump_yard}
+  s.name = %q{humpyard}
   s.version = "0.0.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sven G. Broenstrup"]
   s.date = %q{2010-03-12}
-  s.description = %q{HumpYard is a Rails CMS}
+  s.description = %q{Humpyard is a Rails CMS}
   s.email = %q{broenstrup@spom.net}
   s.extra_rdoc_files = [
     "LICENSE",
      "README.rdoc"
   ]
   s.files = [
-    "app/controllers/hump_yard/pages_controller.rb",
-     "app/models/hump_yard/element.rb",
-     "app/models/hump_yard/page.rb",
-     "app/views/hump_yard/pages/404.html.haml",
-     "app/views/hump_yard/pages/show.html.haml",
+    "app/controllers/humpyard/pages_controller.rb",
+     "app/models/humpyard/element.rb",
+     "app/models/humpyard/page.rb",
+     "app/views/humpyard/pages/404.html.haml",
+     "app/views/humpyard/pages/index.html.haml",
+     "app/views/humpyard/pages/show.html.haml",
      "config/locales/en.yml",
      "config/routes.rb",
      "db/migrate/20100311130037_pages.rb",
      "lib/extensions/action_controller/base.rb",
-     "lib/hump_yard.rb",
-     "lib/hump_yard/config.rb",
-     "lib/hump_yard/engine.rb",
-     "lib/tasks/hump_yard.rake"
+     "lib/humpyard.rb",
+     "lib/humpyard/config.rb",
+     "lib/humpyard/engine.rb",
+     "lib/tasks/humpyard.rake"
   ]
-  s.homepage = %q{http://github.com/starpeak/hump_yard}
+  s.homepage = %q{http://github.com/humpyard/humpyard}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.6}
-  s.summary = %q{HumpYard is a Rails CMS}
+  s.summary = %q{Humpyard is a Rails CMS}
   s.test_files = [
     "test/factories/pages.rb",
      "test/fake_rails.rb"

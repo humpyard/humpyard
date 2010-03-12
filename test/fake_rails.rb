@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 end
 
-module TestHumpYard
+module TestHumpyard
   class Application < Rails::Application
     config.filter_parameters << :password
     config.action_controller.session = { :key => "test_session", :secret => "157c580cceca36817277af541b354923" }
@@ -23,4 +23,4 @@ module TestHumpYard
   end
 end
 
-TestHumpYard::Application.initialize!
+TestHumpyard::Application.initialize!

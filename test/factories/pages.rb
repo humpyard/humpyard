@@ -1,4 +1,4 @@
-Factory.define :page, :class => HumpYard::Page do |p|
+Factory.define :page, :class => Humpyard::Page do |p|
   p.title 'Some Page'
   p.name 'page'
 end

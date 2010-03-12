@@ -1,4 +1,4 @@
-module HumpYard
+module Humpyard
   class PagesController < ApplicationController 
     #self.template_root = File.join(File.dirname(__FILE__), '..', 'views')
 
@@ -12,10 +12,12 @@ module HumpYard
     
     def show
       @page = nil
-      if params[:id]
+      if not params[:id].blank?
         @page = Page.find(params[:id])
-      elsif params[:name]
+      elsif not params[:name].blank?
         @page = Page.find_by_name(params[:name])
+      else
+        @page = Page.find_by_name('index')
       end
 
       if params[:parent] and @page

@@ -1,8 +1,10 @@
 Rails.application.routes.draw do |map|
-  resources :pages, :controller => 'hump_yard/pages'
+ 
+  scope "/#{Humpyard::config.admin_prefix}" do 
+    resources :pages, :controller => 'humpyard/pages'
+  end
   
-  
-  map.root :controller => 'hump_yard/pages', :action => 'show', :name => 'index'
-  map.short_subpage ":locale/*parent/:name.html", :controller => 'hump_yard/pages', :action => 'show'
-  map.short_rootpage ":locale/:name.html", :controller => 'hump_yard/pages', :action => 'show'
+  root :to => 'humpyard/pages#show'
+  match "/#{Humpyard::config.www_prefix}/*parent/:name.html" => 'humpyard/pages#show'
+  match "/#{Humpyard::config.www_prefix}/:name.html" => 'humpyard/pages#show'
 end
