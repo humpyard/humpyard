@@ -20,20 +20,11 @@ Gem::Specification.new do |s|
     "app/controllers/hump_yard/pages_controller.rb",
      "app/models/hump_yard/element.rb",
      "app/models/hump_yard/page.rb",
-     "app/views/hump_yard/pages/index.html.erb",
+     "app/views/hump_yard/pages/404.html.haml",
      "app/views/hump_yard/pages/show.html.haml",
-     "config/database.yml",
      "config/locales/en.yml",
      "config/routes.rb",
      "db/migrate/20100311130037_pages.rb",
-     "features/hump_yard.feature",
-     "features/step_definitions/hump_yard_steps.rb",
-     "features/step_definitions/pages_steps.rb",
-     "features/step_definitions/pickle_steps.rb",
-     "features/step_definitions/web_steps.rb",
-     "features/support/env.rb",
-     "features/support/paths.rb",
-     "features/support/pickle.rb",
      "lib/extensions/action_controller/base.rb",
      "lib/hump_yard.rb",
      "lib/hump_yard/config.rb",
@@ -46,9 +37,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.6}
   s.summary = %q{HumpYard is a Rails CMS}
   s.test_files = [
-    "spec/factories/pages.rb",
-     "spec/hump_yard_spec.rb",
-     "spec/spec_helper.rb"
+    "test/factories/pages.rb",
+     "test/fake_rails.rb"
   ]
 
   if s.respond_to? :specification_version then
@@ -57,20 +47,32 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_development_dependency(%q<rspec>, [">= 1.2.9"])
-      s.add_development_dependency(%q<cucumber>, [">= 0"])
+      s.add_development_dependency(%q<cucumber>, [">= 0.6.3"])
+      s.add_development_dependency(%q<cucumber-rails>, [">= 0.3.0"])
+      s.add_development_dependency(%q<pickle>, [">= 0.2.4"])
+      s.add_development_dependency(%q<capybara>, [">= 0.3.5"])
+      s.add_development_dependency(%q<factory_girl>, [">= 1.2.3"])
       s.add_runtime_dependency(%q<rails>, [">= 3.0.0.beta"])
-      s.add_runtime_dependency(%q<haml>, [">= 0"])
+      s.add_runtime_dependency(%q<haml>, [">= 2.2.20"])
     else
       s.add_dependency(%q<rspec>, [">= 1.2.9"])
-      s.add_dependency(%q<cucumber>, [">= 0"])
+      s.add_dependency(%q<cucumber>, [">= 0.6.3"])
+      s.add_dependency(%q<cucumber-rails>, [">= 0.3.0"])
+      s.add_dependency(%q<pickle>, [">= 0.2.4"])
+      s.add_dependency(%q<capybara>, [">= 0.3.5"])
+      s.add_dependency(%q<factory_girl>, [">= 1.2.3"])
       s.add_dependency(%q<rails>, [">= 3.0.0.beta"])
-      s.add_dependency(%q<haml>, [">= 0"])
+      s.add_dependency(%q<haml>, [">= 2.2.20"])
     end
   else
     s.add_dependency(%q<rspec>, [">= 1.2.9"])
-    s.add_dependency(%q<cucumber>, [">= 0"])
+    s.add_dependency(%q<cucumber>, [">= 0.6.3"])
+    s.add_dependency(%q<cucumber-rails>, [">= 0.3.0"])
+    s.add_dependency(%q<pickle>, [">= 0.2.4"])
+    s.add_dependency(%q<capybara>, [">= 0.3.5"])
+    s.add_dependency(%q<factory_girl>, [">= 1.2.3"])
     s.add_dependency(%q<rails>, [">= 3.0.0.beta"])
-    s.add_dependency(%q<haml>, [">= 0"])
+    s.add_dependency(%q<haml>, [">= 2.2.20"])
   end
 end
 

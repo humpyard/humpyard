@@ -25,19 +25,19 @@ rescue LoadError
   puts 'Jeweler (or a dependency) not available. Install it with: gem install jeweler'
 end
 
-require 'spec/rake/spectask'
-Spec::Rake::SpecTask.new(:spec) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.spec_files = FileList['spec/**/*_spec.rb']
-end
-
-Spec::Rake::SpecTask.new(:rcov) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.pattern = 'spec/**/*_spec.rb'
-  spec.rcov = true
-end
-
-task :spec => :check_dependencies
+# require 'spec/rake/spectask'
+# Spec::Rake::SpecTask.new(:spec) do |spec|
+#   spec.libs << 'lib' << 'spec'
+#   spec.spec_files = FileList['spec/**/*_spec.rb']
+# end
+#
+# Spec::Rake::SpecTask.new(:rcov) do |spec|
+#   spec.libs << 'lib' << 'spec'
+#   spec.pattern = 'spec/**/*_spec.rb'
+#   spec.rcov = true
+# end
+# 
+# task :spec => :check_dependencies
 
 begin
   require 'cucumber/rake/task'
@@ -50,7 +50,7 @@ rescue LoadError
   end
 end
 
-task :default => :spec
+task :default => :features
 
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
@@ -60,4 +60,15 @@ Rake::RDocTask.new do |rdoc|
   rdoc.title = "hump_yard #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
+end
+
+namespace :db do
+  desc "Migrate the test database through scripts in db/migrate. Target specific version with VERSION=x. Turn off output with VERBOSE=false."
+  task :migrate do
+    require 'lib/test/fake_rails'
+    require 'lib/hump_yard'
+    ActiveRecord::Base.table_name_prefix = HumpYard::config.table_name_prefix
+    ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
+    ActiveRecord::Migrator.migrate("#{File.dirname(__FILE__)}/db/migrate/", ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
+  end
 end

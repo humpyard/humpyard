@@ -1,6 +1,3 @@
-I18n.load_path += Dir.glob("#{File.dirname(__FILE__)}/../config/locales/*.yml")
-puts "=> #{I18n.t 'hump_yard.start'}"
-
 module HumpYard
   VERSION = '0.0.0'
   PATH = File.join(File.dirname(__FILE__), '..').to_s
@@ -24,21 +21,11 @@ module HumpYard
   end
 end
 
+require 'i18n'
+I18n.load_path += Dir.glob("#{File.dirname(__FILE__)}/../config/locales/*.yml")
+puts "=> #{I18n.t 'hump_yard.start'}"
+
 require 'haml'
 Haml.init_rails(binding) if defined?(Haml)
+
 require 'extensions/action_controller/base'
-
-#model_path = File.join(File.dirname(__FILE__), '..', 'app', 'models')
-#$LOAD_PATH << model_path
-#ActiveSupport::Dependencies.load_paths << model_path
-
-#controller_path = File.join(File.dirname(__FILE__), '..', 'app', 'controllers')
-#$LOAD_PATH << controller_path
-#ActiveSupport::Dependencies.load_paths << controller_path
-##config.controller_paths << controller_path
-
-##view_path = File.join(File.dirname(__FILE__), 'app', 'views')
-##ActionView::view_paths << view_path
-##ActionView::Base.view_paths << view_path
-
-
