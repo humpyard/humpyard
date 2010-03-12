@@ -24,6 +24,8 @@ module HumpYard
   end
 end
 
+require 'haml'
+Haml.init_rails(binding) if defined?(Haml)
 require 'extensions/action_controller/base'
 
 #model_path = File.join(File.dirname(__FILE__), '..', 'app', 'models')

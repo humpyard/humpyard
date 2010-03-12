@@ -16,7 +16,7 @@ begin
     gem.add_dependency 'haml'
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
     #gem.files = FileList['lib/**/*.rb', 'app/**/*.rb', 'app/views/**/*.haml', 'app/views/**/*.erb', 'locales/*.yml', 'bin/*', '[A-Z]*', 'spec/**/*', 'features/**/*'].to_a
-    gem.files = Dir["{lib}/**/*", "{app}/**/*", "{config}/**/*", "{db}/**/*", "{features}/**/*", "{specs}/**/*"]
+    gem.files = Dir["{lib}/**/*", "{app}/**/*", "{config}/**/*", "{db}/migrate/*", "{features}/**/*", "{specs}/**/*"]
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
