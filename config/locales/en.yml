@@ -1,3 +1,3 @@
 en:
     humpyard:
-        start: 'Loading Humpyard'
+        start: 'Loading Humpyard {{version}}'

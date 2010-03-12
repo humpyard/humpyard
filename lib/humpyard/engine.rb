@@ -1,5 +1,4 @@
-require "humpyard"
-require "rails"
+autoload :Humpyard, 'humpyard'
 
 module Humpyard
   class Engine < Rails::Engine

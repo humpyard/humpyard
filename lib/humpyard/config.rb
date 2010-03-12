@@ -1,4 +1,4 @@
-require "humpyard"
+autoload :Humpyard, "humpyard"
 
 module Humpyard
   class Config 

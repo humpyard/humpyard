@@ -1,5 +1,4 @@
-#require 'rake/remote_task'
-require "humpyard"
+autoload :Humpyard, 'humpyard'
 
 namespace :humpyard do  
   namespace :db do

@@ -66,7 +66,7 @@ namespace :db do
   desc "Migrate the test database through scripts in db/migrate. Target specific version with VERSION=x. Turn off output with VERBOSE=false."
   task :migrate do
     require 'test/fake_rails'
-    #require 'lib/humpyard'
+    autoload :Humpyard, 'humpyard'
     ActiveRecord::Base.table_name_prefix = #{Humpyard::config.table_name_prefix}
     ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
     ActiveRecord::Migrator.migrate("#{File.dirname(__FILE__)}/db/migrate/", ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
@@ -76,7 +76,7 @@ end
 desc 'Print out all defined routes in match order, with names. Target specific controller with CONTROLLER=x.'
 task :routes do
   require 'test/fake_rails'
-  #require 'lib/humpyard'
+  autoload :Humpyard, 'humpyard'
   Rails::Application.reload_routes!
   all_routes = ENV['CONTROLLER'] ? ActionController::Routing::Routes.routes.select { |route| route.defaults[:controller] == ENV['CONTROLLER'] } : ActionController::Routing::Routes.routes
   routes = all_routes.collect do |route|

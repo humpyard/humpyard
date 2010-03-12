@@ -1,13 +1,12 @@
 module Humpyard
-  VERSION = '0.0.0'
-  PATH = File.join(File.dirname(__FILE__), '..').to_s
+  VERSION = ::File.read(::File.join(::File.dirname(__FILE__), "..", "VERSION")).strip
+  PATH = ::File.join(::File.dirname(__FILE__), '..').to_s
 
-  autoload :Config, "rack/config"
-  require 'humpyard/engine' if defined?(Rails) && Rails::VERSION::MAJOR == 3
+  autoload :Config, 'humpyard/config'
+  autoload :Engine, 'humpyard/engine'
 
   def self.load options = {}
     require 'humpyard/rake_tasks'
-    #Kernel.load recipes[:config]
   end
 
   class << self
@@ -22,10 +21,10 @@ module Humpyard
 end
 
 require 'i18n'
-I18n.load_path += Dir.glob("#{File.dirname(__FILE__)}/../config/locales/*.yml")
-puts "=> #{I18n.t 'humpyard.start'}"
+::I18n.load_path += Dir.glob("#{File.dirname(__FILE__)}/../config/locales/*.yml")
+puts "=> #{I18n.t 'humpyard.start', :version => Humpyard::VERSION}"
 
 require 'haml'
-Haml.init_rails(binding) if defined?(Haml)
+::Haml.init_rails(binding) if defined?(Haml)
 
 require 'extensions/action_controller/base'
