@@ -68,7 +68,7 @@ namespace :db do
   task :migrate do
     require 'test/fake_rails'
     autoload :Humpyard, 'humpyard'
-    ActiveRecord::Base.table_name_prefix = #{Humpyard::config.table_name_prefix}
+    ActiveRecord::Base.table_name_prefix = Humpyard::config.table_name_prefix
     ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
     ActiveRecord::Migrator.migrate("#{File.dirname(__FILE__)}/db/migrate/", ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
   end
