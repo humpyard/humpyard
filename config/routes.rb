@@ -5,6 +5,6 @@ Rails.application.routes.draw do |map|
   end
   
   root :to => 'humpyard/pages#show'
-  match "/#{Humpyard::config.www_prefix}/*parent/:name.html" => 'humpyard/pages#show'
-  match "/#{Humpyard::config.www_prefix}/:name.html" => 'humpyard/pages#show'
+  match "/#{Humpyard::config.www_prefix}*webpath.html" => 'humpyard/pages#show'
+  #match "/#{Humpyard::config.www_prefix}:name.html" => 'humpyard/pages#show'
 end

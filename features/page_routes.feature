@@ -5,10 +5,12 @@ Feature: Page Routing
 
   Background:
 	Given the following page records 
-	 | title       | name    |
-	 | My Homepage | index   |
-	 | Contact     | contact |
-	 | Imprint     | imprint |
+	 | id  | title       | name    | parent       | parent_id |
+	 | 41  | My Homepage | index   |              |           |
+	 | 42  | About       | about   |              |           |
+	 | 60  | Contact     | contact |              | 42         |
+	 | 89  | Imprint     | imprint |              |           |
+	 | 102 | Sub Page    | subpage | the 2nd page |           |
 
 
   Scenario: View Index
@@ -19,6 +21,14 @@ Feature: Page Routing
     When I go to path "/en/index.html"
     Then I should see "My Homepage"
 
+  Scenario: View Imprint
+	When I go to path "/en/imprint.html"
+	Then I should see "Imprint"
+
+  Scenario: View Imprint with additional slashes in url
+	When I go to path "/en///imprint.html"
+	Then I should see "Imprint"
+
   Scenario: Miss Page
 	When I go to path "/en/foo.html"
 	Then I should see "not found"
@@ -28,12 +38,32 @@ Feature: Page Routing
 	When I go to path "/cms/en/index.html"
 	Then I should see "My Homepage"
 
-  Scenario: Miss Index without custom www prefix
+ Scenario: Miss Index without custom www prefix
 	Given the www prefix is "cms/:locale/"
 	When I go to path "/en/index.html"
 	Then I should see "Routing Error"
 	
-  Scenario: View Index with default www prefix
+  Scenario: View Index with custom www prefix without locale
+	Given the www prefix is "cms/"
+	When I go to path "/cms/index.html"
+	Then I should see "My Homepage"
+	
+  Scenario: View Index with custom www prefix incorporation locale
+	Given the www prefix is "cms_:locale/"
+	When I go to path "/cms_en/index.html"
+	Then I should see "My Homepage"
+	
+  Scenario: View Index with custom www non-path prefix
+	Given the www prefix is "cms_"
+	When I go to path "/cms_index.html"
+	Then I should see "My Homepage"
+
+		
+  Scenario: View Subpage with default www prefix
 	Given the www prefix is ":default"
-    When I go to path "/en/index.html"
-    Then I should see "My Homepage"
+    When I go to path "/en/about/contact.html"
+    Then I should see "Contact"
+
+  Scenario: Miss Subpage with wrong path
+    When I go to path "/en/contact.html"
+    Then I should see "not found"
