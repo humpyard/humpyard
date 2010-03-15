@@ -3,7 +3,7 @@ module Humpyard
   PATH = ::File.join(::File.dirname(__FILE__), '..').to_s
 
   autoload :Config, 'humpyard/config'
-  autoload :Engine, 'humpyard/engine'
+  require 'humpyard/engine'
 
   def self.load options = {}
     require 'humpyard/rake_tasks'

@@ -18,7 +18,8 @@ begin
     gem.add_development_dependency 'factory_girl', '>= 1.2.3'
     gem.add_dependency 'rails', '>= 3.0.0.beta'
     gem.add_dependency 'haml', '>= 2.2.20'
-    gem.files = Dir["{lib}/**/*", "{app}/**/*", "{config}/routes.rb", "{config}/locales/*", "{db}/migrate/*"]
+    gem.add_dependency 'acts_as_tree', '>= 0.1.1'
+    gem.files = Dir["{lib}/**/*", "{app}/**/*", "{config}/routes.rb", "{config}/locales/*", "{db}/migrate/*", "VERSION", "README*", "LICENCE"]
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
