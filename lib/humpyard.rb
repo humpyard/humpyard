@@ -2,7 +2,7 @@ module Humpyard
   VERSION = ::File.read(::File.join(::File.dirname(__FILE__), "..", "VERSION")).strip
   PATH = ::File.join(::File.dirname(__FILE__), '..').to_s
 
-  autoload :Config, 'humpyard/config'
+  require 'humpyard/config'
   require 'humpyard/engine'
 
   def self.load options = {}

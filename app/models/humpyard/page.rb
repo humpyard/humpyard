@@ -8,10 +8,12 @@ module Humpyard
     
     has_many :elements
     
-    def human_url(prefix_params={:locale=>I18n.locale})
+    def human_url(prefix_params={})
+      
       if self.name == 'index'
         '/'
       else
+        prefix_params[:locale] ||= I18n.locale 
         "/#{Humpyard::config.parsed_www_prefix(prefix_params)}#{(self.ancestors.reverse + [self]).collect{|p| p.name} * '/'}.html"
       end
     end

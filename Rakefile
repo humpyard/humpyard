@@ -17,6 +17,7 @@ begin
     gem.add_development_dependency 'capybara', '>= 0.3.5'
     gem.add_development_dependency 'factory_girl', '>= 1.2.3'
     gem.add_development_dependency 'markup_validity', '>= 1.1.0'
+    gem.add_dependency 'builder'
     gem.add_dependency 'rails', '>= 3.0.0.beta'
     gem.add_dependency 'haml', '>= 2.2.20'
     gem.add_dependency 'acts_as_tree', '>= 0.1.1'
