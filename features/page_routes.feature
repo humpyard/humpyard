@@ -4,14 +4,7 @@ Feature: Page Routing
   and gets the corrosponding page
 
   Background:
-	Given the following page records 
-	 | id  | title       | name    | parent       | parent_id |
-	 | 41  | My Homepage | index   |              |           |
-	 | 42  | About       | about   |              |           |
-	 | 60  | Contact     | contact |              | 42         |
-	 | 89  | Imprint     | imprint |              |           |
-	 | 102 | Sub Page    | subpage | the 2nd page |           |
-
+	Given the standard pages
 
   Scenario: View Index
     When I go to path "/"

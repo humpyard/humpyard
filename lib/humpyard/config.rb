@@ -20,6 +20,14 @@ module Humpyard
       @www_prefix ||= ':locale/'
     end
     
+    def parsed_www_prefix(params)
+      prefix = "#{www_prefix}"
+      params.each do |key,value|
+        prefix.gsub!(":#{key}", value.to_s)
+      end
+      prefix
+    end
+    
     def admin_prefix
       @admin_prefix.blank? ? 'admin' : @admin_prefix
     end

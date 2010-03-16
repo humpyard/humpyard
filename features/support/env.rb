@@ -15,6 +15,8 @@ require 'capybara/cucumber'
 require 'capybara/session'
 require 'cucumber/rails/capybara_javascript_emulation'
 
+require "markup_validity"
+
 Before do
   require 'factory_girl'
   Dir.glob(File.join(File.dirname(__FILE__), '../../test/factories/*.rb')).each {|f| require f }  

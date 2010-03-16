@@ -1,13 +1,23 @@
 module Humpyard
   class PagesController < ApplicationController 
-    #self.template_root = File.join(File.dirname(__FILE__), '..', 'views')
-
     def index
-  
+      
     end
 
     def new
-      render :text=>'test'
+      
+    end
+    
+    def create
+      
+    end
+    
+    def edit
+    
+    end
+    
+    def modify
+      
     end
     
     def show
@@ -36,6 +46,39 @@ module Humpyard
 
       # Raise 404 if no page was found
       render('404', :status => 404) if @page.nil?      
+    end
+  
+    def sitemap
+      xml = Builder::XmlMarkup.new :indent => 2
+      xml.instruct!
+      xml.tag! :urlset, {
+        'xmlns'=>"http://www.sitemaps.org/schemas/sitemap/0.9",
+        'xmlns:xsi'=>"http://www.w3.org/2001/XMLSchema-instance",
+        'xsi:schemaLocation'=>"http://www.sitemaps.org/schemas/sitemap/0.9\nhttp://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+      } do
+
+        last_mod = File.new("#{RAILS_ROOT}").mtime
+        base_url = "#{request.protocol}#{request.host}#{request.port==80 ? '' : ":#{request.port}"}"
+
+        add_to_sitemap xml, base_url, Page.roots, last_mod
+        #add_page xml, url_for(:controller => 'customer/home'), last_mod, 0.8
+      end
+      render :xml => xml.target!
+    end
+
+    private
+    def add_to_sitemap xml, base_url, pages, lastmod, priority=0.8, changefreq='daily'
+      pages.each do |page|
+        xml.tag! :url do
+          xml.tag! :loc, "#{base_url}#{page.human_url}"
+          xml.tag! :lastmod, lastmod.to_time.strftime("%FT%T%z").gsub(/00$/,':00')
+          xml.tag! :changefreq, changefreq
+          xml.tag! :priority, page.name == 'index' ? 1.0 : priority
+          #xml.tag! :wetwerwerw, 'does not validate'
+        end
+      
+        add_to_sitemap xml, base_url, page.children, lastmod, priority/2
+      end
     end
   end
 end

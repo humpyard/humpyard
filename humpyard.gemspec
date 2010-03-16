@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sven G. Broenstrup"]
-  s.date = %q{2010-03-15}
+  s.date = %q{2010-03-16}
   s.description = %q{Humpyard is a Rails CMS}
   s.email = %q{broenstrup@spom.net}
   s.extra_rdoc_files = [
@@ -55,6 +55,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<pickle>, [">= 0.2.4"])
       s.add_development_dependency(%q<capybara>, [">= 0.3.5"])
       s.add_development_dependency(%q<factory_girl>, [">= 1.2.3"])
+      s.add_development_dependency(%q<markup_validity>, [">= 1.1.0"])
       s.add_runtime_dependency(%q<rails>, [">= 3.0.0.beta"])
       s.add_runtime_dependency(%q<haml>, [">= 2.2.20"])
       s.add_runtime_dependency(%q<acts_as_tree>, [">= 0.1.1"])
@@ -65,6 +66,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<pickle>, [">= 0.2.4"])
       s.add_dependency(%q<capybara>, [">= 0.3.5"])
       s.add_dependency(%q<factory_girl>, [">= 1.2.3"])
+      s.add_dependency(%q<markup_validity>, [">= 1.1.0"])
       s.add_dependency(%q<rails>, [">= 3.0.0.beta"])
       s.add_dependency(%q<haml>, [">= 2.2.20"])
       s.add_dependency(%q<acts_as_tree>, [">= 0.1.1"])
@@ -76,6 +78,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<pickle>, [">= 0.2.4"])
     s.add_dependency(%q<capybara>, [">= 0.3.5"])
     s.add_dependency(%q<factory_girl>, [">= 1.2.3"])
+    s.add_dependency(%q<markup_validity>, [">= 1.1.0"])
     s.add_dependency(%q<rails>, [">= 3.0.0.beta"])
     s.add_dependency(%q<haml>, [">= 2.2.20"])
     s.add_dependency(%q<acts_as_tree>, [">= 0.1.1"])

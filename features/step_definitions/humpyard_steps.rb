@@ -1,5 +1,12 @@
 require 'pickle'
 
+Given /^the standard pages$/ do
+  Factory :page, :id => 42, :name => 'index', :title => 'My Homepage', :position => 1
+  Factory :page, :id => 45, :name => 'about', :title => 'About', :position => 4
+  Factory :page, :id => 60, :name => 'contact', :title => 'Contact', :parent_id => 45
+  Factory :page, :id => 89, :name => 'imprint', :title => 'Imprint', :position => 2
+end
+
 Given /^the following (.+) records?$/ do |factory, table|  
   table.hashes.each do |hash|  
     Factory(factory, hash)  
@@ -22,5 +29,11 @@ Given /^#{capture_model} is the parent of #{capture_model}$/ do |parent, child|
   child = model(child)
   child.parent = model(parent)
   child.save!
-  puts Humpyard::Page.all.inspect
+end
+
+
+
+Then /^put me the raw result$/ do
+  # Only use this for debugging a output if you don't know what went wrong
+  raise page.body
 end
