@@ -26,22 +26,27 @@ Feature: Page Routing
 	When I go to path "/en/foo.html"
 	Then I should see "not found"
 	
-  Scenario: View Index with custom www prefix
-	Given the www prefix is "cms/:locale/"
-	When I go to path "/cms/en/index.html"
-	Then I should see "My Homepage"
+  Scenario: View Index without www prefix
+	Given the www prefix is ""
+	When I go to path "/imprint.html"
+	Then I should see "Imprint"
 
- Scenario: Miss Index without custom www prefix
-	Given the www prefix is "cms/:locale/"
-	When I go to path "/en/index.html"
-	Then I should see "Routing Error"
-	
   Scenario: View Index with custom www prefix without locale
 	Given the www prefix is "cms/"
 	When I go to path "/cms/index.html"
 	Then I should see "My Homepage"
+
+  Scenario: View Index with custom www prefix with locale
+	Given the www prefix is "cms/:locale/"
+	When I go to path "/cms/en/index.html"
+	Then I should see "My Homepage"
+
+ Scenario: Miss Index with custom www prefix with locale
+	Given the www prefix is "cms/:locale/"
+	When I go to path "/en/index.html"
+	Then I should see "Routing Error"
 	
-  Scenario: View Index with custom www prefix incorporation locale
+  Scenario: View Index with custom www prefix with inline locale
 	Given the www prefix is "cms_:locale/"
 	When I go to path "/cms_en/index.html"
 	Then I should see "My Homepage"

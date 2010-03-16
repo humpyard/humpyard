@@ -14,7 +14,7 @@ Given /^the following (.+) records?$/ do |factory, table|
   #puts Humpyard::Page.all.inspect
 end
 
-Given /^the www prefix is "(.+)"$/ do |www_prefix|
+Given /^the www prefix is "([^\"]*)"$/ do |www_prefix|
   Humpyard::config.www_prefix = (www_prefix == ':default' ? nil : www_prefix)
   Rails::Application.reload_routes!
 end
