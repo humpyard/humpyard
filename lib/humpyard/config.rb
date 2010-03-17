@@ -1,5 +1,3 @@
-autoload :Humpyard, "humpyard"
-
 module Humpyard
   class Config 
     attr_writer :table_name_prefix, :www_prefix, :admin_prefix

@@ -1,4 +1,4 @@
-autoload :Humpyard, 'humpyard'
+require 'humpyard'
 
 namespace :humpyard do  
   namespace :db do

@@ -1,8 +1,15 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 
-require 'test/fake_rails'
+ENV["RAILS_ENV"] = "test"
+require File.expand_path(File.dirname(__FILE__) + "/../../config/environment")
+require 'rails/test_help'
 
-autoload :Humpyard, 'humpyard'
+begin
+  gem "test-unit"
+rescue LoadError
+end
+
+
 require 'spec/expectations'
 require 'cucumber/formatter/unicode' # Remove this line if you don't want Cucumber Unicode support
 require 'rails/test_help'

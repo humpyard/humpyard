@@ -2,8 +2,8 @@ module Humpyard
   VERSION = ::File.read(::File.join(::File.dirname(__FILE__), "..", "VERSION")).strip
   PATH = ::File.join(::File.dirname(__FILE__), '..').to_s
 
-  require 'humpyard/config'
-  require 'humpyard/engine'
+  require File.expand_path('../humpyard/config', __FILE__)
+  require File.expand_path('../humpyard/engine', __FILE__)
 
   def self.load options = {}
     require 'humpyard/rake_tasks'
@@ -27,4 +27,4 @@ puts "=> #{I18n.t 'humpyard.start', :version => Humpyard::VERSION}"
 require 'haml'
 ::Haml.init_rails(binding) if defined?(Haml)
 
-require 'extensions/action_controller/base'
+require File.expand_path('../extensions/action_controller/base', __FILE__)
