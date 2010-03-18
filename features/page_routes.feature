@@ -24,7 +24,7 @@ Feature: Page Routing
 
   Scenario: Miss Page
 	When I go to path "/en/foo.html"
-	Then I should see "not found"
+	Then I should get a status code of "404"
 	
   Scenario: View Index without www prefix
 	Given the www prefix is ""
@@ -44,7 +44,7 @@ Feature: Page Routing
  Scenario: Miss Index with custom www prefix with locale
 	Given the www prefix is "cms/:locale/"
 	When I go to path "/en/index.html"
-	Then I should see "Routing Error"
+	Then I should get a status code of "404"
 	
   Scenario: View Index with custom www prefix with inline locale
 	Given the www prefix is "cms_:locale/"
@@ -64,4 +64,4 @@ Feature: Page Routing
 
   Scenario: Miss Subpage with wrong path
     When I go to path "/en/contact.html"
-    Then I should see "not found"
+  	Then I should get a status code of "404"
