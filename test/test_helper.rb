@@ -2,6 +2,10 @@ ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'rails/test_help'
 
+require 'factory_girl'
+Dir.glob(File.join(File.dirname(__FILE__), '../test/factories/*.rb')).each {|f| require f }  
+Factory.factories.keys.each {|factory| Factory(factory) }
+
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
   #

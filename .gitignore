@@ -5,3 +5,4 @@ capybara-*
 .bundle/config
 pkg
 tmp
+test/unit/humpyard/log/*
