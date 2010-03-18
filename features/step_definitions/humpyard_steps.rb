@@ -38,6 +38,6 @@ Then /^put me the raw result$/ do
   raise page.body
 end
 
-Then /^I should get a status code of "([^\"]*)"$/ do |status_code|
-  page.driver.last_response.status.to_s.should == status_code
+Then /^I should get a status code of (\d*)$/ do |status_code|
+  page.driver.last_response.status.should == status_code.to_i
 end

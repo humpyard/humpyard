@@ -23,6 +23,8 @@ module Humpyard
     def show
       # No page found at the beginning
       @page = nil
+      
+      # Find page by name
       if not params[:webpath].blank?
         params[:webpath].split('/').each do |path_part|
           # Ignore multiple slashes in URLs
@@ -30,22 +32,21 @@ module Humpyard
             # Find page by name and parent; parent=nil means page on root level
             @page = Page.where(:parent_id=>@page, :name=>path_part).first
             # Raise 404 if no page was found for the URL or subpart
-            if @page.nil?
-              render('404', :status => 404) 
-              return
-            end
+            raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?
           end
         end
+      # Find page by id
       elsif not params[:id].blank?
         # Render page by id if not webpath was given but an id
         @page = Page.find(params[:id])
+      # Find root page
       else
         # Render index page if neither id or webpath was given
         @page = Page.find_by_name('index')
       end
 
       # Raise 404 if no page was found
-      render('404', :status => 404) if @page.nil?      
+      raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?    
     end
   
     def sitemap
