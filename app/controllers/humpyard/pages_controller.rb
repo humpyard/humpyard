@@ -59,7 +59,7 @@ module Humpyard
         'xsi:schemaLocation'=>"http://www.sitemaps.org/schemas/sitemap/0.9\nhttp://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
       } do
 
-        last_mod = ::File.new("#{RAILS_ROOT}").mtime
+        last_mod = ::File.new("#{Rails.root}").mtime
         base_url = "#{request.protocol}#{request.host}#{request.port==80 ? '' : ":#{request.port}"}"
 
         add_to_sitemap xml, base_url, Page.roots, last_mod
