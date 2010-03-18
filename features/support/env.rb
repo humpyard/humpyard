@@ -9,8 +9,6 @@ begin
 rescue LoadError
 end
 
-
-require 'spec/expectations'
 require 'cucumber/formatter/unicode' # Remove this line if you don't want Cucumber Unicode support
 require 'rails/test_help'
 require 'cucumber/rails/world'

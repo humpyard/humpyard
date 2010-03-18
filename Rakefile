@@ -7,9 +7,9 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 require 'rake/gempackagetask'
 
-Rails::Application.railties.all.each do |test|
-  test.load_tasks if test.class == Rails::TestUnitRailtie
-end
+#Rails::Application.railties.all.each do |test|
+#  test.load_tasks if test.class == Rails::TestUnitRailtie
+#end
 
 Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
@@ -17,6 +17,23 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.options << '--line-numbers' << '--inline-source'
   rdoc.rdoc_files.include('README.rdoc')
   rdoc.rdoc_files.include('lib/**/*.rb')
+end
+
+begin
+  require 'rspec/core/rake_task'
+
+  Rspec::Core::RakeTask.new(:spec)
+
+  Rspec::Core::RakeTask.new(:rcov) do |spec|
+    spec.rcov = true
+    spec.rcov_opts = %[--exclude "core,expectations,gems/*,spec/resources,spec/spec,spec/spec_helper.rb,db/*,/Library/Ruby/*,config/*" --text-summary  --sort coverage]
+  end
+  
+  task :spec => [:'db:test:prepare']
+rescue
+  task :spec do
+    abort 'Spec is not available. In order to run features, you must: sudo gem install rspec'
+  end
 end
 
 begin
@@ -30,7 +47,10 @@ rescue LoadError
   end
 end
 
-task :default => :features
+
+desc "Run RSpec and Cucumber tests"
+task :test => [:spec, :features]
+task :default => :test
 
 namespace :db do
   namespace :test do
