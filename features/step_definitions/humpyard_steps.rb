@@ -37,3 +37,7 @@ Then /^put me the raw result$/ do
   # Only use this for debugging a output if you don't know what went wrong
   raise page.body
 end
+
+Then /^I should get a status code of "([^\"]*)"$/ do |status_code|
+  page.driver.last_response.status.to_s.should == status_code
+end
