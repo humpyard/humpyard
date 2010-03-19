@@ -1,25 +1,41 @@
 module Humpyard
+  ####
+  # Humpyard::PagesController is the controller for editing and viewing pages
   class PagesController < ApplicationController 
+    # Probably unneccassary - may be removed later
     def index
       
     end
 
+    # Dialog content for a new page
     def new
       
     end
     
+    # Create a new page
     def create
       
     end
     
+    # Dialog content for an existing page
     def edit
     
     end
     
+    # Modify an existing page
     def modify
       
     end
     
+    # Render a given page
+    # 
+    # When a "webpath" parameter is given it will render the page with that name.
+    # This is what happens when you call a page with it's pretty URL.
+    #
+    # When no "name" is given and an "id" parameter is given it will render the
+    # page with the given id.
+    #
+    # When no "name" nor "id" parameter is given it will render the root page.
     def show
       # No page found at the beginning
       @page = nil
@@ -48,7 +64,8 @@ module Humpyard
       # Raise 404 if no page was found
       raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?    
     end
-  
+    
+    # Render the sitemap.xml for robots
     def sitemap
       require 'builder'
       
@@ -70,7 +87,7 @@ module Humpyard
     end
 
     private
-    def add_to_sitemap xml, base_url, pages, lastmod, priority=0.8, changefreq='daily'
+    def add_to_sitemap xml, base_url, pages, lastmod, priority=0.8, changefreq='daily' 
       pages.each do |page|
         xml.tag! :url do
           xml.tag! :loc, "#{base_url}#{page.human_url}"

@@ -1,23 +1,60 @@
 module Humpyard
+  ####
+  # Humpyard::Config is responsible for holding and managing the configuration
+  # for your Humpyard Rails Application.
+  #
+  # Possible configuration options are:
+  # table_name_prefix:: 
+  #    The prefix for the SQL tables
+  #
+  #    The default value is "humpyard_"
+  # www_prefix::        
+  #    The prefix for the pages in your routes
+  #
+  #    You may use some variables that will be replaced by 
+  #    Humpyard::Page.human_url
+  #    ":locale":: The actual ::I18n.locale
+  #
+  #    A tailing "/" indicates, that the value should be a path.
+  #    Without the tailing "/" the last part would become a prefix
+  #    to the pages URL.
+  #    A page with the path "about/config.html" with the ::I18n.locale="en" 
+  #    and the given prefix will result in:
+  #    ":locale/":: "/en/about/config.html"
+  #    ":locale/cms_":: "/en/cms_about_config.html"
+  #    "cms/":: "/cms/about/config.html"
+  #    "": "/about/config.html"
+  #
+  #    The default value is ":locale/"
+  # admin_prefix::      
+  #    The prefix for the admin controllers
+  #
+  #    The default value is "admin" 
   class Config 
-    attr_writer :table_name_prefix, :www_prefix, :admin_prefix
+    attr_writer :table_name_prefix, :www_prefix, :admin_prefix # :nodoc:
     
-    def initialize(&block)
+    def initialize(&block) #:nodoc:
       configure(&block) if block_given?
     end
 
+    # Configure your Humpyard Rails Application with the given parameters in 
+    # the block. For possible options see above.
     def configure(&block)
       yield(self)
     end
     
-    def table_name_prefix 
+    def table_name_prefix #:nodoc:
       @table_name_prefix ||= 'humpyard_'
     end
-    
-    def www_prefix
+          
+    def www_prefix #:nodoc:
       @www_prefix ||= ':locale/'
     end
     
+    # Get the prefix of your pages with interpreted variables given as params.
+    # You normally don't want to call it yourself. Instead use the
+    # Humpyard::Page.human_url which will put the actual ::I18n.local into
+    # the params.
     def parsed_www_prefix(params)
       prefix = "#{www_prefix}"
       params.each do |key,value|
@@ -26,7 +63,7 @@ module Humpyard
       prefix
     end
     
-    def admin_prefix
+    def admin_prefix #:nodoc:
       @admin_prefix.blank? ? 'admin' : @admin_prefix
     end
   end

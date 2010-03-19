@@ -1,4 +1,8 @@
 module Humpyard
+  ####
+  # Humpyard::Page is the model for your pages. It holds the 
+  # Humpyard::Elements containing the content of your page
+  # and some meta data for the page itself.
   class Page < ActiveRecord::Base
     set_table_name "#{Humpyard::config.table_name_prefix}pages"
     
@@ -8,6 +12,9 @@ module Humpyard
     
     has_many :elements
     
+    # Return the human readable URL for the page
+    #
+    # 
     def human_url(prefix_params={})
       prefix_params[:locale] ||= I18n.locale
       

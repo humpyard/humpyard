@@ -1,2 +1,4 @@
-class ActionController::Base
+module ActionController #:nodoc:
+  class Base #:nodoc:
+  end
 end

@@ -6,3 +6,4 @@ capybara-*
 pkg
 tmp
 test/unit/humpyard/log/*
+rdoc
