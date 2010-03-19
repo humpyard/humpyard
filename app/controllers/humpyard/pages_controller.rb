@@ -1,7 +1,7 @@
 module Humpyard
   ####
   # Humpyard::PagesController is the controller for editing and viewing pages
-  class PagesController < ApplicationController 
+  class PagesController < ::ApplicationController 
     # Probably unneccassary - may be removed later
     def index
       
