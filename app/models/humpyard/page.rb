@@ -18,6 +18,10 @@ module Humpyard
     def human_url(prefix_params={})
       prefix_params[:locale] ||= I18n.locale
       
+      unless Humpyard::config.locales.include? prefix_params[:locale].to_s
+        prefix_params[:locale] = Humpyard::config.locales.first
+      end
+      
       if self.name == 'index'
         "/#{Humpyard::config.parsed_www_prefix(prefix_params).gsub(/[^\/]*$/, '')}"
       else

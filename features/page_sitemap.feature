@@ -30,39 +30,46 @@ Feature: Page sitemap
 
   Scenario: check sitemap for contacts page without www prefix 
 	Given the standard pages
-	And the www prefix is ""
+	And the configured www prefix is ""
 	When go to path "/sitemap.xml"
 	Then I should see "http://www.example.com/about/contact.html"
 
   Scenario: check sitemap for contacts page with custom www prefix 
 	Given the standard pages
-	And the www prefix is "cms/"
+	And the configured www prefix is "cms/"
 	When go to path "/sitemap.xml"
 	Then I should see "http://www.example.com/cms/about/contact.html"
 
   Scenario: check sitemap for contacts page with custom www prefix with locale
 	Given the standard pages
-	And the www prefix is "cms/:locale/"
+	And the configured www prefix is "cms/:locale/"
 	When go to path "/sitemap.xml"
 	Then I should see "http://www.example.com/cms/en/about/contact.html"
 
   Scenario: check sitemap for contacts page with custom www prefix with inline locale
 	Given the standard pages
-	And the www prefix is "cms_:locale/"
+	And the configured www prefix is "cms_:locale/"
 	When go to path "/sitemap.xml"
 	Then I should see "http://www.example.com/cms_en/about/contact.html"
 
   Scenario: check sitemap for contacts page with custom www non-path prefix
 	Given the standard pages
-	And the www prefix is "cms_"
+	And the configured www prefix is "cms_"
 	When go to path "/sitemap.xml"
 	Then I should see "http://www.example.com/cms_about/contact.html"
 
   Scenario: check sitemap for contacts page with default www prefix
 	Given the standard pages
-	And the www prefix is ":default"
+	And the configured www prefix is ":default"
     When go to path "/sitemap.xml"
 	Then I should see "http://www.example.com/en/about/contact.html"
+	
+  Scenario: check sitemap for contacts page with locales
+	Given the standard pages
+	And the configured locales is "en,de"
+	When go to path "/sitemap.xml"
+	Then I should see "http://www.example.com/en/about/contact.html"
+	And I should see "http://www.example.com/de/about/contact.html"
 
 #  Scenario: debug sitemap
 #   Given the standard pages

@@ -80,7 +80,12 @@ module Humpyard
         last_mod = ::File.new("#{Rails.root}").mtime
         base_url = "#{request.protocol}#{request.host}#{request.port==80 ? '' : ":#{request.port}"}"
 
-        add_to_sitemap xml, base_url, Page.roots, last_mod
+        old_locale = ::I18n.locale
+        Humpyard.config.locales.each do |locale|
+          I18n.locale = locale
+          add_to_sitemap xml, base_url, Page.roots, last_mod
+        end
+        ::I18n.locale = old_locale
         #add_page xml, url_for(:controller => 'customer/home'), last_mod, 0.8
       end
       render :xml => xml.target!

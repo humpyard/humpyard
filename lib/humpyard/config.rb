@@ -30,6 +30,14 @@ module Humpyard
   #    The prefix for the admin controllers
   #
   #    The default value is "admin" 
+  # locales::
+  #    The locales used for the pages
+  #
+  #    This option can be configured by giving an Array or comma separated String,
+  #    e.g. 'en,de,fr' or ['en', 'de', 'fr'].
+  #
+  #
+  #    The default value is ['en']
   class Config 
     attr_writer :table_name_prefix, :www_prefix, :admin_prefix # :nodoc:
     
@@ -53,7 +61,7 @@ module Humpyard
     
     # Get the prefix of your pages with interpreted variables given as params.
     # You normally don't want to call it yourself. Instead use the
-    # Humpyard::Page.human_url which will put the actual ::I18n.local into
+    # Humpyard::Page.human_url which will put the actual ::I18n.locale into
     # the params.
     def parsed_www_prefix(params)
       prefix = "#{www_prefix}"
@@ -65,6 +73,25 @@ module Humpyard
     
     def admin_prefix #:nodoc:
       @admin_prefix.blank? ? 'admin' : @admin_prefix
+    end
+    
+    def locales=(locales) #:nodoc:
+      if locales.nil? or locales.class == Array
+        @locales = locales
+      else
+        @locales = locales.split(',')
+      end
+    end
+    
+    def locales #:nodoc:
+      @locales ||= ['en']
+    end
+    
+    # Get the given locales as Regexp constraint. 
+    # This may be used to see if a locale matches the configured locales.
+    # Usage is e.g. in the routes.
+    def locales_contraint
+      Regexp.new locales * '|'
     end
   end
 end

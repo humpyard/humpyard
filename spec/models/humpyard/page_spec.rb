@@ -1,105 +1,136 @@
 require 'spec_helper'
 
 describe Humpyard::Page do
-  it "create" do
+  it "creates a new page from factory" do
     p = Factory.build(:page)
-    p.valid?.should == true
+    p.valid?.should eql true
   end
   
   # Human URL Tests
   
-  it "simple human_url" do
+  it "gets human_url on a simple page name" do
     Humpyard::config.www_prefix = nil
     p = Factory.build(:page, :name => 'about')
-    p.human_url.should == '/en/about.html'
+    p.human_url.should eql '/en/about.html'
   end
   
-  it "sub page human_url" do
+  it "gets human_url on a sub page name" do
     Humpyard::config.www_prefix = nil
     p1 = Factory.build(:page, :name => 'about')
     p2 = Factory.build(:page, :name => 'imprint', :parent => p1)
-    p2.human_url.should == '/en/about/imprint.html'
+    p2.human_url.should eql '/en/about/imprint.html'
   end
   
-  it "root page human_url" do
+  it "gets human_url on the root page" do
     Humpyard::config.www_prefix = nil
     p = Factory.build(:page, :name => 'index')
-    p.human_url.should == '/en/'
+    p.human_url.should eql '/en/'
   end
   
-  it "simple human_url without www prefix" do
+  it "gets human_url on a simple page name without www prefix" do
     Humpyard::config.www_prefix = ''
     p = Factory.build(:page, :name => 'about')
-    p.human_url.should == '/about.html'
+    p.human_url.should eql '/about.html'
   end
   
-  it "sub page human_url without www prefix" do
+  it "gets human_url on a sub page name without www prefix" do
     Humpyard::config.www_prefix = ''
     p1 = Factory.build(:page, :name => 'about')
     p2 = Factory.build(:page, :name => 'imprint', :parent => p1)
-    p2.human_url.should == '/about/imprint.html'
+    p2.human_url.should eql '/about/imprint.html'
   end
   
-  it "root page human_url without www prefix" do
+  it "gets human_url on the root page without www prefix" do
     Humpyard::config.www_prefix = ''
     p = Factory.build(:page, :name => 'index')
-    p.human_url.should == '/'
+    p.human_url.should eql '/'
   end  
   
-  it "simple human_url with custom www prefix" do
+  it "gets human_url on a simple page name with custom www prefix" do
     Humpyard::config.www_prefix = 'cms/'
     p = Factory.build(:page, :name => 'about')
-    p.human_url.should == '/cms/about.html'
+    p.human_url.should eql '/cms/about.html'
   end
   
-  it "sub page human_url with custom www prefix" do
+  it "gets human_url on a sub page name with custom www prefix" do
     Humpyard::config.www_prefix = 'cms/'
     p1 = Factory.build(:page, :name => 'about')
     p2 = Factory.build(:page, :name => 'imprint', :parent => p1)
-    p2.human_url.should == '/cms/about/imprint.html'
+    p2.human_url.should eql '/cms/about/imprint.html'
   end
   
-  it "root page human_url with custom www prefix" do
+  it "gets human_url on the root page with custom www prefix" do
     Humpyard::config.www_prefix = 'cms/'
     p = Factory.build(:page, :name => 'index')
-    p.human_url.should == '/cms/'
+    p.human_url.should eql '/cms/'
   end  
   
-  it "simple human_url with inline www prefix" do
+  it "gets human_url on a simple page name with inline www prefix" do
     Humpyard::config.www_prefix = 'cms_'
     p = Factory.build(:page, :name => 'about')
-    p.human_url.should == '/cms_about.html'
+    p.human_url.should eql '/cms_about.html'
   end
   
-  it "sub page human_url with inline www prefix" do
+  it "gets human_url on a sub page name with inline www prefix" do
     Humpyard::config.www_prefix = 'cms_'
     p1 = Factory.build(:page, :name => 'about')
     p2 = Factory.build(:page, :name => 'imprint', :parent => p1)
-    p2.human_url.should == '/cms_about/imprint.html'
+    p2.human_url.should eql '/cms_about/imprint.html'
   end
   
-  it "root page human_url with inline www prefix" do
+  it "gets human_url on the root page with inline www prefix" do
     Humpyard::config.www_prefix = 'cms_'
     p = Factory.build(:page, :name => 'index')
-    p.human_url.should == '/'
+    p.human_url.should eql '/'
   end  
   
-  it "simple human_url with complex www prefix" do
+  it "gets human_url on a simple page name with complex www prefix" do
     Humpyard::config.www_prefix = 'locale/:locale/cms_'
     p = Factory.build(:page, :name => 'about')
-    p.human_url.should == '/locale/en/cms_about.html'
+    p.human_url.should eql '/locale/en/cms_about.html'
   end
   
-  it "sub page human_url with complex www prefix" do
+  it "gets human_url on a sub page name with complex www prefix" do
     Humpyard::config.www_prefix = 'locale/:locale/cms_'
     p1 = Factory.build(:page, :name => 'about')
     p2 = Factory.build(:page, :name => 'imprint', :parent => p1)
-    p2.human_url.should == '/locale/en/cms_about/imprint.html'
+    p2.human_url.should eql '/locale/en/cms_about/imprint.html'
   end
   
-  it "root page human_url with complex www prefix" do
+  it "gets human_url on the root page with complex www prefix" do
     Humpyard::config.www_prefix = 'locale/:locale/cms_'
     p = Factory.build(:page, :name => 'index')
-    p.human_url.should == '/locale/en/'
+    p.human_url.should eql '/locale/en/'
+  end
+  
+  it "gets human_url on a page with allowed custom locale" do
+    Humpyard::config.www_prefix = nil
+    Humpyard::config.locales = 'en'
+    p = Factory.build(:page, :name => 'about')
+    p.human_url.should eql '/en/about.html'
+  end
+  
+  it "gets human_url on a page with not allowed custom locale and fallback to first locale" do
+    Humpyard::config.www_prefix = nil
+    Humpyard::config.locales = 'en'
+    I18n.locale = :de
+    p = Factory.build(:page, :name => 'about')
+    p.human_url.should eql '/en/about.html'
+  end
+  
+  it "gets human_url on a page with allowed custom locale with many locales configured" do
+    Humpyard::config.www_prefix = nil
+    Humpyard::config.locales = 'en,fr,de'
+    I18n.locale = :de
+    p = Factory.build(:page, :name => 'about')
+    p.human_url.should eql '/de/about.html'
+  end
+  
+  it "gets human_url on a page with not allowed custom locale and fallback to first locale with many locales configured" do
+    Humpyard::config.www_prefix = nil
+    Humpyard::config.locales = 'de,en,fr'
+    I18n.locale = :cn
+    p = Factory.build(:page, :name => 'about')
+    p.human_url.should eql '/de/about.html'
   end
 end

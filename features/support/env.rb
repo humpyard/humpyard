@@ -24,6 +24,10 @@ require 'cucumber/rails/capybara_javascript_emulation'
 require "markup_validity"
 
 Before do
+  require 'database_cleaner'
+  DatabaseCleaner.strategy = :truncation
+  DatabaseCleaner.clean
+  
   require 'factory_girl'
   Dir.glob(File.join(File.dirname(__FILE__), '../../test/factories/*.rb')).each {|f| require f }  
   Factory.factories.keys.each {|factory| Factory(factory) }
