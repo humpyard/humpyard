@@ -5,5 +5,6 @@ gem "builder"
 gem "haml", ">= 2.2.20"
 gem "acts_as_tree", ">= 0.1.1"
 gem "globalize2", :git => "git://github.com/starpeak/globalize2.git"
-gem 'humpyard', :git => 'git://github.com/humpyard/humpyard.git'
+# This should be only enabled when the Rails app is standalone:
+# gem 'humpyard', :git => 'git://github.com/humpyard/humpyard.git'
 gem "sqlite3-ruby", :require => "sqlite3"
