@@ -5,12 +5,14 @@ module Humpyard
   # and some meta data for the page itself.
   class Page < ::ActiveRecord::Base
     set_table_name "#{Humpyard::config.table_name_prefix}pages"
-    
     require 'acts_as_tree'
+    require 'globalize'
+    
+    translates :title, :description
     
     acts_as_tree :order => :position
     
-    has_many :elements
+    has_many :elements, :class_name => 'Humpyard::Element'
     
     # Return the human readable URL for the page.
     #

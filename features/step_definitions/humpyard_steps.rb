@@ -1,10 +1,31 @@
 require 'pickle'
 
 Given /^the standard pages$/ do
+# TODO: Problem with globalize2 when not setting the AR locale to a definite locale.
+#       Keep an eye on it and hope for fixes for globalize2 and rails3.
+#       I will contact Sven Fuchs the next days.
+#  
+#  old_locale = I18n.locale
+#  I18n.locale = :en
+  Humpyard::Page.locale = :en
+  Humpyard::Elements::TextElement.locale = :en
+  
   Factory :page, :id => 42, :name => 'index', :title => 'My Homepage', :position => 1
   Factory :page, :id => 45, :name => 'about', :title => 'About', :position => 4
   Factory :page, :id => 60, :name => 'contact', :title => 'Contact', :parent_id => 45
   Factory :page, :id => 89, :name => 'imprint', :title => 'Imprint', :position => 2
+  
+  t = Factory :text_element, :id => 23, :content => 'This is some great text!'
+  Factory :element, :page_id => 42, :content_data => t
+#  I18n.locale = :de
+  Humpyard::Page.locale = :de
+  Humpyard::Page.find(42).update_attributes(:title => 'Meine Startseite')
+#  I18n.locale = old_locale
+  Humpyard::Elements::TextElement.locale = :de
+  t.update_attribute :content, 'Dies ist ein super Text!'
+  
+  Humpyard::Page.locale = nil
+  Humpyard::Elements::TextElement.locale = nil
 end
 
 Given /^the following (.+) records?$/ do |factory, table|  
@@ -22,6 +43,10 @@ end
 Given /^the configured locales is "([^\"]*)"$/ do |locales|
   Humpyard::config.locales = (locales == ':default' ? nil : locales)
   Rails::Application.reload_routes!
+end
+
+Given /^the current locale is "([^\"]*)"$/ do |locale|
+  I18n.locale = (locale == ':default' ? nil : locale)
 end
 
 Transform /^table:(?:.*,)?parent(?:,.*)?$/i do |table|

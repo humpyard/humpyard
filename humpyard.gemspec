@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.date = %q{2010-03-20}
   s.description = %q{Humpyard is a Rails CMS}
   s.email = %q{info@humpyard.org}
-  s.files = ["lib/extensions", "lib/extensions/action_controller", "lib/extensions/action_controller/base.rb", "lib/humpyard", "lib/humpyard/config.rb", "lib/humpyard/engine.rb", "lib/humpyard.rb", "lib/tasks", "lib/tasks/humpyard.rake", "app/controllers/humpyard/pages_controller.rb", "app/models/humpyard/element.rb", "app/models/humpyard/page.rb", "app/views/humpyard/pages", "app/views/humpyard/pages/index.html.haml", "app/views/humpyard/pages/show.html.haml", "config/routes.rb", "config/locales/en.yml", "db/migrate/20100311130037_pages.rb", "VERSION", "README.rdoc", "Gemfile"]
+  s.files = ["lib/extensions/action_controller/base.rb", "lib/humpyard/active_record/acts/element.rb", "lib/humpyard/config.rb", "lib/humpyard/engine.rb", "lib/humpyard.rb", "lib/tasks/humpyard.rake", "app/controllers/humpyard/pages_controller.rb", "app/helpers/humpyard/pages_helper.rb", "app/models/humpyard/element.rb", "app/models/humpyard/elements/text_element.rb", "app/models/humpyard/page.rb", "app/views/humpyard/common/_head.html.haml", "app/views/humpyard/elements/text_elements/_dialog.html.haml", "app/views/humpyard/elements/text_elements/_edit.html.haml", "app/views/humpyard/elements/text_elements/_show.html.haml", "app/views/humpyard/pages/index.html.haml", "app/views/humpyard/pages/show.html.haml", "config/routes.rb", "config/locales/en.yml", "db/migrate/20100320134137_base.rb", "VERSION", "README.rdoc", "Gemfile"]
   s.homepage = %q{http://humpyard.org/}
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.6}

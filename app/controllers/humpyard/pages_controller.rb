@@ -2,6 +2,8 @@ module Humpyard
   ####
   # Humpyard::PagesController is the controller for editing and viewing pages
   class PagesController < ::ApplicationController 
+    helper 'humpyard::pages'
+    
     # Probably unneccassary - may be removed later
     def index
       
@@ -59,6 +61,10 @@ module Humpyard
       else
         # Render index page if neither id or webpath was given
         @page = Page.find_by_name('index')
+      end
+      
+      if params[:locale] and Humpyard.config.locales.include? params[:locale]
+        I18n.locale = params[:locale]
       end
 
       # Raise 404 if no page was found

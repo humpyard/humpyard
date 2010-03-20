@@ -1,5 +1,3 @@
-require 'humpyard'
-
 namespace :humpyard do  
   namespace :db do
     desc "Migrate the database through scripts in db/migrate and update db/schema.rb by invoking db:schema:dump. Target specific version with VERSION=x. Turn off output with VERBOSE=false."
