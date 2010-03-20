@@ -1,5 +1,5 @@
 ENV["RAILS_ENV"] ||= 'test'
-require File.dirname(__FILE__) + "/../config/environment" unless defined?(RAILS_ROOT)
+require File.dirname(__FILE__) + "/../test/rails/config/environment" unless defined?(Rails.root)
 require 'rspec/rails'
 
 require 'factory_girl'

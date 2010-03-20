@@ -20,7 +20,7 @@ class Pages < ActiveRecord::Migration
       t.references :parent
       t.datetime :display_from
       t.datetime :display_until
-      t.indeger :position
+      t.integer :position
       t.timestamps
       t.datetime :deleted_at
     end

@@ -1,7 +1,7 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 
 ENV["RAILS_ENV"] = "test"
-require File.expand_path(File.dirname(__FILE__) + "/../../config/environment")
+require File.expand_path(File.dirname(__FILE__) + "/../../test/rails/config/environment")
 require 'rails/test_help'
 
 begin

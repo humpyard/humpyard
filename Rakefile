@@ -1,6 +1,6 @@
 # encoding: UTF-8
 ENV["RAILS_ENV"] = "test"
-require File.expand_path(File.dirname(__FILE__) + "/config/environment")
+require File.expand_path(File.dirname(__FILE__) + "/test/rails/config/environment")
 
 require 'rake'
 require 'rake/testtask'
@@ -56,9 +56,6 @@ namespace :db do
   namespace :test do
     desc "Migrate the test database through scripts in db/migrate. Target specific version with VERSION=x. Turn off output with VERBOSE=false."
     task :prepare do
-      ENV["RAILS_ENV"] = "test"
-      require File.expand_path(File.dirname(__FILE__) + "/config/environment")
-    
       ActiveRecord::Base.table_name_prefix = Humpyard::config.table_name_prefix
       ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
       ActiveRecord::Migrator.migrate("#{File.dirname(__FILE__)}/db/migrate/", ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
