@@ -12,21 +12,23 @@ module Humpyard
     
     has_many :elements
     
-    # Return the human readable URL for the page
+    # Return the human readable URL for the page.
     #
-    # 
-    def human_url(prefix_params={})
-      prefix_params[:locale] ||= I18n.locale
+    # Posible options values are
+    # :locale:: 
+    #     A locale given in the Humpyard::Config.locales.
+    #     If no :locale is given the option will be ::I18n.locale by default
+    def human_url(options={})
+      options[:locale] ||= ::I18n.locale
       
-      unless Humpyard::config.locales.include? prefix_params[:locale].to_s
-        prefix_params[:locale] = Humpyard::config.locales.first
+      unless Humpyard::config.locales.include? options[:locale].to_s
+        options[:locale] = Humpyard::config.locales.first
       end
       
       if self.name == 'index'
-        "/#{Humpyard::config.parsed_www_prefix(prefix_params).gsub(/[^\/]*$/, '')}"
+        "/#{Humpyard::config.parsed_www_prefix(options).gsub(/[^\/]*$/, '')}"
       else
-        prefix_params[:locale] ||= I18n.locale 
-        "/#{Humpyard::config.parsed_www_prefix(prefix_params)}#{(self.ancestors.reverse + [self]).collect{|p| p.name} * '/'}.html"
+        "/#{Humpyard::config.parsed_www_prefix(options)}#{(self.ancestors.reverse + [self]).collect{|p| p.name} * '/'}.html"
       end
     end
   end

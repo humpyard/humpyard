@@ -72,7 +72,8 @@ Feature: Page sitemap
 	And I should see "http://www.example.com/de/about/contact.html"
 
 #  Scenario: debug sitemap
-#   Given the standard pages
-#   When go to path "/sitemap.xml"
-#   Then put me the raw result
+#    Given the standard pages
+#    And the configured locales is "en,de"
+#    When go to path "/sitemap.xml"
+#    Then put me the raw result
 

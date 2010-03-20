@@ -12,6 +12,11 @@ Feature: Page Routing
 	And I should see the page with id 42
 
   Scenario: View Index
+    When I go to path "/en/"
+    Then I should get a status code of 200
+	And I should see the page with id 42
+
+  Scenario: View Index
     When I go to path "/en/index.html"
     Then I should get a status code of 200
 	And I should see the page with id 42
