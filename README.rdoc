@@ -9,15 +9,14 @@ Humpyard is a CMS in a gem for Rails 3.
 
 == API Documentation
 
-* Auto-generated, up-to-the-hour API docs are here: http://humpyard.org/rdoc/
+* Auto-generated, up-to-the-hour API docs are here: http://humpyard.org/rdoc
 
 == Note on Patches/Pull Requests
  
 * Fork the project.
 * Make your feature addition or bug fix.
 * Add tests for it. No discussion. No tests, no game. We use rspec and cucumber with associated addons.
-* Commit, do not mess with rakefile, version, or history.
-  (if you want to have your own version, that is fine but bump yur version in a seperate commit that can be ignored when pulling)
+* Commit, do not mess with rakefile, version, or history. If you want to have your own version, thats fine. But bump your version in a seperate commit that can be ignored when pulling.
 * Send me a pull request. Bonus points for topic branches.
 
 == Copyright
