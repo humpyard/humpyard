@@ -16,7 +16,7 @@ module Humpyard
   class << self
     # To access the actual configuration of your Humpyard, you can call this.
     #
-    # An example would be Humpyard.config.www_prefix = 'cms/:locale/'
+    # An example would be <tt>Humpyard.config.www_prefix = 'cms/:locale/'</tt>
     #
     # See Humpyard::Config for configuration options.
     def config

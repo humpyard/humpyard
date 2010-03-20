@@ -4,40 +4,40 @@ module Humpyard
   # for your Humpyard Rails Application.
   #
   # Possible configuration options are:
-  # table_name_prefix:: 
+  # +table_name_prefix+:: 
   #    The prefix for the SQL tables
   #
-  #    The default value is "humpyard_"
-  # www_prefix::        
+  #    The default value is <tt>"humpyard_"</tt>
+  # +www_prefix+::        
   #    The prefix for the pages in your routes
   #
   #    You may use some variables that will be replaced by 
   #    Humpyard::Page.human_url
-  #    ":locale":: The actual ::I18n.locale
+  #    <tt>":locale"</tt>:: The current ::I18n.locale
   #
   #    A tailing "/" indicates, that the value should be a path.
   #    Without the tailing "/" the last part would become a prefix
   #    to the pages URL.
   #    A page with the path "about/config.html" with the ::I18n.locale="en" 
   #    and the given prefix will result in:
-  #    ":locale/":: "/en/about/config.html"
-  #    ":locale/cms_":: "/en/cms_about_config.html"
-  #    "cms/":: "/cms/about/config.html"
-  #    "": "/about/config.html"
+  #    <tt>":locale/"</tt>:: <tt>"/en/about/config.html"</tt>
+  #    <tt>":locale/cms_"</tt>:: <tt>"/en/cms_about_config.html"</tt>
+  #    <tt>"cms/"</tt>:: <tt>"/cms/about/config.html"</tt>
+  #    <tt>""</tt>: <tt>"/about/config.html"</tt>
   #
-  #    The default value is ":locale/"
-  # admin_prefix::      
+  #    The default value is <tt>":locale/"</tt>
+  # +admin_prefix+::      
   #    The prefix for the admin controllers
   #
-  #    The default value is "admin" 
-  # locales::
+  #    The default value is <tt>"admin"</tt>
+  # +locales+::
   #    The locales used for the pages
   #
   #    This option can be configured by giving an Array or comma separated String,
-  #    e.g. 'en,de,fr' or ['en', 'de', 'fr'].
+  #    e.g. <tt>'en,de,fr'</tt> or <tt>['en', 'de', 'fr']</tt>.
   #
   #
-  #    The default value is ['en']
+  #    The default value is <tt>['en']</tt>
   class Config 
     attr_writer :table_name_prefix, :www_prefix, :admin_prefix # :nodoc:
     
@@ -61,7 +61,7 @@ module Humpyard
     
     # Get the prefix of your pages with interpreted variables given as params.
     # You normally don't want to call it yourself. Instead use the
-    # Humpyard::Page.human_url which will put the actual ::I18n.locale into
+    # Humpyard::Page.human_url which will put the current ::I18n.locale into
     # the params.
     def parsed_www_prefix(params)
       prefix = "#{www_prefix}"

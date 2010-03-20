@@ -15,9 +15,9 @@ module Humpyard
     # Return the human readable URL for the page.
     #
     # Posible options values are
-    # :locale:: 
+    # <tt>:locale</tt>:: 
     #     A locale given in the Humpyard::Config.locales.
-    #     If no :locale is given the option will be ::I18n.locale by default
+    #     If no <tt>:locale</tt> is given the option will be ::I18n.locale by default
     def human_url(options={})
       options[:locale] ||= ::I18n.locale
       
