@@ -1,6 +1,7 @@
 source 'http://gemcutter.org'
 
-gem 'rails', '>= 3.0.0.beta'
+#gem 'rails', '>= 3.0.0.beta'
+gem "rails", :git => "git://github.com/rails/rails.git"
 gem 'builder'
 gem 'haml', '>= 2.2.20'
 gem 'acts_as_tree', '>= 0.1.1'
@@ -12,6 +13,7 @@ group :test do
 	gem 'rspec-rails', :git => 'git://github.com/rspec/rspec-rails.git'
 	gem 'capybara',         :git => 'git://github.com/jnicklas/capybara.git'
     gem 'database_cleaner', :git => 'git://github.com/bmabey/database_cleaner.git'
+	gem 'cucumber',   :git => 'git://github.com/aslakhellesoy/cucumber.git'
     gem 'cucumber-rails',   :git => 'git://github.com/aslakhellesoy/cucumber-rails.git'
 	gem 'pickle', '>= 0.2.4'
 	gem 'capybara', '>= 0.3.5'
