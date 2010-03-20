@@ -5,7 +5,7 @@ gem "rails", :git => "git://github.com/rails/rails.git"
 gem 'builder'
 gem 'haml', '>= 2.2.20'
 gem 'acts_as_tree', '>= 0.1.1'
-gem 'globalize2', :git => 'http://github.com/starpeak/globalize2.git'
+gem 'globalize2', :git => 'git://github.com/starpeak/globalize2.git'
 
 group :test do
 	gem 'test-unit'
