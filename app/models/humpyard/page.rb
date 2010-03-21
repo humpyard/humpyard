@@ -33,5 +33,12 @@ module Humpyard
         "/#{Humpyard::config.parsed_www_prefix(options)}#{(self.ancestors.reverse + [self]).collect{|p| p.name} * '/'}.html"
       end
     end
+    
+    # Return the logical modification time for the page, suitable or http caching, generational cache keys, etc.
+    def last_modified
+      rails_root_mtime = Time.zone.at(::File.new("#{Rails.root}").mtime)
+      timestamps = [rails_root_mtime, self.updated_at] + self.elements.collect{|element| element.last_modified}
+      timestamps.sort.last
+    end
   end
 end
