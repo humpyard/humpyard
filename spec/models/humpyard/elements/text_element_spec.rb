@@ -25,17 +25,11 @@ describe Humpyard::Elements::TextElement do
   end
 
   it "updates last_modified if content_data is updated" do
-    # pending does not work??
-    #pending "missing callbacks to element in acts_as_humpyard_element" do
-      te = Factory(:text_element, :updated_at => @rails_root_mtime + 2.minutes)
-      e = Factory(:element, :updated_at => @rails_root_mtime + 2.minutes, :content_data => te)
-      te.content = "updated text content"
-      te.save
-      # this is missing in the model. that beacuse the test fails:
-      #e.touch
-      e.reload
-      e.last_modified.should > @rails_root_mtime + 2.minutes
-    #end
+    e = Factory(:element, :updated_at => @rails_root_mtime + 2.minutes)
+    te = Factory(:text_element, :updated_at => @rails_root_mtime + 2.minutes, :element => e)
+    te.content = "updated text content"
+    te.save!
+    e.last_modified.should > @rails_root_mtime + 2.minutes
   end
 
 end
