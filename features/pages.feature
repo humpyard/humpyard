@@ -1,4 +1,4 @@
-Feature: Page Admin
+Feature: Pages
   In order to access page content
   A user views pages
 
@@ -16,11 +16,6 @@ Feature: Page Admin
 	Then I should see "Meine Startseite" within "/html/head/title"
 	And I should see "Dies ist ein super Text!"
 	And I should see "Dies ist ein Text in einem Container"
-
-  Scenario: Page Admin 
-	Given the standard pages
-    When I go to path "/admin/pages"
-    Then I should see "CMS Admin"
 
 #  Scenario: Debug Content in German
 #    Given the standard pages
