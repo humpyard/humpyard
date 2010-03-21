@@ -41,4 +41,3 @@ require 'haml'
 require File.expand_path('../extensions/action_controller/base', __FILE__)
 
 require File.expand_path('../humpyard/active_record/acts/element', __FILE__)
-ActiveRecord::Base.send :include, Humpyard::ActiveRecord::Acts::Element

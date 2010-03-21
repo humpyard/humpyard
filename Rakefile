@@ -23,10 +23,13 @@ begin
   require 'rspec/core/rake_task'
 
   Rspec::Core::RakeTask.new(:spec)
-
-  Rspec::Core::RakeTask.new(:rcov) do |spec|
-    spec.rcov = true
-    spec.rcov_opts = %[--exclude "core,expectations,gems/*,spec/resources,spec/spec,spec/spec_helper.rb,db/*,/Library/Ruby/*,config/*" --text-summary  --sort coverage]
+  
+  namespace :spec do
+    desc "Run specs to generate coverage"
+    Rspec::Core::RakeTask.new(:rcov) do |spec|
+      spec.rcov = true
+      spec.rcov_opts = %[--exclude "core,expectations,gems/*,spec/resources,spec/spec,spec/spec_helper.rb,db/*,/Library/Ruby/*,config/*" --text-summary  --sort coverage]
+    end
   end
   
   task :spec => [:'db:test:prepare']
@@ -39,6 +42,15 @@ end
 begin
   require 'cucumber/rake/task'
   Cucumber::Rake::Task.new(:features)
+  
+  namespace :features do
+    desc "Run features to generate coverage"
+    Cucumber::Rake::Task.new(:rcov) do |features|    
+      features.rcov = true
+      features.rcov_opts = %w{--rails --exclude osx\/objc,gems\/,spec\/,features\/,test\/ --aggregate coverage.data}
+      features.rcov_opts << %[-o "coverage"]
+    end
+  end
 
   task :features => [:'db:test:prepare']
 rescue LoadError
@@ -47,15 +59,23 @@ rescue LoadError
   end
 end
 
-
 desc "Run RSpec and Cucumber tests"
 task :test => [:spec, :features]
 task :default => :test
+ 
+desc "Run both specs and features to generate aggregated coverage"
+task :rcov do |t|
+  rm "coverage.data" if File.exist?("coverage.data")
+  Rake::Task['spec:rcov'].invoke
+  Rake::Task["features:rcov"].invoke
+  `open #{File.dirname(__FILE__)}/coverage/index.html`
+end
 
 namespace :db do
   namespace :test do
     desc "Migrate the test database through scripts in db/migrate. Target specific version with VERSION=x. Turn off output with VERBOSE=false."
     task :prepare do
+      `rm #{File.dirname(__FILE__)}/test/rails/db/test.sqlite3`
       ActiveRecord::Base.table_name_prefix = Humpyard::config.table_name_prefix
       ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
       ActiveRecord::Migrator.migrate("#{File.dirname(__FILE__)}/db/migrate/", ENV["VERSION"] ? ENV["VERSION"].to_i : nil)

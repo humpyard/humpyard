@@ -7,7 +7,7 @@ describe Humpyard::Elements::TextElement do
   end
   
   it "creates a new text element from factory" do
-    e = Factory.build(:text_element)
+    e = Factory.build(:text_element, :page => Factory.build(:page))
     e.valid?.should eql true
   end
   

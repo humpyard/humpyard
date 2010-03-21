@@ -15,14 +15,17 @@ Given /^the standard pages$/ do
   Factory :page, :id => 60, :name => 'contact', :title => 'Contact', :parent_id => 45
   Factory :page, :id => 89, :name => 'imprint', :title => 'Imprint', :position => 2
   
-  t = Factory :text_element, :id => 23, :content => 'This is some great text!'
-  Factory :element, :page_id => 42, :content_data => t
+  t1 = Factory :text_element, :content => 'This is some great text!', :page_id => 42, :position => 2
+  c = Factory :container_element, :page_id => 42, :position => 1
+  t2 = Factory :text_element, :content => 'This is text inside a container', :container => c, :position => 1
+  
 #  I18n.locale = :de
   Humpyard::Page.locale = :de
   Humpyard::Page.find(42).update_attributes(:title => 'Meine Startseite')
 #  I18n.locale = old_locale
   Humpyard::Elements::TextElement.locale = :de
-  t.update_attribute :content, 'Dies ist ein super Text!'
+  t1.update_attribute :content, 'Dies ist ein super Text!'
+  t2.update_attribute :content, 'Dies ist ein Text in einem Container'
   
   Humpyard::Page.locale = nil
   Humpyard::Elements::TextElement.locale = nil

@@ -115,7 +115,7 @@ describe Humpyard::Page do
     p.human_url.should eql '/en/about.html'
   end
   
-  it "gets human_url on a page with not allowed custom locale and fallback to first locale" do
+  it "gets human_url on a page with not allowed custom locale as I18n.locale and fallback to first locale" do
     Humpyard::config.www_prefix = nil
     Humpyard::config.locales = 'en'
     I18n.locale = :de
@@ -136,15 +136,23 @@ describe Humpyard::Page do
     Humpyard::config.locales = 'en,fr,de'
     I18n.locale = :en
     p = Factory.build(:page, :name => 'about')
-    p.human_url(:locale=>:de).should eql '/de/about.html'
+    p.human_url(:locale => :de).should eql '/de/about.html'
   end
   
-  it "gets human_url on a page with not allowed custom locale and fallback to first locale with many locales configured" do
+  it "gets human_url on a page with not allowed custom locale as I18n.locale and fallback to first locale with many locales configured" do
     Humpyard::config.www_prefix = nil
     Humpyard::config.locales = 'de,en,fr'
     I18n.locale = :cn
     p = Factory.build(:page, :name => 'about')
     p.human_url.should eql '/de/about.html'
+  end
+  
+  it "gets human_url on a page with not allowed custom locale as option and fallback to first locale with many locales configured" do
+    Humpyard::config.www_prefix = nil
+    Humpyard::config.locales = 'en,fr,de'
+    I18n.locale = :fr
+    p = Factory.build(:page, :name => 'about')
+    p.human_url(:locale => :cn).should eql '/en/about.html'
   end
   
   # last_modified tests
