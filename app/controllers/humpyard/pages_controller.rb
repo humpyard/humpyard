@@ -83,11 +83,10 @@ module Humpyard
         'xsi:schemaLocation'=>"http://www.sitemaps.org/schemas/sitemap/0.9\nhttp://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
       } do
 
-        last_mod = ::File.new("#{Rails.root}").mtime
         base_url = "#{request.protocol}#{request.host}#{request.port==80 ? '' : ":#{request.port}"}"
 
         Humpyard.config.locales.each do |locale|
-          add_to_sitemap xml, base_url, locale, Page.roots, last_mod
+          add_to_sitemap xml, base_url, locale, Page.roots
         end
         #add_page xml, url_for(:controller => 'customer/home'), last_mod, 0.8
       end
@@ -95,8 +94,9 @@ module Humpyard
     end
 
     private
-    def add_to_sitemap xml, base_url, locale, pages, lastmod, priority=0.8, changefreq='daily' 
+    def add_to_sitemap xml, base_url, locale, pages, priority=0.8, changefreq='daily' 
       pages.each do |page|
+        lastmod = page.last_modified
         xml.tag! :url do
           xml.tag! :loc, "#{base_url}#{page.human_url :locale=>locale}"
           xml.tag! :lastmod, lastmod.to_time.strftime("%FT%T%z").gsub(/00$/,':00')
@@ -105,7 +105,7 @@ module Humpyard
           #xml.tag! :wetwerwerw, 'does not validate'
         end
       
-        add_to_sitemap xml, base_url, locale, page.children, lastmod, priority/2
+        add_to_sitemap xml, base_url, locale, page.children, priority/2
       end
     end
   end
