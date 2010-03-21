@@ -2,10 +2,6 @@ require 'spec_helper'
 
 describe Humpyard::Page do
   
-  before(:all) do
-    @rails_root_mtime = Time.zone.at(::File.new("#{Rails.root}").mtime)
-  end
-  
   it "creates a new page from factory" do
     p = Factory.build(:page)
     p.valid?.should eql true
@@ -157,29 +153,29 @@ describe Humpyard::Page do
   
   # last_modified tests
   it "responds to last_modified with the mtime of Rails.root if it is later than the combination of itself and the contained elements" do
-    p = Factory(:page, :updated_at => @rails_root_mtime - 1.minute)
-    Factory(:element, :updated_at => @rails_root_mtime - 2.minutes, :page => p)
-    Factory(:element, :updated_at => @rails_root_mtime - 3.minutes, :page => p)
-    p.last_modified.should eql (@rails_root_mtime)
+    p = Factory(:page, :updated_at => rails_root_mtime - 1.minute)
+    Factory(:element, :updated_at => rails_root_mtime - 2.minutes, :page => p)
+    Factory(:element, :updated_at => rails_root_mtime - 3.minutes, :page => p)
+    p.last_modified.should eql rails_root_mtime
   end
 
   it "responds to last_modified with the timestamp of the latest element update" do
-    p = Factory(:page, :updated_at => @rails_root_mtime + 1.minute)
-    Factory(:element, :updated_at => @rails_root_mtime + 2.minutes, :page => p)
-    Factory(:element, :updated_at => @rails_root_mtime + 3.minutes, :page => p)
-    p.last_modified.should eql (@rails_root_mtime + 3.minutes)
+    p = Factory(:page, :updated_at => rails_root_mtime + 1.minute)
+    Factory(:element, :updated_at => rails_root_mtime + 2.minutes, :page => p)
+    Factory(:element, :updated_at => rails_root_mtime + 3.minutes, :page => p)
+    p.last_modified.should eql rails_root_mtime + 3.minutes
   end
   
   it "responds to last_modified with the timestamp of itself if there are no elements on the page" do
-    p = Factory(:page, :updated_at => @rails_root_mtime + 1.minute)
-    p.last_modified.should eql (@rails_root_mtime + 1.minute)
+    p = Factory(:page, :updated_at => rails_root_mtime + 1.minute)
+    p.last_modified.should eql rails_root_mtime + 1.minute
   end
   
   it "responds to last_modified with the timestamp of itself if it is newer than all elements on the page" do
-    p = Factory(:page, :updated_at => @rails_root_mtime + 1.minute)
-    Factory(:element, :updated_at => @rails_root_mtime, :page => p)
-    Factory(:element, :updated_at => @rails_root_mtime, :page => p)
-    p.last_modified.should eql (@rails_root_mtime + 1.minute)
+    p = Factory(:page, :updated_at => rails_root_mtime + 1.minute)
+    Factory(:element, :updated_at => rails_root_mtime, :page => p)
+    Factory(:element, :updated_at => rails_root_mtime, :page => p)
+    p.last_modified.should eql rails_root_mtime + 1.minute
   end
   
 end

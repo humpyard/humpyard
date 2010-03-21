@@ -13,3 +13,8 @@ Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 Rspec.configure do |config|
   config.mock_with :rspec
 end
+
+def rails_root_mtime
+  Time.zone.at(::File.new("#{Rails.root}").mtime)
+end
+
