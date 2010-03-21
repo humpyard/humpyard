@@ -56,6 +56,7 @@ namespace :db do
   namespace :test do
     desc "Migrate the test database through scripts in db/migrate. Target specific version with VERSION=x. Turn off output with VERBOSE=false."
     task :prepare do
+      `rm #{File.dirname(__FILE__)}/test/rails/db/test.sqlite3`
       ActiveRecord::Base.table_name_prefix = Humpyard::config.table_name_prefix
       ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
       ActiveRecord::Migrator.migrate("#{File.dirname(__FILE__)}/db/migrate/", ENV["VERSION"] ? ENV["VERSION"].to_i : nil)

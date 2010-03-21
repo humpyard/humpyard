@@ -1,6 +1,6 @@
 class Base < ActiveRecord::Migration
   def self.up
-    create_table :pages, :force => true do |t|
+    create_table :pages do |t|
       t.references :parent
       t.string :name  # should be i18n, searchable
       t.boolean :in_menu, :default => true
@@ -14,9 +14,9 @@ class Base < ActiveRecord::Migration
     end
     Humpyard::Page.create_translation_table! :title => :string, :description => :text
     
-    create_table :elements, :force => true do |t|
+    create_table :elements do |t|
       t.references :page
-      t.references :parent
+      t.references :container
       t.references :content_data
       t.string :content_data_type
       t.datetime :display_from
@@ -24,6 +24,10 @@ class Base < ActiveRecord::Migration
       t.integer :position
       t.timestamps
       t.datetime :deleted_at
+    end
+    
+    create_table :elements_container_elements do |t|
+      t.timestamps
     end
     
     create_table :elements_text_elements do |t|

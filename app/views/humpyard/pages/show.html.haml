@@ -1,6 +1,6 @@
 - title @page.title, false
-- @page.elements.each do |element|
-	=render :partial => "/humpyard/elements/#{element.content_data_type.split('::').last.underscore.pluralize}/show", :locals => {:element => element}
+- @page.elements.each do |e|
+	=render :partial => "/humpyard/elements/#{e.content_data_type.split('::').last.underscore.pluralize}/show", :locals => {:element => e}
 
 
 
