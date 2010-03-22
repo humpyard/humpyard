@@ -23,7 +23,7 @@ module Humpyard
     def human_url(options={})
       options[:locale] ||= ::I18n.locale
       
-      unless Humpyard::config.locales.include? options[:locale].to_s
+      unless Humpyard::config.locales.include? options[:locale].to_sym
         options[:locale] = Humpyard::config.locales.first
       end
       
@@ -34,7 +34,7 @@ module Humpyard
       end
     end
     
-    # Return the logical modification time for the page, suitable or http caching, generational cache keys, etc.
+    # Return the logical modification time for the page, suitable for http caching, generational cache keys, etc.
     def last_modified
       rails_root_mtime = Time.zone.at(::File.new("#{Rails.root}").mtime)
       timestamps = [rails_root_mtime, self.updated_at] + self.elements.collect{|element| element.last_modified}

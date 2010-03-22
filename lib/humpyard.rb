@@ -2,18 +2,25 @@
 # Welcome to Humpyard
 module Humpyard
   # This is the actual version of the Humpyard gem
-  VERSION = ::File.read(::File.join(::File.dirname(__FILE__), "..", "VERSION")).strip
-  # This is the path to the Humpyard gem's root directory
-  PATH = ::File.join(::File.dirname(__FILE__), '..').to_s
-
-  require File.expand_path('../humpyard/config', __FILE__)
-  require File.expand_path('../humpyard/engine', __FILE__)
-
+  VERSION = ::File.read(::File.join(::File.dirname(__FILE__), "..", "VERSION")).strip  
+    
   def self.load options = {} #:nodoc:
-    require 'humpyard/rake_tasks'
+    require ::File.expand_path('../humpyard/rake_tasks', __FILE__)
   end
+  
+  # This is the path to the Humpyard gem's root directory
+  def base_directory
+    ::File.expand_path(::File.join(::File.dirname(__FILE__), '..'))
+  end
+  
+  # This is the path to the Humpyard gem's lib directory
+  def lib_directory
+    ::File.expand_path(::File.join(::File.dirname(__FILE__)))
+  end
+  
+  module_function :base_directory, :lib_directory
 
-  class << self
+  class << self    
     # To access the actual configuration of your Humpyard, you can call this.
     #
     # An example would be <tt>Humpyard.config.www_prefix = 'cms/:locale/'</tt>
@@ -31,13 +38,14 @@ module Humpyard
   end
 end
 
+require File.expand_path('../humpyard/config', __FILE__)
+require File.expand_path('../humpyard/engine', __FILE__)
+require File.expand_path('../humpyard/compass', __FILE__)
+
 require 'i18n'
-::I18n.load_path += Dir.glob("#{File.dirname(__FILE__)}/../config/locales/*.yml")
+I18n.load_path += Dir.glob("#{File.dirname(__FILE__)}/../config/locales/*.yml")
 puts "=> #{I18n.t 'humpyard.start', :version => Humpyard::VERSION}"
 
-require 'haml'
-::Haml.init_rails(binding) if defined?(Haml)
-
-require File.expand_path('../extensions/action_controller/base', __FILE__)
-
+require File.expand_path('../humpyard/action_controller/base', __FILE__)
 require File.expand_path('../humpyard/active_record/acts/element', __FILE__)
+

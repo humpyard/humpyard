@@ -1,7 +1,8 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
-require File.expand_path('../../../../lib/humpyard', __FILE__)
+$LOAD_PATH << File.expand_path('../../../../lib/', __FILE__)
+require 'humpyard'
 
 # Auto-require default libraries and those for the current Rails environment.
 #Bundler.require :default, Rails.env

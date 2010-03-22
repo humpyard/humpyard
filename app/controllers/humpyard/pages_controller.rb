@@ -63,7 +63,7 @@ module Humpyard
         @page = Page.find_by_name('index')
       end
       
-      if params[:locale] and Humpyard.config.locales.include? params[:locale]
+      if params[:locale] and Humpyard.config.locales.include? params[:locale].to_sym
         I18n.locale = params[:locale]
       end
 

@@ -76,15 +76,17 @@ module Humpyard
     end
     
     def locales=(locales) #:nodoc:
-      if locales.nil? or locales.class == Array
-        @locales = locales
+      if locales.nil? 
+        @locales = nil
+      elsif locales.class == Array
+        @locales = locales.map{|l| l.to_sym}
       else
-        @locales = locales.split(',')
+        @locales = locales.split(',').collect{|l| l.to_sym}
       end
     end
     
     def locales #:nodoc:
-      @locales ||= ['en']
+      @locales ||= [:en]
     end
     
     # Get the given locales as Regexp constraint. 

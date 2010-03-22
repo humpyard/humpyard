@@ -10,3 +10,5 @@ tmp
 test/unit/humpyard/log/*
 rdoc
 test/rails/db/schema.rb
+test/rails/public/stylesheets/compiled/*
+.sass-cache
