@@ -71,6 +71,13 @@ Feature: Page sitemap
 	Then I should see "http://www.example.com/en/about/contact.html"
 	And I should see "http://www.example.com/de/about/contact.html"
 
+  Scenario: check_sitemap_for_correct_last_modified
+  Given the standard pages
+  And the configured locales is "en"
+  When go to path "/sitemap.xml"
+  Then the sitemap should contain correct lastmod entry for page with id 45
+  
+
 #  Scenario: debug sitemap
 #    Given the standard pages
 #    And the configured locales is "en,de"
