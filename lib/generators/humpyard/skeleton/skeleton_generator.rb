@@ -2,6 +2,48 @@ require 'generators/humpyard'
 
 module Humpyard
   module Generators
+    ####
+    # == Skeleton Generator
+    #
+    #   rails humpyard:skeleton [layout_name] [options]
+    #
+    # === Description
+    # The humpyard skeleton generator creates a basic layout, stylesheet and
+    # helper which will give some structure to a starting Rails app.
+    #
+    # === Options
+    # <tt>[--skip-compass]</tt>::
+    #   Don't generate COMPASS related files (do this only if you really know what you are doing)
+    # <tt>[--table-name-prefix=TABLE_NAME_PREFIX]</tt>::
+    #  The SQL table name prefix for humpyard as string
+    #
+    #  Default: <tt>humpyard_</tt>
+    # <tt>[--locales=one two three]</tt>::
+    #   The locales used in humpyard as array
+    #
+    #   Default: <tt>en</tt>
+    # <tt>[--www-prefix=WWW_PREFIX]</tt>::
+    #   The prefix for humpyard www pages as string
+    #
+    #   Default: <tt>:locale/</tt>
+    # <tt>[--skip-haml-init]</tt>::
+    #   Don't generate HAML initializer (if you are already using HAML)
+    # <tt>[--admin-prefix=ADMIN_PREFIX]</tt>::
+    #   The prefix for humpyard admin controllers as string
+    #
+    #   Default: <tt>admin</tt>
+    # <tt>[--skip-compass-init]</tt>::
+    #   Don't generate COMPASS initializer (if you are already using COMPASS)
+    #
+    # === Runtime options
+    # <tt>-q, [--quiet]</tt>:: Supress status output
+    # <tt>-p, [--pretend]</tt>:: Run but do not make any changes
+    # <tt>-s, [--skip]</tt>:: Skip files that already exist
+    # <tt>-f, [--force]</tt>:: Overwrite files that already exist
+    #
+    # === Examples
+    #   rails generate humpyard:skeleton
+    
     class SkeletonGenerator < Base
       argument :layout_name, :type => :string, :default => 'application', :banner => 'layout_name'
       
@@ -14,7 +56,7 @@ module Humpyard
       class_option :skip_compass_init, :desc => 'Don\'t generate COMPASS initializer (if you are already using COMPASS)', :type => :boolean
       class_option :skip_compass, :desc => 'Don\'t generate COMPASS related files (do this only if you really know what you are doing)', :type => :boolean
     
-      def create_skeleton     
+      def create_skeleton # :nodoc:
         template 'views/layout.html.haml', "app/views/layouts/#{file_name}.html.haml"
         template 'initializers/humpyard.rb', "config/initializers/humpyard.rb"
         copy_file 'initializers/haml.rb', "config/initializers/haml.rb" unless options[:skip_haml_init]

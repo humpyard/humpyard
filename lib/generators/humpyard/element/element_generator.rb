@@ -6,7 +6,37 @@ require 'active_record'
 
 module Humpyard
   module Generators
-    class ElementGenerator < Base
+    ####
+    # == Element Generator
+    #
+    #   rails humpyard:element ElementName [field:type field:type] [options]
+    #
+    # === Description
+    # The humpyard element generator creates a custom element that can 
+    # be used inside your humpyard pages.
+    #
+    # === Options
+    # <tt>[--skip-model]</tt>:: Don't generate a model or migration file.
+    # <tt>[--skip-migration]</tt>:: Dont generate migration file for model.
+    # <tt>[--skip-timestamps]</tt>:: Don't add timestamps to migration file.
+    # <tt>[--skip-views]</tt>:: Don't generate view files.
+    #
+    # === Runtime options
+    # <tt>-q, [--quiet]</tt>:: Supress status output
+    # <tt>-p, [--pretend]</tt>:: Run but do not make any changes
+    # <tt>-s, [--skip]</tt>:: Skip files that already exist
+    # <tt>-f, [--force]</tt>:: Overwrite files that already exist
+    #
+    # === Test framework options
+    # <tt>[--testunit]</tt>:: Use test/unit for test files.
+    # <tt>[--shoulda]</tt>:: Use shoulda for test files.
+    # <tt>[--rspec]</tt>:: Use RSpec for test files.
+    # <tt>[--skip-tests]</tt>:: Don't generate test files.
+    #
+    # === Examples
+    #   rails generate humpyard:element SimpleText text:string 
+    #   rails generate humpyard:element another_thing content:text --skip-tests
+    class ElementGenerator < Base 
       include Rails::Generators::Migration
 
       argument :element_name, :type => :string, :required => true, :banner => 'ElementName'
@@ -17,12 +47,12 @@ module Humpyard
       class_option :skip_timestamps, :desc => 'Don\'t add timestamps to migration file.', :type => :boolean
       class_option :skip_views, :desc => 'Don\'t generate view files.', :type => :boolean
       
-      class_option :skip_tests, :desc => 'Don\'t generate text files.'
+      class_option :skip_tests, :desc => 'Don\'t generate test files.', :group => 'Test framework', :type => :boolean
       class_option :testunit, :desc => 'Use test/unit for test files.', :group => 'Test framework', :type => :boolean
       class_option :rspec, :desc => 'Use RSpec for test files.', :group => 'Test framework', :type => :boolean
       class_option :shoulda, :desc => 'Use shoulda for test files.', :group => 'Test framework', :type => :boolean
 
-      def create_element        
+      def create_element # :nodoc:        
         unless options.skip_model?
           template 'model.rb', "app/models/#{singular_name}.rb"
           unless options.skip_tests?

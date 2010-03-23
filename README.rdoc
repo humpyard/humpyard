@@ -8,7 +8,7 @@ Humpyard is a CMS in a gem for Rails 3.
     gem "rails", :git => "git://github.com/rails/rails.git"
     gem "builder"
     gem 'haml', :git => 'git://github.com/nex3/haml.git'
-	gem 'compass', :git => 'git://github.com/chriseppstein/compass.git'
+    gem 'compass', :git => 'git://github.com/chriseppstein/compass.git'
     gem "acts_as_tree", ">= 0.1.1"
     gem "globalize2", :git => "git://github.com/starpeak/globalize2.git"
     gem "humpyard", :git => "git://github.com/humpyard/humpyard.git"
@@ -17,13 +17,18 @@ Humpyard is a CMS in a gem for Rails 3.
 
 * Generate Humpyard skeleton
     rails generate humpyard:skeleton
+  A full documentation of options for creating a humpyard skeleton can be
+  found at the Humpyard::Generators::ElementGenerator section of this documentation.
 
 * Migrate the Humpyard database tables
     rake humpyard:db:migrate
 
 == API Documentation
 
-* Auto-generated, up-to-the-hour API docs are here: http://humpyard.org/rdoc
+* API Documentation can be created by running 
+    rake rdoc
+  from the humpyard project directory.
+* There is an auto-generated, up-to-the-hour online_documentation[http://humpyard.org/rdoc] of the API Documentation.
 
 == Note on Patches/Pull Requests
  

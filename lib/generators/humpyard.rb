@@ -1,6 +1,9 @@
 require 'rails/generators/base'
  
 module Humpyard
+  ####
+  # = Humpyard::Generators
+  #
   module Generators
     class Base < Rails::Generators::Base #:nodoc:
       def self.source_root

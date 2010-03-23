@@ -16,7 +16,8 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.title    = 'HumpYard'
   rdoc.options << '--line-numbers' << '--inline-source'
   rdoc.rdoc_files.include('README.rdoc')
-  rdoc.rdoc_files.include('lib/**/*.rb', 'app/*/humpyard/**/*.rb')
+  rdoc.rdoc_files.include('doc/**/*.rdoc', 'lib/**/*.rb', 'app/*/humpyard/**/*.rb')
+  rdoc.rdoc_files.exclude('lib/generators/**/templates/**/*.rb')
 end
 
 begin

@@ -1,0 +1,7 @@
+Description:
+  The humpyard element generator creates a custom element that can 
+  be used inside your humpyard pages.
+  
+Examples:
+    rails generate humpyard:element SimpleText text:string 
+    rails generate humpyard:element another_thing content:text --skip-tests
