@@ -19,12 +19,12 @@ describe Humpyard::PagesHelper do
     end
   end
   
-  describe "stylesheet" do
-    it "should create a proper stylesheet link"
-  end
-  
-  describe "javascript" do
-    it "should create a proper javascript link"
-  end
+  # describe "stylesheet" do
+  #   it "should create a proper stylesheet link"
+  # end
+  # 
+  # describe "javascript" do
+  #   it "should create a proper javascript link"
+  # end
   
 end
