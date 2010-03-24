@@ -1,0 +1,2 @@
+%div{:class => "#{element.content_data_type.split('::').last.underscore.gsub('_','-')}"}
+    =render :partial => "/humpyard/elements/#{element.content_data_type.split('::').last.underscore.pluralize}/show", :locals => {:element => element}

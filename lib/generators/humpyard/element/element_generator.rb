@@ -71,7 +71,7 @@ module Humpyard
         end
         
         unless options.skip_views?
-          template '_dialog.html.haml', "app/views/#{plural_name}/_dialog.html.haml"
+          template '_inline_edit.html.haml', "app/views/#{plural_name}/_inline_edit.html.haml"
           template '_edit.html.haml', "app/views/#{plural_name}/_edit.html.haml"
           template '_show.html.haml', "app/views/#{plural_name}/_show.html.haml"
         end

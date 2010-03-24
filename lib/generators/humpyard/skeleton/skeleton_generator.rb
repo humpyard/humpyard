@@ -47,19 +47,25 @@ module Humpyard
     class SkeletonGenerator < Base
       argument :layout_name, :type => :string, :default => 'application', :banner => 'layout_name'
       
-      class_option :www_prefix, :desc => 'The prefix for humpyard www pages as string', :type => :string, :default => ':locale/'
-      class_option :admin_prefix, :desc => 'The prefix for humpyard admin controllers as string', :type => :string, :default => 'admin'
-      class_option :table_name_prefix, :desc => 'The SQL table name prefix for humpyard as string', :type => :string, :default => 'humpyard_'
-      class_option :locales, :desc => 'The locales used in humpyard as array', :type => :array, :default => [:en]
-    
+      class_option :www_prefix, :desc => 'The prefix for humpyard www pages as string', :group => 'Humpyard config', :type => :string, :default => ':locale/'
+      class_option :admin_prefix, :desc => 'The prefix for humpyard admin controllers as string', :group => 'Humpyard config', :type => :string, :default => 'admin'
+      class_option :table_name_prefix, :desc => 'The SQL table name prefix for humpyard as string', :group => 'Humpyard config', :type => :string, :default => 'humpyard_'
+      class_option :locales, :desc => 'The locales used in humpyard as array', :group => 'Humpyard config', :type => :array, :default => [:en]
+	  
+	
       class_option :skip_haml_init, :desc => 'Don\'t generate HAML initializer (if you are already using HAML)', :type => :boolean
+      class_option :skip_haml, :desc => 'Don\'t generate COMPASS related files (do this only if you really know what you are doing)', :type => :boolean
       class_option :skip_compass_init, :desc => 'Don\'t generate COMPASS initializer (if you are already using COMPASS)', :type => :boolean
       class_option :skip_compass, :desc => 'Don\'t generate COMPASS related files (do this only if you really know what you are doing)', :type => :boolean
-    
-      def create_skeleton # :nodoc:
-        template 'views/layout.html.haml', "app/views/layouts/#{file_name}.html.haml"
+      class_option :skip_js_init, :desc => 'Don\'t generate COMPASS related files (do this only if you really know what you are doing)', :type => :boolean
+      class_option :js_framework, :desk => 'The javascript framework used in humpyard', :type => :string, :default => 'jquery-ui-18'
+	
+      def create_skeleton # :nodoc:      
         template 'initializers/humpyard.rb', "config/initializers/humpyard.rb"
-        copy_file 'initializers/haml.rb', "config/initializers/haml.rb" unless options[:skip_haml_init]
+        unless options[:skip_haml]
+          copy_file 'initializers/haml.rb', "config/initializers/haml.rb" unless options[:skip_haml_init]
+          template 'views/layout.html.haml', "app/views/layouts/#{file_name}.html.haml"
+        end
         unless options[:skip_compass]
           copy_file 'initializers/compass.rb', "config/initializers/compass.rb" unless options[:skip_compass_init]
           copy_file 'compass.config', "config/compass.config" 
@@ -70,6 +76,11 @@ module Humpyard
           #mk_dir 'public/stylesheets/compiled'
           Dir.glob("#{template_path}images/**/*.{png,gif,jpg}").each do |file|
             copy_file file.gsub(template_path, ''), "public/#{file.gsub(template_path, '')}"
+          end
+        end
+        unless options[:skip_js]
+		      Dir.glob("#{template_path}javascripts/#{options[:js_framework]}/**/*.*").each do |file|
+            copy_file file.gsub(template_path, ''), "public/#{file.gsub("#{template_path}javascripts/#{options[:js_framework]}", '')}"
           end
         end  
       end

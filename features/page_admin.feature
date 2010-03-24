@@ -1,4 +1,4 @@
-Feature: Pages
+Feature: Pages Admin
   In order to access page content
   A user views pages
 

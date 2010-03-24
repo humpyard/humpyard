@@ -1,0 +1,17 @@
+- if @humpyard_fake_login
+	%body.hy-logged-in
+		#hy-top
+			#hy-top-left
+				=link_to 'Edit', '#', :onclick => "toggleEditMode($(this));"
+			#hy-top-right
+				=link_to 'Logout', '#', :onclick => "$(body).removeClass('hy-logged-in', 500)"
+		#hy-bottom.hy-eb
+			Some functions
+		#hy-side.hy-eb
+			Some pages
+		#hy-body.hy-eb
+			= capture_haml(&block)
+- else
+	%body
+		#hy-body
+			= capture_haml(&block)
