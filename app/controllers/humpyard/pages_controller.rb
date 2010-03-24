@@ -26,8 +26,8 @@ module Humpyard
     
     end
     
-    # Modify an existing page
-    def modify
+    # Update an existing page
+    def update
       
     end
     

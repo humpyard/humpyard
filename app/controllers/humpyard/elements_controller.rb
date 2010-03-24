@@ -1,7 +1,7 @@
 module Humpyard
   ####
   # Humpyard::ElementController is the controller for editing your elements
-  class ElementsController < ::ApplicationController 
+  class ElementsController < ::ApplicationController         
     # Dialog content for a new element
     def new
       render :partial => 'new'
@@ -24,8 +24,10 @@ module Humpyard
       render :partial => 'edit'
     end
     
-    # Modify an existing element
-    def modify
+    # Update an existing element
+    def update
+      @element = Humpyard::Element.find(params[:id])
+      @element.content_data.update_attributes params[:element]
       render :partial => 'edit'
     end
         

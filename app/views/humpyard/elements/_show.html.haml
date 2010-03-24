@@ -2,6 +2,6 @@
   .hy-el{:class => "hy-id-#{element.id}"}
     = render :partial => "/humpyard/elements/show_view", :locals => {:element => element}
     .hy-el-menu
-      =link_to 'Edit', edit_element_path(element), :class => 'hy-action-edit'
+      =link_to 'Edit', edit_humpyard_element_path(element), :class => 'hy-action-edit'
 - else # view mode
   = render :partial => "/humpyard/elements/show_view", :locals => {:element => element}

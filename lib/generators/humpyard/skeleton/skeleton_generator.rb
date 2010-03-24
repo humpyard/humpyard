@@ -54,10 +54,10 @@ module Humpyard
 	  
 	
       class_option :skip_haml_init, :desc => 'Don\'t generate HAML initializer (if you are already using HAML)', :type => :boolean
-      class_option :skip_haml, :desc => 'Don\'t generate COMPASS related files (do this only if you really know what you are doing)', :type => :boolean
+      class_option :skip_haml, :desc => 'Don\'t generate HAML related files (the layout template)', :type => :boolean
       class_option :skip_compass_init, :desc => 'Don\'t generate COMPASS initializer (if you are already using COMPASS)', :type => :boolean
       class_option :skip_compass, :desc => 'Don\'t generate COMPASS related files (do this only if you really know what you are doing)', :type => :boolean
-      class_option :skip_js_init, :desc => 'Don\'t generate COMPASS related files (do this only if you really know what you are doing)', :type => :boolean
+      class_option :skip_js_init, :desc => 'Don\'t generate Javascript related files', :type => :boolean
       class_option :js_framework, :desk => 'The javascript framework used in humpyard', :type => :string, :default => 'jquery-ui-18'
 	
       def create_skeleton # :nodoc:      
@@ -73,7 +73,6 @@ module Humpyard
           Dir.glob("#{template_path}stylesheets/**/*.sass").each do |file|
             copy_file file.gsub(template_path, ''), "app/#{file.gsub(template_path, '')}"
           end
-          #mk_dir 'public/stylesheets/compiled'
           Dir.glob("#{template_path}images/**/*.{png,gif,jpg}").each do |file|
             copy_file file.gsub(template_path, ''), "public/#{file.gsub(template_path, '')}"
           end
