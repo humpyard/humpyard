@@ -67,6 +67,10 @@ module Humpyard
       else
         # Render index page if neither id or webpath was given
         @page = Page.find_by_name('index')
+        unless @page
+          render '/humpyard/pages/welcome'
+          return false
+        end
       end
       
       # Raise 404 if no page was found

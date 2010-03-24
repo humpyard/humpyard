@@ -2,6 +2,10 @@ Feature: Pages
   In order to access page content
   A user views pages
 
+  Scenario: Accessing root page on a system without pages
+    When I go to path "/"
+    Then I should see "Welcome to Humpyard" within "/html/head/title"
+
   Scenario: Localized Content in English
     Given the standard pages
     When I go to path "/en/index.html"
