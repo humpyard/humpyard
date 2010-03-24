@@ -2,6 +2,11 @@ Rails.application.routes.draw do |map|
   # Map admin controllers
   scope "/#{Humpyard::config.admin_prefix}" do 
     resources :pages, :controller => 'humpyard/pages'
+    resources :elements, :controller => 'humpyard/elements' do
+      member do
+        get :inline_edit
+      end
+    end
   end
   
   # Map "/" URL

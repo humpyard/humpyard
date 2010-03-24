@@ -1,3 +1,2 @@
-.container_element
-	- element.content_data.elements.each do |e|
-		=render :partial => "/humpyard/elements/#{e.content_data_type.split('::').last.underscore.pluralize}/show", :locals => {:element => e}
+- element.content_data.elements.each do |e|
+	=render :partial => "/humpyard/elements/show", :locals => {:element => e}

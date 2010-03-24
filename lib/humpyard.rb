@@ -17,7 +17,7 @@ module Humpyard
   def lib_directory
     ::File.expand_path(::File.join(::File.dirname(__FILE__)))
   end
-  
+    
   module_function :base_directory, :lib_directory
 
   class << self    

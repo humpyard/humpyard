@@ -4,6 +4,8 @@ module Humpyard
   class PagesController < ::ApplicationController 
     helper 'humpyard::pages'
     
+    before_filter :check_login
+    
     # Probably unneccassary - may be removed later
     def index
       
@@ -41,6 +43,10 @@ module Humpyard
     def show
       # No page found at the beginning
       @page = nil
+
+      if params[:locale] and Humpyard.config.locales.include? params[:locale].to_sym
+        I18n.locale = params[:locale]
+      end
       
       # Find page by name
       if not params[:webpath].blank?
@@ -63,10 +69,6 @@ module Humpyard
         @page = Page.find_by_name('index')
       end
       
-      if params[:locale] and Humpyard.config.locales.include? params[:locale].to_sym
-        I18n.locale = params[:locale]
-      end
-
       # Raise 404 if no page was found
       raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?    
     end
@@ -106,6 +108,12 @@ module Humpyard
         end
       
         add_to_sitemap xml, base_url, locale, page.children, priority/2
+      end
+    end
+    
+    def check_login
+      if params[:fake_login] == 'true'
+        @humpyard_fake_login = true
       end
     end
   end
