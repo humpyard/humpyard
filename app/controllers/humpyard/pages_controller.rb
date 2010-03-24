@@ -74,7 +74,8 @@ module Humpyard
       end
       
       # Raise 404 if no page was found
-      raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?    
+      raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?
+      response.headers['X-Humpyard-Page'] = "#{@page.id}"
     end
     
     # Render the sitemap.xml for robots

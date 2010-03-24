@@ -1,5 +1,6 @@
 Then /^I should see the page with id (\d*)$/ do |page_id|
-  "#{page.body}".slice(/X-HumpYard-Page:(\d*)/).gsub(/^X-HumpYard-Page:(\d*)$/, '\1').should == page_id
+  # "#{page.body}".slice(/X-HumpYard-Page:(\d*)/).gsub(/^X-HumpYard-Page:(\d*)$/, '\1').should == page_id
+  page.driver.last_response.headers['X-Humpyard-Page'].should == page_id
 end
 
 Then /the sitemap should contain correct lastmod entry for page with id (\d+)/ do |page_id|
@@ -14,3 +15,4 @@ Then /the sitemap should contain correct lastmod entry for page with id (\d+)/ d
     end
   end
 end
+
