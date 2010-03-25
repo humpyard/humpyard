@@ -2,9 +2,9 @@
 	%body.hy-logged-in
 		#hy-top
 			#hy-top-left
-				=link_to 'Edit', '#', :onclick => "toggleEditMode($(this));"
+				=link_to 'Edit', '#', :'data-command' => "toggleEditMode"
 			#hy-top-right
-				=link_to 'Logout', '#', :onclick => "$(body).removeClass('hy-logged-in', 500)"
+				=link_to 'Logout', '.'
 		#hy-bottom.hy-eb
 			Some functions
 		#hy-side.hy-eb
