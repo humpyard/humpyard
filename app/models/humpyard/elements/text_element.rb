@@ -8,6 +8,7 @@ module Humpyard
       require 'globalize'
       
       translates :content
+      validates_presence_of :content
     end
   end
 end

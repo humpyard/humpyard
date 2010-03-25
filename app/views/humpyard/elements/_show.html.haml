@@ -1,7 +1,7 @@
--if  @humpyard_fake_login #edit mode possible
+-if (request.xhr? or @humpyard_fake_login) #edit mode possible, fake functionality
   .hy-el{:class => "hy-id-#{element.id}"}
     = render :partial => "/humpyard/elements/show_view", :locals => {:element => element}
     .hy-el-menu
-      =link_to 'Edit', edit_humpyard_element_path(element), :class => 'hy-action-edit'
+      =link_to 'Edit', edit_humpyard_element_path(element), :'data-dialog' => true
 - else # view mode
   = render :partial => "/humpyard/elements/show_view", :locals => {:element => element}

@@ -27,13 +27,35 @@ module Humpyard
     # Update an existing element
     def update
       @element = Humpyard::Element.find(params[:id])
-      @element.content_data.update_attributes params[:element]
-      render :partial => 'edit'
+      if @element
+        if @element.content_data.update_attributes params[:element]
+          render :json => {
+            :status => :ok,
+            :dialog => :close,
+            :replace => [
+              { 
+                :element => "hy-id-#{@element.id}",
+                :url => humpyard_element_path(@element)
+              }
+            ]
+          }
+        else
+          render :json => {
+            :status => :failed, 
+            :errors => @element.errors
+          }
+        end
+      else
+        render :json => {
+          :status => :failed
+        }, :status => 404
+      end
     end
         
     # Render a given element
     def show
-      render :partial => 'show', :locals => {:element => e}
+      @element = Humpyard::Element.find(params[:id])
+      render :partial => 'show', :locals => {:element => @element}
     end
   end
 end
