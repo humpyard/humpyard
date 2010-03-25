@@ -1,6 +1,18 @@
 - title "Welcome to Humpyard"
 
-%p
-	The installation of Humpyard was successful.
-%p
-	You may now add pages.
+.container
+	#header.span-24{"class"=>"last"}
+		%h1
+			=. content_for_title
+	#content.span-16	
+		%p
+			The installation of Humpyard was successful.
+		%p
+			You may now add pages.
+	#sidebar.span-8{"class"=>"last"}
+		%p
+			%a{"href"=>"http://humpyard.org/"}
+				Visit the Humpyard Homepage
+	#footer.span-24{"class"=>"last"}
+		%p
+			Have fun

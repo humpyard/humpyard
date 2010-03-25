@@ -49,6 +49,4 @@ $(function() {
 		});
 		e.preventDefault();
 	});
-
-	//$('.humpyard-tabview').live()
 });

@@ -11,4 +11,16 @@
 <% end -%>
     = csrf_meta_tag
   - page_body do
-    = yield
+    .container
+      #header.span-24{"class"=>"last"}
+        %h1
+          = @content_for_title
+      #content.span-16	
+        = yield
+      #sidebar.span-8{"class"=>"last"}
+        %p
+          %a{"href"=>"http://humpyard.org/"}
+            Visit the Humpyard Homepage
+      #footer.span-24{"class"=>"last"}
+        %p
+          This is just a template
