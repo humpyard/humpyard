@@ -13,23 +13,21 @@
 // +blueprint
 
 //Recommended Blueprint configuration with scoping and semantic layout:
-+blueprint-typography("#hy-body")
+
 +blueprint-scaffolding("#hy-body")
 +humpyard-base
 #hy-body
+  +blueprint-typography(true)
   +blueprint-utilities
   +blueprint-debug
   +blueprint-interaction
   // Remove the scaffolding when you're ready to start doing visual design.
   // Or leave it in if you're happy with how blueprint looks out-of-the-box
-#hy-body form
-  +blueprint-form
-
-// Page layout can be done using mixins applied to your semantic classes and IDs:
-#hy-body
+  form
+    +blueprint-form
   .container
     +container
-    margin = 20px
+    //margin = 20px
   #header, #footer
     +column(!blueprint_grid_columns)
   #footer
