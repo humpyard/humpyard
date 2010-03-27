@@ -42,7 +42,7 @@ module Humpyard
         else
           render :json => {
             :status => :failed, 
-            :errors => @element.errors
+            :errors => @element.content_data.errors
           }
         end
       else
