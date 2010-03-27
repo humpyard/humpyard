@@ -6,6 +6,7 @@ module Humpyard
           base.has_one :element, :as => :content_data, :class_name => 'Humpyard::Element', :autosave => true
           base.validate :element_must_be_valid
           base.alias_method_chain :element, :autobuild 
+          base.alias_method_chain :column_for_attribute, :element_column_for_attribute
    
           all_attributes = Humpyard::Element.column_names
           ignored_attributes = ['id', 'created_at', 'updated_at', 'content_data_id', 'content_data_type']
@@ -24,6 +25,10 @@ module Humpyard
 
         def element_with_autobuild
           element_without_autobuild || build_element
+        end
+        
+        def column_for_attribute_with_element_column_for_attribute(attr)
+          ret = column_for_attribute_without_element_column_for_attribute(attr) || element.column_for_attribute(attr)
         end
         
 #        def method_missing(meth, *args, &blk)

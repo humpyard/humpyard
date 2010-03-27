@@ -1,0 +1,7 @@
+.input{:class => "attr_#{name}"}
+  %div
+    %label
+      = form.object.class.human_attribute_name(name)
+    .field-errors.ui-state-error-text{:style => 'display:none;'}
+  %div
+    %input{:type => "text", :name => "#{form.namespace}[#{name}]", :value => "#{form.object.send(name)}", :class => "datetime-field text ui-widget-content ui-corner-all field-highlight"}

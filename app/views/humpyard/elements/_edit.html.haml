@@ -1,12 +1,20 @@
 = humpyard_form_for @element.content_data, :as => :element, :url => humpyard_element_path, :html=>{:remote => true, :'data-form-object-class' => "element", :class=>'element_form humpyard_form'} do |form|
-	.humpyard-dialog-title
-		= @element.content_data.class
-	.humpyard-tabview
-		= render :partial => "/humpyard/elements/#{@element.content_data_type.split('::').last.underscore.pluralize}/edit", :locals => {:element => @element, :form => form}
-		.humpyard-tab
-			.humpyard-tab-title
-				Generic Options
-			= form.input :display_from
-			= form.input :display_until
-	.humpyard-dialog-buttons	
-		= form.submit
+  .humpyard-dialog-title
+    = @element.content_data.class
+  .humpyard-tabview
+    = render :partial => "/humpyard/elements/#{@element.content_data_type.split('::').last.underscore.pluralize}/edit", :locals => {:element => @element, :form => form}
+    .humpyard-tab
+      .humpyard-tab-title
+        Generic Options
+      = form.input :display_from
+      = form.input :display_until
+  .humpyard-dialog-buttons  
+    = form.submit
+
+:javascript
+  $('.datetime-field').datepicker({
+    showButtonPanel: true,
+    changeMonth: true,
+    changeYear: true,
+    dateFormat: 'yy-mm-dd'
+  });
