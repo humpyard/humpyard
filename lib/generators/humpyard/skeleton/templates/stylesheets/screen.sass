@@ -16,6 +16,13 @@
 
 +blueprint-scaffolding("#hy-body")
 +humpyard-base
+
+body.hy-logged-in
+  form
+    +blueprint-form-layout
+    +blueprint-form-borders(#bbb, #666, #ccc)
+    +blueprint-form-sizes("400px", "400px", "250px")
+
 #hy-body
   +blueprint-typography(true)
   +blueprint-utilities

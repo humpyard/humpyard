@@ -1,4 +1,4 @@
 .input
 	%label
-		= form.record.class.human_attribute_name(name)
-	%input{"name"=>"#{form.namespace}[#{name}]", "value"=>"#{form.record.send(name)}"}
+		= form.object.class.human_attribute_name(name)
+	%input{"name"=>"#{form.namespace}[#{name}]", "value"=>"#{form.object.send(name)}"}

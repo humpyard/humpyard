@@ -1,0 +1,8 @@
+.input{:class => "attr_#{name}"}
+  %div
+    %label{:for => "#{form.namespace}[#{name}]"}
+      = form.object.class.human_attribute_name(name)
+    %span.field-errors.ui-state-error-text{:style => 'display:none;'}
+  %div
+    %textarea{:name => "#{form.namespace}[#{name}]", :class => "text ui-widget-content ui-corner-all field-highlight"}
+      = preserve raw(form.object.send(name))
