@@ -9,6 +9,8 @@ module Humpyard
     belongs_to :page, :class_name => 'Humpyard::Page'
     belongs_to :container, :class_name => 'Humpyard::Elements::ContainerElement'
     belongs_to :content_data, :polymorphic => true, :dependent => :destroy
+
+    validates_with Humpyard::PublishRangeValidator, {:attributes => [:display_from, :display_until]}
     
     # Return the logical modification time for the element.
     #
