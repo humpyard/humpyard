@@ -178,4 +178,31 @@ describe Humpyard::Page do
     p.last_modified.should eql rails_root_mtime + 1.minute
   end
   
+  it "is invalid if display_from is after display_until" do
+    p = Factory.build(:page)
+    p.display_from = Time.zone.now + 1.week
+    p.display_until = Time.zone.now - 1.week
+    p.valid?.should eql false
+  end
+  
+  it "is valid if only display_from is set" do
+    p = Factory.build(:page)
+    p.display_from = Time.zone.now + 1.week
+    p.valid?.should eql true
+  end
+  
+  it "is valid if only display_unitl is set" do
+    p = Factory.build(:page)
+    p.display_until = Time.zone.now + 1.week
+    p.valid?.should eql true
+  end
+  
+  it "is invalid if display_until is after display_from" do
+    p = Factory.build(:page)
+    p.display_from = Time.zone.now - 1.week
+    p.display_until = Time.zone.now + 1.week
+    p.valid?.should eql true
+  end
+  
+  
 end

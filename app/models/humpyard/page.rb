@@ -14,6 +14,8 @@ module Humpyard
     
     has_many :elements, :class_name => 'Humpyard::Element'
     
+    validates_with Humpyard::PublishRangeValidator, {:attributes => [:display_from, :display_until]}
+    
     # Return the human readable URL for the page.
     #
     # Posible options values are
