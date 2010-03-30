@@ -1,4 +1,4 @@
--if (request.xhr? or @humpyard_fake_login) #edit mode possible, fake functionality
+-if humpyard_user == 'admin' #edit mode possible, fake functionality
   .hy-el{:class => "hy-id-#{element.id}"}
     = render :partial => "/humpyard/elements/show_view", :locals => {:element => element}
     .hy-el-menu

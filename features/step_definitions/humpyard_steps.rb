@@ -31,6 +31,10 @@ Given /^the standard pages$/ do
   Humpyard::Elements::TextElement.locale = nil
 end
 
+Given /^I am logged in as (.+)$/ do |user|
+  visit "/?user=#{user}"
+end
+
 Given /^the following (.+) records?$/ do |factory, table|  
   table.hashes.each do |hash|  
     Factory(factory, hash)  

@@ -4,8 +4,6 @@ module Humpyard
   class PagesController < ::ApplicationController 
     helper 'humpyard::pages'
     
-    before_filter :check_login
-    
     # Probably unneccassary - may be removed later
     def index
       
@@ -116,10 +114,5 @@ module Humpyard
       end
     end
     
-    def check_login
-      if params[:fake_login] == 'true'
-        @humpyard_fake_login = true
-      end
-    end
   end
 end

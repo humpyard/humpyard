@@ -1,10 +1,10 @@
-- if @humpyard_fake_login
+- if humpyard_user == 'admin'
 	%body.hy-logged-in
 		#hy-top
 			#hy-top-left
 				=link_to 'Edit', '#', :'data-command' => "toggleEditMode"
 			#hy-top-right
-				=link_to 'Logout', '.'
+				=link_to 'Logout', '?user='
 		#hy-bottom.hy-eb
 			Some functions
 		#hy-side.hy-eb
