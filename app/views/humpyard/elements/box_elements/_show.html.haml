@@ -1,0 +1,5 @@
+.box_title
+  = element.content_data.title
+.box_content
+  - element.content_data.elements.each do |e|
+    = render :partial => "/humpyard/elements/show", :locals => {:element => e}

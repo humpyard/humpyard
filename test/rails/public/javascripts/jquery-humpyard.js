@@ -31,12 +31,13 @@ jQuery(function($) {
 
   $('a[data-dialog]').live('click', function (e) {
     dialog = $('<div></div>').appendTo('body').dialog({
-      width: '600px'
+      width: '600px',
     });
+
     dialog.load($(this).attr('href'), function(response, status, xhr) {
       if (status == "error") {
-        var icon = '<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>';
-        var msg = "Sorry but there was an error: ";
+        var error_content = '<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"><p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span><strong>Sorry, an error occurred:</strong> '+xhr.statusText+' ['+xhr.status+']</p></div>';
+        //var msg = "Sorry but there was an error: ";
         dialog.dialog({
           title: 'An Error occured',
           dialogClass: 'alert',
@@ -46,10 +47,18 @@ jQuery(function($) {
             'Ok': function() {
               $(this).dialog('close');
             }
-          }   
+          }
         });
-        dialog.html(icon + msg + xhr.status + " " + xhr.statusText);
+        dialog.html(error_content);
       } else {
+        // configure date pickers
+        $('input[data-date-input]', dialog).datepicker({
+             showButtonPanel: true,
+             changeMonth: true,
+             changeYear: true,
+             dateFormat: 'yy-mm-dd'
+        });
+
         dialog.dialog({
           close: function(ev, ui) { $(this).remove(); },
           title: $('.humpyard-dialog-title', dialog).html()
@@ -72,16 +81,30 @@ jQuery(function($) {
           dialog.dialog({
             buttons: {
               'Ok': function() {
-                $('form:first', this).bind('ajax:complete', function(e, xhr) {
+                var form = $('form:first', $(this));
+                form.bind('ajax:complete', function(e, xhr) {
                   result = $.parseJSON(xhr.responseText);
                   if(result['dialog'] == 'close') {
                     dialog.dialog('close');
                   }
                   if(result['replace']) {
                     $(result['replace']).each(function(i,k){
-                      console.log(k['element'] + ': ' + k['url']);
+                      //console.log(k['element'] + ': ' + k['url']);
                       $('.' + k['element']).load(k['url']);
                     });
+                  }
+                  if(result['status'] == 'failed') {
+                    $('.field-highlight', form).removeClass("ui-state-error");
+                    $('.field-errors', form).empty().hide();
+                    if(result['errors']) {
+                      $.each(result['errors'], function(attr, errors) {
+                        errors = $.isArray(errors) ? errors : [errors];
+                        $('.input.attr_' + attr + ' .field-highlight', form).addClass("ui-state-error");
+                        field_errors = $('.input.attr_' + attr + ' .field-errors', form);
+                        field_errors.append(errors.join(', '));
+                        field_errors.fadeIn();
+                      });
+                    }
                   }
                 }).submit();
               },
@@ -90,7 +113,7 @@ jQuery(function($) {
               }
             }
           });
-        })
+        });
 
         $('.humpyard-dialog-buttons').remove();
 
