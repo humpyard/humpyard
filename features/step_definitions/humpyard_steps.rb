@@ -87,19 +87,21 @@ When /^I edit the page "([^\"]*)"$/ do |page_url|
 end
 
 When /^I edit the css element "([^\"]*)"$/ do |selector|
-  res = page.evaluate_script("window.setTimeout (function() {$('#{selector}').trigger('mouseover');}, 1)")
+  page.evaluate_script("window.setTimeout (function() {$('#{selector}').trigger('mouseover');}, 1)")
   within(:css, selector) do
     wait_until { find_link("Edit").visible? }
     find_link("Edit").click()
   end
+  page.evaluate_script("window.setTimeout (function() {$('#{selector}').trigger('mouseout');}, 1)")
   dialog = wait_until{find(:css, ".ui-dialog")}
   dialog.visible?.should == true
+  wait_until(15){ has_css?(".ui-dialog form") }.should == true
 end
 
-When /^I change the content to "([^\"]*)"$/ do |new_content|
-   within(:css, ".ui-dialog form") do
-     fill_in 'element[content]', :with => new_content
-   end
+When /^I change the field "([^\"]*)" to "([^\"]*)"$/ do |attr, new_content|
+  within(:css, ".ui-dialog form") do
+    fill_in "element[#{attr}]", :with => new_content
+  end
 end
 
 When /^I click "([^\"]*)" on the dialog$/ do |button_title|
@@ -131,10 +133,9 @@ Then /^I should see a button named "([^\"]*)" within "([^\"]*)"$/ do |name, sele
 end
 
 Then /^I should see \/([^\/]*)\/(?: within css element "([^\"]*)")?$/ do |re, scope_selector|
-  sleep 10
   regexp = Regexp.new(re)
   within(:css, scope_selector) do
-    wait_until { page.has_xpath?('//*', :text => regexp) }.should == true
+    wait_until(15) { find(:css, ".text-element").text.match(regexp) rescue false }.should_not == nil
   end
 end
 
@@ -160,5 +161,27 @@ Then /^the css element "([^\"]*)" should be within the window boundaries$/ do |s
   end
 end
 
+Then /^the dialog should be open$/ do
+  wait_until(15) { page.has_css?(".ui-dialog") }.should == true
+end
 
+Then /^the dialog should be closed$/ do
+  wait_until(15) { not page.has_css?(".ui-dialog") }.should == true
+end
+
+Then /^I should see the error "([^\"]*)" on the field "([^\"]*)"$/ do |msg, attr|
+  within(:css, ".ui-dialog .attr_#{attr}") do
+    wait_until(15) { find(:css, ".field-errors").text == msg rescue false }.should_not == nil
+  end
+end
+
+When /^I switch to the dialog tab "([^\"]*)"$/ do |tabtitle|
+  wait_until(15) { page.has_css?(".ui-dialog") }.should == true
+  within(:css, ".ui-dialog") do
+    link = find_link(tabtitle)
+    link.click
+    puts link['href']
+    wait_until { find(:css, link['href']).visible? }.should == true
+  end
+end
 

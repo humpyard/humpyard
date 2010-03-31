@@ -4,5 +4,5 @@ en:
 
   errors:
     messages:
-      cannot_be_after_display_until: 'cannot be after "Display until". Set an earlier date/time OR remove "Display until"'
-      cannot_be_before_display_from: 'cannot be before "Display from". Set a later date/time OR remove "Display from"'
+      cannot_be_after_display_until: "cannot be after 'Display until'. Set an earlier date/time OR remove 'Display until'"
+      cannot_be_before_display_from: "cannot be before 'Display from'. Set a later date/time OR remove 'Display from'"
