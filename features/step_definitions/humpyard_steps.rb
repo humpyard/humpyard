@@ -76,10 +76,37 @@ When /^I click on "([^\"]*)" within "([^\"]*)"$/ do |link_text, selector|
 end
 
 When /^I hover over the css element "([^\"]*)"$/ do |selector|
-  el = page.find(:css, selector)
   res = page.evaluate_script("window.setTimeout (function() {$('#{selector}').trigger('mouseover');}, 1)")
 end
 
+When /^I edit the page "([^\"]*)"$/ do |page_url|
+  visit page_url
+  within(:css, "#hy-top") do
+    find_link("Edit").click()
+  end
+end
+
+When /^I edit the css element "([^\"]*)"$/ do |selector|
+  res = page.evaluate_script("window.setTimeout (function() {$('#{selector}').trigger('mouseover');}, 1)")
+  within(:css, selector) do
+    wait_until { find_link("Edit").visible? }
+    find_link("Edit").click()
+  end
+  dialog = wait_until{find(:css, ".ui-dialog")}
+  dialog.visible?.should == true
+end
+
+When /^I change the content to "([^\"]*)"$/ do |new_content|
+   within(:css, ".ui-dialog form") do
+     fill_in 'element[content]', :with => new_content
+   end
+end
+
+When /^I click "([^\"]*)" on the dialog$/ do |button_title|
+  within(:css, ".ui-dialog") do
+    click(button_title)
+  end
+end
 
 
 Then /^put me the raw result$/ do
@@ -102,6 +129,15 @@ Then /^I should see a button named "([^\"]*)" within "([^\"]*)"$/ do |name, sele
     but.visible?.should == true
   end
 end
+
+Then /^I should see \/([^\/]*)\/(?: within css element "([^\"]*)")?$/ do |re, scope_selector|
+  sleep 10
+  regexp = Regexp.new(re)
+  within(:css, scope_selector) do
+    wait_until { page.has_xpath?('//*', :text => regexp) }.should == true
+  end
+end
+
 
 Then /^the css element "([^\"]*)" should be within the window boundaries$/ do |selector|
   el = page.find(:css, selector)
