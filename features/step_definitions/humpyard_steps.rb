@@ -16,8 +16,8 @@ Given /^the standard pages$/ do
   Factory :page, :id => 89, :name => 'imprint', :title => 'Imprint', :position => 2
   
   t1 = Factory :text_element, :content => 'This is some great text!', :page_id => 42, :position => 2
-  c = Factory :container_element, :page_id => 42, :position => 1
-  t2 = Factory :text_element, :content => 'This is text inside a container', :container => c, :position => 1
+  c = Factory :box_element, :title => 'This is a box element', :page_id => 42, :position => 1
+  t2 = Factory :text_element, :content => 'This is text inside a container', :container => c.element, :position => 1
   
 #  I18n.locale = :de
   Humpyard::Page.locale = :de

@@ -7,7 +7,7 @@ module Humpyard
           base.validate :element_must_be_valid
           base.alias_method_chain :element, :autobuild 
           base.alias_method_chain :column_for_attribute, :element_column_for_attribute
-   
+          
           all_attributes = Humpyard::Element.column_names
           ignored_attributes = ['id', 'created_at', 'updated_at', 'content_data_id', 'content_data_type']
           attributes_to_delegate = all_attributes - ignored_attributes
@@ -31,6 +31,14 @@ module Humpyard
           ret = column_for_attribute_without_element_column_for_attribute(attr) || element.column_for_attribute(attr)
         end
         
+        def is_humpyard_element?
+          self.class.is_humpyard_element?
+        end
+        
+        def is_humpyard_container_element?
+          self.class.is_humpyard_container_element?
+        end
+        
 #        def method_missing(meth, *args, &blk)
 #          element.send(meth, *args, &blk)
 #        rescue NoMethodError
@@ -38,7 +46,13 @@ module Humpyard
 #        end
 
         module ClassMethods
-          
+          def is_humpyard_element?
+            true
+          end
+
+          def is_humpyard_container_element?
+            false
+          end          
         end
 
         module InstanceMethods
