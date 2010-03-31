@@ -9,7 +9,9 @@ gem 'globalize2', :git => 'git://github.com/starpeak/globalize2.git'
 
 group :test do
   gem 'test-unit'
-  gem 'rspec', :git => 'git://github.com/rspec/rspec.git'
+  gem 'rspec-core', :git => 'git://github.com/rspec/rspec-core.git'
+  gem 'rspec-expectations', :git => 'git://github.com/rspec/rspec-expectations.git'
+  gem 'rspec-mocks', :git => 'git://github.com/rspec/rspec-mocks.git'
   gem 'rspec-rails', :git => 'git://github.com/rspec/rspec-rails.git'
   gem 'capybara',         :git => 'git://github.com/jnicklas/capybara.git'
   gem 'database_cleaner', :git => 'git://github.com/bmabey/database_cleaner.git'
