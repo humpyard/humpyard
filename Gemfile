@@ -20,6 +20,7 @@ group :test do
   gem 'factory_girl', '>= 1.2.3'
   gem 'markup_validity', '>= 1.1.0'
   gem 'sqlite3-ruby', :require => 'sqlite3'
+  gem 'thin'
 end
 
 if RUBY_VERSION < '1.9'

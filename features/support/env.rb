@@ -23,6 +23,13 @@ require 'cucumber/rails/capybara_javascript_emulation'
 
 require "markup_validity"
 
+begin
+  File.symlink File.dirname(__FILE__)+"/../../test/rails/public", File.dirname(__FILE__)+"/../../public"
+  puts "=== Created symlink public -> test/rails/public ==="
+rescue Exception => e
+  puts "=== The symlink public -> test/rails/public already exists ==="
+end
+
 Before do
   require 'database_cleaner'
   DatabaseCleaner.strategy = :truncation
@@ -31,4 +38,5 @@ Before do
   require 'factory_girl'
   Dir.glob(File.join(File.dirname(__FILE__), '../../test/factories/**/*.rb')).each {|f| require f }  
   Factory.factories.keys.each {|factory| Factory(factory) }
+  
 end
