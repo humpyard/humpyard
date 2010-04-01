@@ -61,7 +61,7 @@ module Humpyard
     end
 
     def translation_info(method) #:nodoc:
-      if @object.translated_attribute_names.include?(method)
+      if @object.respond_to?(:translated_attribute_names) and @object.translated_attribute_names.include?(method)
         tmp = @object.translation_class.new
         if tmp
           column = tmp.column_for_attribute(method) if tmp.respond_to?(:column_for_attribute)

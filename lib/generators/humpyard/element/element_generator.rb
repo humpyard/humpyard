@@ -36,6 +36,8 @@ module Humpyard
     # === Examples
     #   rails generate humpyard:element SimpleText text:string 
     #   rails generate humpyard:element another_thing content:text --skip-tests
+    # 
+    # 
     class ElementGenerator < Base 
       include Rails::Generators::Migration
 
@@ -71,9 +73,9 @@ module Humpyard
         end
         
         unless options.skip_views?
-          template '_inline_edit.html.haml', "app/views/#{plural_name}/_inline_edit.html.haml"
-          template '_edit.html.haml', "app/views/#{plural_name}/_edit.html.haml"
-          template '_show.html.haml', "app/views/#{plural_name}/_show.html.haml"
+          template '_inline_edit.html.haml', "app/views/humpyard/elements/#{plural_name}/_inline_edit.html.haml"
+          template '_edit.html.haml', "app/views/humpyard/elements/#{plural_name}/_edit.html.haml"
+          template '_show.html.haml', "app/views/humpyard/elements/#{plural_name}/_show.html.haml"
         end
 
         unless options.skip_model? || options.skip_migration?

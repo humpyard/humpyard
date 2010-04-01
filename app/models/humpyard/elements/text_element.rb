@@ -3,7 +3,7 @@ module Humpyard
     ####
     # Humpyard::Elements::TextElement is a model of a text element.    
     class TextElement < ::ActiveRecord::Base
-      acts_as_humpyard_element
+      acts_as_humpyard_element :system_element => true
       
       require 'globalize'
       

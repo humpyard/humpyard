@@ -74,7 +74,7 @@ end
 
 class ActiveRecord::Base
   def self.acts_as_humpyard_element(options = {})
-    set_table_name "#{Humpyard::config.table_name_prefix}elements_#{name.split('::').last.underscore.pluralize}"
+    set_table_name "#{Humpyard::config.table_name_prefix}elements_#{name.split('::').last.underscore.pluralize}" if options[:system_element]
     include Humpyard::ActiveRecord::Acts::Element
   end
 end

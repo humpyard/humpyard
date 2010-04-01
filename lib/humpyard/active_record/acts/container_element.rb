@@ -3,8 +3,6 @@ module Humpyard
     module Acts
       module ContainerElement
         def self.included(base)
-          base.acts_as_humpyard_element
-
           base.delegate "elements", "elements=", "elements?", :to => :element
           
           base.extend ClassMethods
@@ -22,6 +20,7 @@ end
 
 class ActiveRecord::Base
   def self.acts_as_humpyard_container_element(options = {})
+    acts_as_humpyard_element options
     include Humpyard::ActiveRecord::Acts::ContainerElement
   end
 end
