@@ -14,6 +14,8 @@ Given /^the standard pages$/ do
   Factory :page, :id => 45, :name => 'about', :title => 'About', :position => 4
   Factory :page, :id => 60, :name => 'contact', :title => 'Contact', :parent_id => 45
   Factory :page, :id => 89, :name => 'imprint', :title => 'Imprint', :position => 2
+  Factory :page, :id => 11, :name => 'alternative-layout-test', :title => 'Special page', :position => 5, :template_name => "alternative"
+  
   
   t1 = Factory :text_element, :content => 'This is some great text!', :page_id => 42, :position => 2
   c = Factory :box_element, :title => 'This is a box element', :page_id => 42, :position => 1
