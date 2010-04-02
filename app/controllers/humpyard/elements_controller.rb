@@ -51,6 +51,14 @@ module Humpyard
         }, :status => 404
       end
     end
+    
+    # Destroy an element
+    def destroy
+      @element = Humpyard::Element.find(params[:id])
+      
+      # Not enabled until adding elements is implemented
+      # @element.destoy
+    end
         
     # Render a given element
     def show
