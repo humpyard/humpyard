@@ -1,6 +1,5 @@
 - title @page.title
-- @page.elements.each do |e|
-	=render :partial => "/humpyard/elements/show", :locals => {:element => e}
+= render :partial => "/humpyard/elements/show_container", :locals => {:elements => @page.elements}
 
 / 
-	="X-HumpYard-Page:#{@page.id}"
+  ="X-HumpYard-Page:#{@page.id}"
