@@ -6,9 +6,5 @@
       =link_to 'Edit', edit_humpyard_element_path(element), :'data-dialog' => true, :'data-icon' => "ui-icon-gear"
       =link_to 'Delete', humpyard_element_path(element), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :remote => true
       =link_to 'Move', '#', :'data-icon' => "ui-icon-arrow-4", :"data-draghandle"=>true
-    .hy-marker.lt
-    .hy-marker.rt
-    .hy-marker.rb
-    .hy-marker.lb
 - else # view mode
   = render :partial => "/humpyard/elements/show_view", :locals => {:element => element}
