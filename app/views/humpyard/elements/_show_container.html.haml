@@ -1,0 +1,3 @@
+%div{'data-dropable'=>'true'}
+  - elements.each do |e|
+    = render :partial => "/humpyard/elements/show", :locals => {:element => e}

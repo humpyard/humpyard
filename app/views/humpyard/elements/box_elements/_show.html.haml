@@ -1,5 +1,5 @@
-.box_title
+.box-element-title
   = element.content_data.title
-.box_content
-  - element.content_data.elements.each do |e|
-    = render :partial => "/humpyard/elements/show", :locals => {:element => e}
+.box-element-content
+  = render :partial => "/humpyard/elements/show_container", :locals => {:elements => element.content_data.elements}
+  
