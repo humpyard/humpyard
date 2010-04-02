@@ -124,7 +124,3 @@ jQuery(function ($) {
         });
     });
 });
-
-remove_element = function(el) {
-  $("."+el).remove();
-}
