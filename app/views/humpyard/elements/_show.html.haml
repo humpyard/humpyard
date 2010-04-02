@@ -1,10 +1,10 @@
 -if humpyard_user == 'admin' #edit mode possible, fake functionality
   .hy-el{:class => "hy-id-#{element.id}"}
     = render :partial => "/humpyard/elements/show_view", :locals => {:element => element}
+    .hy-marker-frame
     .hy-el-menu
       =link_to 'Edit', edit_humpyard_element_path(element), :'data-dialog' => true, :'data-icon' => "ui-icon-gear"
       =link_to 'Delete', '#', :'data-icon' => "ui-icon-trash"
       =link_to 'Move', '#', :'data-icon' => "ui-icon-arrow-4"
-    .hy-marker-frame
 - else # view mode
   = render :partial => "/humpyard/elements/show_view", :locals => {:element => element}
