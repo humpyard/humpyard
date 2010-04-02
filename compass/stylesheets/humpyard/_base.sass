@@ -1,6 +1,8 @@
 $hy_panel_bg_color: #cccccc !default
 $hy_panel_border_color: #a5a5a5 !default
 $hy_selection_color: #ffcc00 !default
+$hy_top_bar_height: 20px
+$hy_bottom_bar_height: 120px
 
 @import jquery_ui_overrides.sass
 
@@ -27,12 +29,15 @@ $hy_selection_color: #ffcc00 !default
       background: $hy_panel_bg_color
       border-bottom: $hy_panel_border_color solid 1px
       padding: 0.2em
-      height: 20px
+      height: $hy_top_bar_height
       display: block
       #hy-top-left
         float: left
       #hy-top-right
         float: right
+    #hy-top.hy-edit-active
+      border-bottom: $hy_selection_color solid 1px
+    
     #hy-side
       position: absolute
       background: $hy_panel_bg_color
@@ -50,24 +55,24 @@ $hy_selection_color: #ffcc00 !default
       border-top: $hy_panel_border_color solid 1px
       left: 0
       right: 0
-      bottom: -90px
-      height: 89px
-      padding-left: 20px
+      bottom: -$hy_bottom_bar_height - 1
+      height: $hy_bottom_bar_height
+      padding: 5px
       display: block
       .element
         display: block
         float: left
         width: 64px
         height: 64px
-        border: 1px solid #333
-        padding: 5p
+        border: 1px solid $hy_panel_border_color
+        padding: 5px
     #hy-bottom.hy-edit-active
       bottom: 0
       left: 0px
     #hy-body
       position: absolute
       overflow: auto
-      top: 36px
+      top: $hy_top_bar_height + 5
       bottom: 0
       left: 0
       right: 0
@@ -78,7 +83,6 @@ $hy_selection_color: #ffcc00 !default
           text-decoration: none
         position: absolute
         background: none
-        //border: 1px solid $hy_selection_color
         top: 0
         left: 0
         display: none
@@ -86,26 +90,12 @@ $hy_selection_color: #ffcc00 !default
         position: absolute
         top: 0
         left: 0
-        width: 100px
-        height: 100px
-        border: 1px solid $hy_selection_color
+        background: $hy_selection_color
         display: none
-      .hy-marker
-        position: absolute
-        background: none
-        display: block
-        width: 5px
-        height: 5px
-        top: 0
-        left: 0
     #hy-body.hy-edit-active
       left: 0px
-      bottom: 90px
+      bottom: $hy_bottom_bar_height + 1
       .hy-el-active
-        //border: 1px solid $hy_selection_color
-        //margin: -1px
-        .hy-marker
-          background: $hy_selection_color
         .hy-el-menu, .hy-marker-frame
           display: block
 

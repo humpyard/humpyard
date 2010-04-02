@@ -1,8 +1,8 @@
 - if humpyard_user == 'admin'
   %body.hy-logged-in
-    #hy-top
+    #hy-top.hy-eb
       #hy-top-left
-        =link_to 'Edit', '#', :'data-command' => "toggleEditMode"
+        =link_to 'Edit', '#', :'data-command' => "toggleEditMode", :'data-icon' => "ui-icon-pencil"
       #hy-top-right
         =link_to 'Logout', '?user='
     #hy-bottom.hy-eb
@@ -10,8 +10,6 @@
         Text Element
       .element{'data-addable'=>'true', 'data-element-class'=>'Humpyard::Elements::BoxElement'}
         Box Element
-    #hy-side.hy-eb-disabled-sidebar-in-edit-mode-for-now
-      Some pages
     #hy-body.hy-eb
       = capture_haml(&block)
 - else

@@ -1,9 +1,12 @@
 -if humpyard_user == 'admin' #edit mode possible, fake functionality
   .hy-el{:class => "hy-id-#{element.id}", :"data-draggable"=>"true"}
     = render :partial => "/humpyard/elements/show_view", :locals => {:element => element}
-    .hy-marker-frame
+    .hy-marker-frame.top
+    .hy-marker-frame.bottom
+    .hy-marker-frame.left
+    .hy-marker-frame.right
     .hy-el-menu
-      =link_to 'Edit', edit_humpyard_element_path(element), :'data-dialog' => true, :'data-icon' => "ui-icon-gear"
+      =link_to 'Edit', edit_humpyard_element_path(element), :'data-dialog' => true, :'data-icon' => "ui-icon-pencil"
       =link_to 'Delete', humpyard_element_path(element), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :remote => true
       =link_to 'Move', '#', :'data-icon' => "ui-icon-arrow-4", :"data-draghandle"=>true
 - else # view mode
