@@ -75,6 +75,14 @@ $hy_selection_color: #ffcc00 !default
         top: 0
         left: 0
         display: none
+      .hy-marker-frame
+        position: absolute
+        top: 0
+        left: 0
+        width: 100px
+        height: 100px
+        border: 1px solid $hy_selection_color
+        display: none
       .hy-marker
         position: absolute
         background: none
@@ -83,18 +91,6 @@ $hy_selection_color: #ffcc00 !default
         height: 5px
         top: 0
         left: 0
-      .hy-marker.lt
-        top: 0
-        left: 0
-      .hy-marker.rt
-        top: 0
-        right: 0
-      .hy-marker.lb
-        bottom: 0
-        left: 0
-      .hy-marker.rb
-        bottom: 0
-        right: 0
     #hy-body.hy-edit-active
       left: 0px
       bottom: 90px
@@ -103,7 +99,7 @@ $hy_selection_color: #ffcc00 !default
         //margin: -1px
         .hy-marker
           background: $hy_selection_color
-        .hy-el-menu
+        .hy-el-menu, .hy-marker-frame
           display: block
 
 
