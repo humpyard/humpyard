@@ -4,6 +4,10 @@ module Humpyard
   class FormBuilder 
     attr_reader :object, :options
     
+    @@file_methods = [ :file?, :public_filename ]
+    
+    cattr_accessor :file_methods
+    
     def initialize(renderer, object, options={})
       @renderer = renderer
       @object = object
@@ -52,7 +56,7 @@ module Humpyard
       #options[:required] = method_required?(method) unless options.key?(:required)
       options[:as] ||= default_input_type(method)
       options[:translation_info] = translation_info(method)
-      #puts options.inspect
+      puts options.inspect
       @renderer.render :partial => "/humpyard/forms/#{options[:as]}_input", :locals => {:form => self, :name => method, :options => options}
     end
     
@@ -106,12 +110,18 @@ module Humpyard
         # otherwise assume the input name will be the same as the column type (eg string_input)
         return column.type
       else
-        # if @object
-        #   return :select if find_reflection(method)
-        # 
-        #   file = @object.send(method) if @object.respond_to?(method)
-        #   return :file   if file && @@file_methods.any? { |m| file.respond_to?(m) }
-        # end
+        if @object
+          #return :select if find_reflection(method)
+         
+          file = @object.send(method) if @object.respond_to?(method)
+          if file && @@file_methods.any? { |m| file.respond_to?(m) }
+            if file.styles.keys.empty?
+              return :file
+            else
+              return :image_file
+            end
+          end
+        end
 
         return :password if method.to_s =~ /password/
         return :string
