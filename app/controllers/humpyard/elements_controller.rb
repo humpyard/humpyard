@@ -4,12 +4,36 @@ module Humpyard
   class ElementsController < ::ApplicationController         
     # Dialog content for a new element
     def new
-      render :partial => 'new'
+      @element = Humpyard::config.elements[params[:type]].new(:page_id => params[:page_id], :container_id => params[:container_id])
+      @type = params[:type]
+      @page = Humpyard::Page.find(params[:page_id])
+      @container = Humpyard::Element.where('id = ?', params[:container_id]).first
+      @prev = Humpyard::Element.where('id = ?', params[:prev_id]).first
+      @next = Humpyard::Element.where('id = ?', params[:next_id]).first
+      
+      render :partial => 'edit'
     end
     
     # Create a new element
     def create
-      render :partial => 'new'
+      @element = Humpyard::config.elements[params[:type]].create params[:element]
+      if @element
+        render :json => {
+          :status => :ok,
+          :dialog => :close,
+          :insert => [
+            { 
+              :element => "hy-id-#{@element.element.id}",
+              :url => humpyard_element_path(@element.element)
+            }
+          ]
+        }
+      else
+        render :json => {
+          :status => :failed, 
+          :errors => @element.errors
+        }
+      end
     end
     
     # Inline edit content for an existing element
@@ -19,7 +43,7 @@ module Humpyard
 
     # Dialog content for an existing element
     def edit
-      @element = Humpyard::Element.find(params[:id])
+      @element = Humpyard::Element.find(params[:id]).content_data
       
       render :partial => 'edit'
     end
@@ -55,9 +79,7 @@ module Humpyard
     # Destroy an element
     def destroy
       @element = Humpyard::Element.find(params[:id])
-      
-      # Not enabled until adding elements is implemented
-      # @element.destoy
+      @element.destroy
     end
         
     # Render a given element

@@ -6,11 +6,10 @@
       #hy-top-right
         =link_to 'Logout', '?user='
     #hy-bottom.hy-eb
-      .element{'data-addable'=>'true', 'data-element-class'=>'Humpyard::Elements::TextElement'}
-        Text Element
-      .element{'data-addable'=>'true', 'data-element-class'=>'Humpyard::Elements::BoxElement'}
-        Box Element
-    #hy-body.hy-eb
+      - Humpyard::config.elements.each do |name, type|
+        .element{'data-addable'=>'true', 'data-draggable'=>'true', 'data-element-type'=>name, 'data-create-url'=>new_humpyard_element_path}
+          = name
+    #hy-body.hy-eb{'data-page-id'=>@page ? @page.id : 0}
       = capture_haml(&block)
 - else
   %body

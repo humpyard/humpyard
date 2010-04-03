@@ -1,8 +1,8 @@
-= humpyard_form_for @element.content_data, :as => :element, :url => humpyard_element_path, :html=>{:remote => true, :'data-form-object-class' => "element", :class=>'element_form humpyard_form'} do |form|
+= humpyard_form_for @element, :as => :element, :url => humpyard_element_path, :html=>{:remote => true, :'data-form-object-class' => "element", :class=>'element_form humpyard_form'} do |form|
   .humpyard-dialog-title
-    = @element.content_data.class
+    = @element.class
   .humpyard-tabview
-    = render :partial => "/humpyard/elements/#{@element.content_data_type.split('::').last.underscore.pluralize}/edit", :locals => {:element => @element, :form => form}
+    = render :partial => "/humpyard/elements/#{@element.class.name.split('::').last.underscore.pluralize}/edit", :locals => {:element => @element, :form => form}
     .humpyard-tab
       .humpyard-tab-title
         Generic Options
