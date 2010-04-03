@@ -1,6 +1,12 @@
-= humpyard_form_for @element, :as => :element, :url => humpyard_element_path, :html=>{:remote => true, :'data-form-object-class' => "element", :class=>'element_form humpyard_form'} do |form|
+= humpyard_form_for @element, :as => :element, :url => url_for(:controller=>:'humpyard/elements', :action=>@element.id ? :update : :create), :html=>{:remote => true, :'data-form-object-class' => "element", :class=>'element_form humpyard_form'} do |form|
   .humpyard-dialog-title
     = @element.class
+  - unless @element.id
+    = hidden_field :element, :page_id
+    = hidden_field :element, :container_id
+    = hidden_field_tag :type, @element_type
+    = hidden_field_tag :prev_id, @prev.id if @prev
+    = hidden_field_tag :next_id, @next.id if @next
   .humpyard-tabview
     = render :partial => "/humpyard/elements/#{@element.class.name.split('::').last.underscore.pluralize}/edit", :locals => {:element => @element, :form => form}
     .humpyard-tab
