@@ -1,5 +1,6 @@
 - title @page.title
-= render :partial => "/humpyard/elements/show_container", :locals => {:elements => @page.elements}
+#hy-page{'data-page-id'=>@page.id}
+  = render :partial => "/humpyard/elements/show_container", :locals => {:elements => @page.root_elements}
 
 / 
   ="X-HumpYard-Page:#{@page.id}"

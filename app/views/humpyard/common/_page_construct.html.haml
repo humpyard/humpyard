@@ -9,7 +9,7 @@
       - Humpyard::config.elements.each do |name, type|
         .element{'data-addable'=>'true', 'data-draggable'=>'true', 'data-element-type'=>name, 'data-create-url'=>new_humpyard_element_path}
           = name
-    #hy-body.hy-eb{'data-page-id'=>@page ? @page.id : 0}
+    #hy-body.hy-eb
       = capture_haml(&block)
 - else
   %body

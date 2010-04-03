@@ -4,7 +4,7 @@ module Humpyard
   class ElementsController < ::ApplicationController         
     # Dialog content for a new element
     def new
-      @element = Humpyard::config.elements[params[:type]].new(:page_id => params[:page_id], :container_id => params[:container_id])
+      @element = Humpyard::config.elements[params[:type]].new(:page_id => params[:page_id], :container_id => params[:container_id].to_i > 0 ? params[:container_id].to_i : nil)
       @element_type = params[:type]
       @prev = Humpyard::Element.where('id = ?', params[:prev_id]).first
       @next = Humpyard::Element.where('id = ?', params[:next_id]).first
@@ -15,16 +15,41 @@ module Humpyard
     # Create a new element
     def create
       @element = Humpyard::config.elements[params[:type]].create params[:element]
+      
+      if @element.container
+        neighbours = @element.container.elements
+      else
+        neighbours = @element.page.root_elements
+      end
+      
       if @element
+        position = 0
+        neighbours.each do |element|
+          if params[:next_id] == element.id
+            @element.update_attribute :position, position
+            position += 1
+          end  
+          element.update_attribute :position, position unless element.position == position
+          if not params[:next_id] and params[:prev_id] == element.id
+            position += 1
+            @element.update_attribute :position, position
+          end
+          position += 1
+        end
+      
+        insert_options = {
+          :element => "hy-id-#{@element.element.id}",
+          :url => humpyard_element_path(@element.element),
+          :parent => @element.container ? "hy-id-#{@element.container.id}" : "hy-page"
+        }
+        
+        insert_options[:before] = "hy-id-#{params[:next_id]}" if params[:next_id]
+        insert_options[:after] = "hy-id-#{params[:prev_id]}" if not params[:next_id] and params[:prev_id]
+      
         render :json => {
           :status => :ok,
           :dialog => :close,
-          :insert => [
-            { 
-              :element => "hy-id-#{@element.element.id}",
-              :url => humpyard_element_path(@element.element)
-            }
-          ]
+          :insert => [insert_options]
         }
       else
         render :json => {

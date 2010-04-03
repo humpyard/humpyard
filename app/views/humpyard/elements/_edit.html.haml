@@ -5,8 +5,10 @@
     = hidden_field :element, :page_id
     = hidden_field :element, :container_id
     = hidden_field_tag :type, @element_type
-    = hidden_field_tag :prev_id, @prev.id if @prev
-    = hidden_field_tag :next_id, @next.id if @next
+    - if @prev
+      = hidden_field_tag :prev_id, @prev.id 
+    - if @next
+      = hidden_field_tag :next_id, @next.id
   .humpyard-tabview
     = render :partial => "/humpyard/elements/#{@element.class.name.split('::').last.underscore.pluralize}/edit", :locals => {:element => @element, :form => form}
     .humpyard-tab
