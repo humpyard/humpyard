@@ -39,7 +39,7 @@ module Humpyard
   #
   #    The default value is <tt>['en']</tt>
   class Config 
-    attr_writer :table_name_prefix, :www_prefix, :admin_prefix # :nodoc:
+    attr_writer :table_name_prefix, :www_prefix, :admin_prefix, :elements # :nodoc:
     
     def initialize(&block) #:nodoc:
       configure(&block) if block_given?
@@ -57,6 +57,13 @@ module Humpyard
           
     def www_prefix #:nodoc:
       @www_prefix ||= ':locale/'
+    end
+    
+    def elements #:nodoc:
+      @elements ||= {
+        'text_element' => Humpyard::Elements::TextElement,
+        'box_element' => Humpyard::Elements::BoxElement
+      }
     end
     
     # Get the prefix of your pages with interpreted variables given as params.
