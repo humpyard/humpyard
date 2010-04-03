@@ -109,6 +109,7 @@ jQuery(function($) {
                       //console.log(k['element'] + ': ' + k['url']);
                       $('.' + k['element']).load(k['url'], function(r, s, x) {
                         init_edit_buttons();
+                        $('.' + k['element']).effect("highlight", {}, 2000);
                       });
                     });
                   }
