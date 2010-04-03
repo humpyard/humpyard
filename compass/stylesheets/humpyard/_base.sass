@@ -1,8 +1,10 @@
 $hy_panel_bg_color: #cccccc !default
 $hy_panel_border_color: #a5a5a5 !default
 $hy_selection_color: #ffcc00 !default
-$hy_top_bar_height: 20px
-$hy_bottom_bar_height: 120px
+$hy_top_bar_height: 20px !default
+$hy_bottom_bar_height: 120px !default
+$hy_bottom_padding: 5px !default
+
 
 @import jquery_ui_overrides.sass
 
@@ -55,9 +57,9 @@ $hy_bottom_bar_height: 120px
       border-top: $hy_panel_border_color solid 1px
       left: 0
       right: 0
-      bottom: -$hy_bottom_bar_height - 1
+      bottom: -$hy_bottom_bar_height - 1 - 2 * $hy_bottom_padding
       height: $hy_bottom_bar_height
-      padding: 5px
+      padding: $hy_bottom_padding
       display: block
       .element
         display: block
@@ -94,7 +96,7 @@ $hy_bottom_bar_height: 120px
         display: none
     #hy-body.hy-edit-active
       left: 0px
-      bottom: $hy_bottom_bar_height + 1
+      bottom: $hy_bottom_bar_height + 2 * $hy_bottom_padding + 1
       .hy-el-active
         .hy-el-menu, .hy-marker-frame
           display: block
