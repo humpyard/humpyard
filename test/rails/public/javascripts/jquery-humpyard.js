@@ -9,7 +9,7 @@
       },
       replace: function(dialog, form, options) {
         $.each(options, function(i,k){
-          elem = $('#' + k['element']);
+          var elem = $('#' + k['element']);
           elem.load(k['url'], function(r, s, x) {
             $.humpyard.initElements(elem);
             elem.effect("highlight", {}, 2000);
@@ -18,8 +18,7 @@
       },
       insert: function(dialog, form, options) {
         $.each(options, function(i,k){
-          
-          elem = $('<div></div>');
+          var elem = $('<div></div>');
           if(k['before']) {
             elem.insertBefore($('#'+k['before']));
           } else if(k['after']) {
@@ -66,12 +65,12 @@
         connectWith: 'div[data-sortable]',
         placeholder: 'ui-state-highlight',
         update: function(e, ui) {
-          item = ui.item
-          parent = item.parents('div[data-draggable]').first();
-          prev = item.prev('div[data-draggable]');
-          next = item.next('div[data-draggable]');
+          var item = ui.item;
+          var parent = item.parents('div[data-draggable]').first();
+          var prev = item.prev('div[data-draggable]');
+          var next = item.next('div[data-draggable]');
 
-          params = {
+          var params = {
             page_id: $('#hy-page').attr('data-page-id'),
             container_id: parent.attr('data-element-id'),
             prev_id: prev.attr('data-element-id'),
@@ -105,8 +104,8 @@
     },
 
     initTabView: function(tabview) {
-      tabs = $('<ul></ul>').prependTo(tabview);
-      tabcount=0;
+      var tabs = $('<ul></ul>').prependTo(tabview);
+      var tabcount=0;
       $('.humpyard-tabview .humpyard-tab', tabview).each(function(i,k){
         tabcount++;
         id = 'humpyard-' + $.humpyard.dialog_count + '-tab-' + tabcount;
@@ -119,10 +118,10 @@
 
     dialog: function(url, options) {
       options = options || {};
-      post_options = options['post'] || null
-      get_options = $.param(options['get'] || {}) 
+      var post_options = options['post'] || null
+      var get_options = $.param(options['get'] || {}) 
       
-      dialog = $('<div></div>').appendTo('body').dialog({
+      var dialog = $('<div></div>').appendTo('body').dialog({
         width: '600px',
         modal: true
       });
@@ -159,7 +158,7 @@
                 'Ok': function() {
                   var form = $('form:first', $(this));
                   form.bind('ajax:complete', function(e, xhr) {
-                    result = $.parseJSON(xhr.responseText);
+                    var result = $.parseJSON(xhr.responseText);
 
                     // reset error messages
                     $('.field-highlight', form).removeClass("ui-state-error");
