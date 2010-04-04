@@ -259,5 +259,5 @@
   });
 
   remove_element = function(el) {
-    $("."+el).remove();
+    $("#"+el).remove();
   };
