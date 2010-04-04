@@ -15,27 +15,9 @@ module Humpyard
     # Create a new element
     def create
       @element = Humpyard::config.elements[params[:type]].create params[:element]
-      
-      if @element.container
-        neighbours = @element.container.elements
-      else
-        neighbours = @element.page.root_elements
-      end
-      
+            
       if @element
-        position = 0
-        neighbours.each do |element|
-          if params[:next_id] == element.id
-            @element.update_attribute :position, position
-            position += 1
-          end  
-          element.update_attribute :position, position unless element.position == position
-          if not params[:next_id] and params[:prev_id] == element.id
-            position += 1
-            @element.update_attribute :position, position
-          end
-          position += 1
-        end
+        do_move(@element, params[:prev_id].to_i, params[:next_id].to_i)
       
         insert_options = {
           :element => "hy-id-#{@element.element.id}",
@@ -99,6 +81,25 @@ module Humpyard
       end
     end
     
+    # Move an element
+    def move
+      @element = Humpyard::Element.find(params[:id])
+      
+      if @element
+        @element.update_attribute :container, Humpyard::Element.where('id = ?', params[:container_id]).first
+        
+        do_move(@element, params[:prev_id].to_i, params[:next_id].to_i)
+        
+        render :json => {
+          :status => :ok
+        }
+      else
+        render :json => {
+          :status => :failed
+        }, :status => 404        
+      end
+    end
+    
     # Destroy an element
     def destroy
       @element = Humpyard::Element.find(params[:id])
@@ -110,5 +111,37 @@ module Humpyard
       @element = Humpyard::Element.find(params[:id])
       render :partial => 'show', :locals => {:element => @element}
     end
+    
+    private
+    def do_move(element, prev_id, next_id) #:nodoc#
+      if element.container
+        neighbours = element.container.elements
+      else
+        neighbours = element.page.root_elements
+      end
+      
+      #p "before #{next_id} and after #{prev_id}"
+
+      position = 0
+      neighbours.each do |el|    
+        if next_id == el.id
+          #p "insert element #{element.id} before #{el.id}"
+          element.update_attribute :position, position
+          position += 1
+        end  
+        if element.id != el.id
+          #p "process #{el.id} to position #{position}"
+          el.update_attribute :position, position unless element.position == position 
+        end
+        if not next_id and prev_id == el.id
+          #p "insert element #{element.id} after #{el.id}"
+          position += 1
+          element.update_attribute :position, position
+        end
+        if element.id != el.id
+          position += 1
+        end
+      end
+    end  
   end
 end

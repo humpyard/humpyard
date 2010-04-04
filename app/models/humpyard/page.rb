@@ -17,7 +17,7 @@ module Humpyard
     validates_with Humpyard::PublishRangeValidator, {:attributes => [:display_from, :display_until]}
     
     def root_elements
-      elements.where('container_id IS NULL').order('position')
+      elements.where('container_id IS NULL').order('position ASC')
     end 
     
     # Return the human readable URL for the page.

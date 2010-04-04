@@ -5,6 +5,7 @@ Rails.application.routes.draw do |map|
     resources :humpyard_elements, :controller => 'humpyard/elements', :as => :humpyard_elements, :path => :elements, :only => [:new, :edit, :update, :show, :destroy] do
       member do
         get :inline_edit
+        post :move
       end
     end
   end
