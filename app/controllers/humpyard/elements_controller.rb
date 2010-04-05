@@ -17,7 +17,10 @@ module Humpyard
       @element = Humpyard::config.elements[params[:type]].create params[:element]
             
       if @element
-        do_move(@element, params[:prev_id].to_i, params[:next_id].to_i)
+        @prev = Humpyard::Element.where('id = ?', params[:prev_id]).first
+        @next = Humpyard::Element.where('id = ?', params[:next_id]).first
+        
+        do_move(@element, @prev, @next)
       
         insert_options = {
           :element => "hy-id-#{@element.element.id}",
@@ -87,8 +90,10 @@ module Humpyard
       
       if @element
         @element.update_attribute :container, Humpyard::Element.where('id = ?', params[:container_id]).first
+        @prev = Humpyard::Element.where('id = ?', params[:prev_id]).first
+        @next = Humpyard::Element.where('id = ?', params[:next_id]).first
         
-        do_move(@element, params[:prev_id].to_i, params[:next_id].to_i)
+        do_move(@element, @prev, @next)
         
         render :json => {
           :status => :ok
@@ -113,7 +118,7 @@ module Humpyard
     end
     
     private
-    def do_move(element, prev_id, next_id) #:nodoc#
+    def do_move(element, prev_element, next_element) #:nodoc#
       if element.container
         neighbours = element.container.elements
       else
@@ -124,21 +129,21 @@ module Humpyard
 
       position = 0
       neighbours.each do |el|    
-        if next_id == el.id
-          #p "insert element #{element.id} before #{el.id}"
+        if next_element == el
+          p "insert element #{element.id} before #{el.id}"
           element.update_attribute :position, position
           position += 1
         end  
-        if element.id != el.id
-          #p "process #{el.id} to position #{position}"
+        if element != el
+          p "process #{el.id} to position #{position}"
           el.update_attribute :position, position unless element.position == position 
         end
-        if not next_id and prev_id == el.id
-          #p "insert element #{element.id} after #{el.id}"
+        if not next_element and prev_element == el
+          p "insert element #{element.id} after #{el.id}"
           position += 1
           element.update_attribute :position, position
         end
-        if element.id != el.id
+        if element != el
           position += 1
         end
       end
