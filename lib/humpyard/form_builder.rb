@@ -56,7 +56,7 @@ module Humpyard
       #options[:required] = method_required?(method) unless options.key?(:required)
       options[:as] ||= default_input_type(method)
       options[:translation_info] = translation_info(method)
-      puts options.inspect
+      #puts options.inspect
       @renderer.render :partial => "/humpyard/forms/#{options[:as]}_input", :locals => {:form => self, :name => method, :options => options}
     end
     
