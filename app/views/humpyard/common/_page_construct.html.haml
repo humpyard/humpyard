@@ -4,6 +4,7 @@
       #hy-top-left
         =link_to 'Edit', '#', :'data-command' => "toggleEditMode", :'data-icon' => "ui-icon-pencil"
         =link_to 'Pages', '#', :'data-dialog' => "size:800x700;", :'data-icon' => "ui-icon-document"
+        =image_tag "ajax-loader.gif", :size => "16x16", :class => "ajax-indicator ui-widget ui-widget-content ui-corner-all"
       #hy-top-right
         =link_to 'Logout', '?user='
     #hy-bottom.hy-eb

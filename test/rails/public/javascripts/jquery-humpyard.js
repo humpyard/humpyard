@@ -202,6 +202,13 @@
 // Humpyard actions / UJS
 jQuery(function($) {
 
+  // bind ajax indicator to ajax events
+  $(document).ajaxSend(function() {
+    $(".ajax-indicator").addClass("active");
+  }).ajaxStop(function() {
+    $(".ajax-indicator").removeClass("active");
+  });
+
   // Dialog UJS
   $('a[data-dialog]').live('click', function (e) {
 	  var options = {};

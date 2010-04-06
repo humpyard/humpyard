@@ -10,6 +10,8 @@ $hy_bottom_padding: 5px !default
 
 =humpyard-base
   +jquery-ui-overrides
+  a:focus
+    outline: none
   body
     margin: 0
     padding: 0
@@ -27,6 +29,10 @@ $hy_bottom_padding: 5px !default
     margin: 0
     padding: 0
     overflow: hidden
+    .ajax-indicator
+      display: none
+    .ajax-indicator.active
+      display: block
     #hy-top
       background: $hy_panel_bg_color
       border-bottom: $hy_panel_border_color solid 1px
