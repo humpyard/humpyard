@@ -1,7 +1,8 @@
 module Humpyard
   ####
   # Humpyard::ElementController is the controller for editing your elements
-  class ElementsController < ::ApplicationController         
+  class ElementsController < ::ApplicationController
+    
     # Dialog content for a new element
     def new
       @element = Humpyard::config.elements[params[:type]].new(:page_id => params[:page_id], :container_id => params[:container_id].to_i > 0 ? params[:container_id].to_i : nil)
