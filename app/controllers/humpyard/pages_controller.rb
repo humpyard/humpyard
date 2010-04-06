@@ -6,12 +6,14 @@ module Humpyard
     
     # Probably unneccassary - may be removed later
     def index
-      
+      @pages = Page.roots
+      render :partial => 'index'
     end
 
     # Dialog content for a new page
     def new
-      
+      @page = Humpyard::Page.new
+      render :partial => 'edit'
     end
     
     # Create a new page
@@ -21,7 +23,8 @@ module Humpyard
     
     # Dialog content for an existing page
     def edit
-    
+      Humpyard::Page.find(params[:id])
+      render :partial => 'edit'
     end
     
     # Update an existing page

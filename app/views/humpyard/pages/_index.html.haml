@@ -1,0 +1,14 @@
+.humpyard-dialog-title
+  = @pages.first.class
+.ui-widget-content.ui-corner-all
+  #pages.tree.tree-themeroller
+    %ul
+      %li#index.open{"rel"=>"root"}
+        %a{"href"=>"#"}
+          %ins
+            &nbsp;
+          Startseite
+        = render :partial => 'subtree', :locals => {:pages => @pages} 
+  %br{"style"=>"clear:both;"}
+= link_to "Add Page", new_humpyard_page_path, 'data-dialog' => 'size:600'
+.humpyard-dialog-buttons

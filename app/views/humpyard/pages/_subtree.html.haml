@@ -1,0 +1,10 @@
+- if pages and pages.size > 0
+  %ul
+    - pages.each do |page|
+      -# unless CMS_STATIC_PAGES.include? page.name 
+        %li{"id"=>"page_#{page.id}", "rel"=>"page", "class"=>"#{page.children.size>0 ? 'open' : ''}"}
+        %a{href="#"}
+          %ins
+            &nbsp;
+          = page.title
+        = render :partial => 'subtree', :locals => {:pages => page.children}
