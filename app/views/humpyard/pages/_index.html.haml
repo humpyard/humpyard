@@ -1,14 +1,16 @@
 .humpyard-dialog-title
   = @pages.first.class
-.ui-widget-content.ui-corner-all
-  #pages.tree.tree-themeroller
-    %ul
-      %li#index.open{"rel"=>"root"}
-        %a{"href"=>"#"}
-          %ins
-            &nbsp;
-          Startseite
-        = render :partial => 'subtree', :locals => {:pages => @pages} 
-  %br{"style"=>"clear:both;"}
-= link_to "Add Page", new_humpyard_page_path, 'data-dialog' => 'size:600'
+.dialog-columns
+  .left-dialog-column
+    #pages.tree.tree-themeroller
+      %ul
+        - root_page = Humpyard::Page.where('name = ?', 'index').first
+        %li#index.open{"rel"=>"root"}
+          = link_to root_page.title, edit_humpyard_page_path(root_page), :'data-dialog-link' => true, :class => (@page and @page == root_page ? 'active' : '')
+          = render :partial => 'subtree', :locals => {:pages => @pages, :root_page => root_page} 
+    %br{"style"=>"clear:both;"}
+    %hr
+    = link_to "Add Page", new_humpyard_page_path, :'data-dialog-link' => true
+  .right-dialog-column
+    = #render :partial => 'edit', :locals => {:page => @page}
 .humpyard-dialog-buttons

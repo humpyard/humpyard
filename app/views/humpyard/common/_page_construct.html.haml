@@ -3,7 +3,7 @@
     #hy-top.hy-eb
       #hy-top-left
         =link_to 'Edit', '#', :'data-command' => "toggleEditMode", :'data-icon' => "ui-icon-pencil"
-        =link_to 'Pages', humpyard_pages_path, :'data-dialog' => "size:800x700;", :'data-icon' => "ui-icon-document"
+        =link_to 'Pages', humpyard_pages_path(:actual_id => @page ? @page.id : nil), :'data-dialog' => "size:800x700;", :'data-icon' => "ui-icon-document"
       #hy-top-right
         =link_to 'Logout', '?user='
     #hy-bottom.hy-eb

@@ -6,7 +6,9 @@ module Humpyard
     
     # Probably unneccassary - may be removed later
     def index
-      @pages = Page.roots
+      @pages = Humpyard::Page.roots
+      @page = Humpyard::Page.where("id = ?", params[:actual_id]).first
+      @page = Humpyard::Page.new if @page.nil?
       render :partial => 'index'
     end
 
@@ -18,12 +20,12 @@ module Humpyard
     
     # Create a new page
     def create
-      
+      @page = Humpyard::Page.create params[:page]
     end
     
     # Dialog content for an existing page
     def edit
-      Humpyard::Page.find(params[:id])
+      @page = Humpyard::Page.find params[:id]
       render :partial => 'edit'
     end
     

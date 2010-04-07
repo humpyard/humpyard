@@ -1,3 +1,6 @@
+!left_dialog_column_width = 170px
+!left_dialog_column_background = rgb(211, 217, 226)
+
 =jquery-ui-overrides
   .ui-button-text-only .ui-button-text 
     padding: .2em .5em !important
@@ -15,3 +18,43 @@
   .ui-state-highlight 
     height: 2px
     line-height: 2px
+    
+    
+  .ui-dialog-content
+    position: relative
+    background: yellow
+    .left-dialog-column
+      overflow: auto
+      position: absolute
+      left: 0
+      width: !left_dialog_column_width
+      top: 0
+      bottom: 0
+      background: !left_dialog_column_background
+      ul
+        list-style-type: none
+        margin: 0
+        padding: 0 0 0 10px 
+        li
+          margin: 0
+          padding: 0
+      a.active 
+        color: #fff
+        background: rgb(114, 133, 172)
+      a
+        display: block
+        text-decoration: none
+        width: 100%
+        line-height: 24px
+        padding-left: 105px
+        margin-left: -100px
+          
+    .right-dialog-column
+      padding: 5px
+      overflow: auto
+      position: absolute
+      left: !left_dialog_column_width
+      right: 0
+      top: 0
+      bottom: 0
+  
