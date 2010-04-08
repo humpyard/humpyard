@@ -1,5 +1,5 @@
 .humpyard-dialog-title
-  = @pages.first.class
+  = @pages.first.class.to_s.pluralize
 .dialog-columns
   .left-dialog-column
     #pages.tree.tree-themeroller
