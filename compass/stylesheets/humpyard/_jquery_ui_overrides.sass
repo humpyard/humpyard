@@ -1,5 +1,5 @@
-!left_dialog_column_width = 170px
-!left_dialog_column_background = rgb(211, 217, 226)
+$left_dialog_column_width: 170px
+$left_dialog_column_background: rgb(211, 217, 226)
 
 =jquery-ui-overrides
   .ui-button-text-only .ui-button-text 
@@ -27,10 +27,10 @@
       overflow: auto
       position: absolute
       left: 0
-      width: !left_dialog_column_width
+      width: $left_dialog_column_width
       top: 0
       bottom: 0
-      background: !left_dialog_column_background
+      background: $left_dialog_column_background
       ul
         list-style-type: none
         margin: 0
@@ -53,7 +53,7 @@
       padding: 5px
       overflow: auto
       position: absolute
-      left: !left_dialog_column_width
+      left: $left_dialog_column_width
       right: 0
       top: 0
       bottom: 0
