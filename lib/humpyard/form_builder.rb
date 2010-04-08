@@ -2,7 +2,7 @@ module Humpyard
   ####
   # Humpyard::FormHelper is a helper for forms in Humpyard 
   class FormBuilder 
-    attr_reader :object, :options
+    attr_reader :object, :options, :html_options, :url
     
     @@file_methods = [ :file?, :public_filename ]
     
@@ -10,8 +10,19 @@ module Humpyard
     
     def initialize(renderer, object, options={})
       @renderer = renderer
-      @object = object
+      @object = @renderer.convert_to_model(object)
+      @html_options = options.delete(:html) || {}
+      @url = options.delete(:url) || @renderer.polymorphic_path(@object)
       @options = options
+      
+      
+      if object.respond_to?(:persisted?) && object.persisted?
+        @html_options[:'data-action'] = @renderer.dom_class(object, :edit),
+        @html_options[:method] = :put
+      else
+        @html_options[:'data-action'] = @renderer.dom_class(object, :new),
+        @html_options[:method] = :post 
+      end
     end
     
     def namespace

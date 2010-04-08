@@ -1,4 +1,4 @@
-= humpyard_form_for @page, :as => :page, :url => url_for(:controller=>:'humpyard/pages', :action=>@page.id ? :update : :create), :html=>{:remote => true, :'data-form-object-class' => "page", :class=>'page_form humpyard_form'} do |form|
+= humpyard_form_for @page, :as => :page, :html=>{:remote => true, :'data-form-object-class' => "page", :class=>'page_form humpyard_form'} do |form|
   .humpyard-dialog-title
     = @page.class
   = @page.id

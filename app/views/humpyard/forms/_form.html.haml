@@ -1,4 +1,3 @@
-- html_options = options.delete(:html) || {}
-- html_options[:method] = :put
-= form_tag(options.delete(:url) || {}, (html_options)) do
+- #html_options[:method] = :put
+= form_tag(form.url, form.html_options) do
 	= inner_haml
