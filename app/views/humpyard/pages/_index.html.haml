@@ -6,11 +6,14 @@
       %ul
         - root_page = Humpyard::Page.where('name = ?', 'index').first
         %li#index.open{"rel"=>"root"}
-          = link_to root_page.title, edit_humpyard_page_path(root_page), :'data-dialog-link' => true, :class => (@page and @page == root_page ? 'active' : '')
+          = link_to root_page.title, edit_humpyard_page_path(root_page), :'data-dialog-link' => true, :class => (@page and @page == root_page ? 'active' : ''), :id => "hy-page-dialog-item-#{@page.id}"
           = render :partial => 'subtree', :locals => {:pages => @pages, :root_page => root_page} 
     %br{"style"=>"clear:both;"}
     %hr
     = link_to "Add Page", new_humpyard_page_path, :'data-dialog-link' => true
   .right-dialog-column
-    = #render :partial => 'edit', :locals => {:page => @page}
+    - if @page
+      = render :partial => 'edit', :locals => {:page => @page}
+    - else
+      Nothing selected
 .humpyard-dialog-buttons

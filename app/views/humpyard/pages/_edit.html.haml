@@ -1,22 +1,22 @@
 = humpyard_form_for @page, :as => :page, :html=>{:remote => true, :'data-form-object-class' => "page", :class=>'page_form humpyard_form'} do |form|
   .humpyard-dialog-title
-    = @page.class
-  = @page.id
+    = "#{form.form_type} #{@page.class} #{@page.id}"
   - unless @page.id
     = hidden_field :page, :parent_id
     - if @prev
       = hidden_field_tag :prev_id, @prev.id 
     - if @next
       = hidden_field_tag :next_id, @next.id
-  .humpyard-tab
-    .humpyard-tab-title
-      Page Options
-    = form.input :name
-    = form.input :title
-  .humpyard-tab
-    .humpyard-tab-title
-      Generic Options
-    = form.input :display_from
-    = form.input :display_until
-  .humpyard-dialog-buttons  
+  .humpyard-tabview
+    .humpyard-tab
+      .humpyard-tab-title
+        Page Options
+      = form.input :name
+      = form.input :title
+    .humpyard-tab
+      .humpyard-tab-title
+        Generic Options
+      = form.input :display_from
+      = form.input :display_until
+  .humpyard-form-buttons  
     = form.submit

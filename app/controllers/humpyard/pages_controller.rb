@@ -21,6 +21,33 @@ module Humpyard
     # Create a new page
     def create
       @page = Humpyard::Page.create params[:page]
+      
+      if @page.valid?
+        @prev = Humpyard::Page.where('id = ?', params[:prev_id]).first
+        @next = Humpyard::Page.where('id = ?', params[:next_id]).first
+        
+        #do_move(@page, @prev, @next)
+      
+        insert_options = {
+          :element => "hy-id-#{@page.id}",
+          :url => @page,
+          :parent => @page.parent ? "hy-page-dialog-item-#{@page.id}" : "hy-page-dialog-pages"
+        }
+        
+        insert_options[:before] = "hy-page-dialog-item-#{@next.id}" if @next
+        insert_options[:after] = "hy-page-dialog-item-#{@prev.id}" if not @next and @prev
+      
+        render :json => {
+          :status => :ok,
+          :dialog => :close,
+          :insert => [insert_options]
+        }
+      else
+        render :json => {
+          :status => :failed, 
+          :errors => @page.errors
+        }
+      end
     end
     
     # Dialog content for an existing page
@@ -31,6 +58,30 @@ module Humpyard
     
     # Update an existing page
     def update
+      @page = Humpyard::Page.find(params[:id])
+      if @page
+        if @page.update_attributes params[:page]
+          render :json => {
+            :status => :ok,
+#            :dialog => :close,
+            :replace => [
+              { 
+                :element => "hy-page-dialog-item-#{@page.id}",
+                :content => @page.title
+              }
+            ]
+          }
+        else
+          render :json => {
+            :status => :failed, 
+            :errors => @page.errors
+          }
+        end
+      else
+        render :json => {
+          :status => :failed
+        }, :status => 404
+      end
       
     end
     

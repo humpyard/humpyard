@@ -15,6 +15,8 @@ module Humpyard
     has_many :elements, :class_name => 'Humpyard::Element'
     
     validates_with Humpyard::PublishRangeValidator, {:attributes => [:display_from, :display_until]}
+    validates_presence_of :name, :title
+    validates_uniqueness_of :name
     
     def root_elements
       elements.where('container_id IS NULL').order('position ASC')

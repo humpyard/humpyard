@@ -10,10 +10,15 @@
       replace: function(dialog, form, options) {
         $.each(options, function(i,k){
           var elem = $('#' + k['element']);
-          elem.load(k['url'], function(r, s, x) {
-            $.humpyard.initElements(elem);
-            elem.effect("highlight", {}, 2000);
-          });
+          if(k['content']) {
+            elem.html(k['content']);
+          }
+          if(k['url']) {
+            elem.load(k['url'], function(r, s, x) {
+              $.humpyard.initElements(elem);
+              elem.effect("highlight", {}, 2000);
+            });
+          }
         });
       },
       insert: function(dialog, form, options) {
@@ -104,8 +109,9 @@
       });
     },
 
-    initTabView: function(tabview) {
-      var tab_sources = $('.humpyard-tabview .humpyard-tab', tabview);
+    initTabView: function(container) {
+      var tabview = $('.humpyard-tabview', container);
+      var tab_sources = $('.humpyard-tab', tabview);
       var tabs = $('<ul></ul>').prependTo(tabview);
       var tabcount=0;
       
@@ -146,6 +152,8 @@
       options = options || {};
       var post_options = options['post'] || null;
       var get_options = $.param(options['get'] || {});
+      var dialog_id = options['dialog_id'];
+      var dialog = null;
       options['close'] = options['close'] || function(ev, ui) { $(this).remove(); };
       
       // Remove get and post from options for dialog
@@ -159,8 +167,19 @@
       */
       options['get'] = null;
       options['post'] = null;
+      options['dialog_id'] = null;
       
-      var dialog = $('<div></div>').appendTo('body').dialog(options);
+      if(dialog_id) {
+        if($('#' + dialog_id).size()) {
+          dialog = $('#' + dialog_id);
+          dialog.dialog("moveToTop");
+          return;
+        } else {
+          dialog = $('<div id="' + dialog_id + '"></div>').appendTo('body').dialog(options);
+        }
+      } else {
+        dialog = $('<div></div>').appendTo('body').dialog(options);
+      }
 
       dialog.load(url+(get_options ? '?'+get_options : ''), post_options, function(response, status, xhr) {
         if (status == "error") {
@@ -187,9 +206,9 @@
           // Add buttons
           
           buttons = {};
-          if($('form:first', $(this)).size()) {
+          if($('form[data-dialog-form]:first', $(this)).size()) {
             buttons['Ok'] = function() {
-              var form = $('form:first', $(this));
+              var form = $('form[data-dialog-form]:first', $(this));
               $.humpyard.submitForm(form, dialog);
             };  
             buttons['Cancel'] = function() {
@@ -235,6 +254,7 @@ jQuery(function($) {
       attr = this.split(':');
       switch(attr[0]) {
         case 'modal':
+        case 'dialog_id':
           options[attr[0]] = attr[1];
           break;
         case 'size':
@@ -446,7 +466,30 @@ jQuery(function($) {
     var content = columns.children('.right-dialog-column');
     $('a', columns).removeClass('active');
     $(this).addClass('active');
-    content.empty().load($(this).attr('href'));
+    content.empty().load($(this).attr('href'), function(response, status, xhr) {
+      dialog = columns.parents('.ui-dialog-content:first');
+      if (status == "error") {
+        var error_content = '<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"><p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span><strong>Sorry, an error occurred:</strong> '+xhr.statusText+' ['+xhr.status+']</p></div>';
+        dialog.dialog({
+          title: 'An Error occured',
+          dialogClass: 'alert',
+          buttons: {
+            'Ok': function() {
+              $(this).dialog('close');
+            }
+          }
+        });
+        dialog.html(error_content);
+      } else {
+        dialog.dialog({
+          title: $('.humpyard-dialog-title', content).html()
+        });
+        $('.humpyard-dialog-title', content).remove();
+
+        $.humpyard.initForm(content);
+        $.humpyard.initTabView(content);
+      }
+    });
     e.preventDefault();
   });
 
@@ -460,6 +503,11 @@ jQuery(function($) {
 
     }
   }      
+  
+  $('.ui-dialog-content form[data-remote]').live('submit', function(e){
+    $.humpyard.submitForm($(this), $(this).parents('.ui-dialog-content:first'));
+    e.preventDefault();
+  })
 
 
   $('a[data-command],input[data-command]').live('click', function (e) {
