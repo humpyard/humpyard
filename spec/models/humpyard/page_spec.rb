@@ -204,5 +204,35 @@ describe Humpyard::Page do
     p.valid?.should eql true
   end
   
+  it "gives itself index as name if first page" do
+    Humpyard::Page.destroy_all
+    p = Factory.build :page, :title=>'My great page'
+    p.name = p.suggested_name
+    p.save
+    p.name.should eql 'index'
+  end
   
+  it "gives itself sane names if uniqueness not met" do
+    p = Factory.build :page, :title=>'My great page'
+    p.name = p.suggested_name
+    p.save
+    p.name.should eql 'my_great_page'
+    p = Factory :page, :title=>'My great page'
+    p.suggested_name.should eql 'my_great_page_'
+  end
+  
+  it "gives itself names with some special chars" do
+    p = Factory.build :page
+    p.title = 'Das  Überwebseite'
+    p.suggested_name.should eql 'das_uberwebseite'
+    p.title = 'Eine kleine Seite über mich'
+    p.suggested_name.should eql 'eine_kleine_seite_uber_mich'
+    p.title = 'Smá síðu um mig'
+    p.suggested_name.should eql 'sma_siu_um_mig'
+    p.title = 'Hakkımda Biraz sayfa'
+    p.suggested_name.should eql 'hakkmda_biraz_sayfa'
+    # not really nice, but better than nothing
+    p.title = 'Немного обо мне страницы'
+    p.suggested_name.should eql '%D0%9D%D0%B5%D0%BC%D0%BD%D0%BE%D0%B3%D0%BE_%D0%BE%D0%B1%D0%BE_%D0%BC%D0%BD%D0%B5_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D1%8B'
+  end
 end

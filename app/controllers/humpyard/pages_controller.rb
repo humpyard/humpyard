@@ -20,9 +20,10 @@ module Humpyard
     
     # Create a new page
     def create
-      @page = Humpyard::Page.create params[:page]
+      @page = Humpyard::Page.new params[:page]
+      @page.name = @page.suggested_name
       
-      if @page.valid?
+      if @page.save
         @prev = Humpyard::Page.where('id = ?', params[:prev_id]).first
         @next = Humpyard::Page.where('id = ?', params[:next_id]).first
         
@@ -61,6 +62,8 @@ module Humpyard
       @page = Humpyard::Page.find(params[:id])
       if @page
         if @page.update_attributes params[:page]
+          @page.name = @page.suggested_name
+          @page.save
           render :json => {
             :status => :ok,
 #            :dialog => :close,
@@ -108,7 +111,7 @@ module Humpyard
           # Ignore multiple slashes in URLs
           unless(path_part.blank?)
             # Find page by name and parent; parent=nil means page on root level
-            @page = Page.where(:parent_id=>@page, :name=>path_part).first
+            @page = Page.where(:parent_id=>@page, :name=>CGI::escape(path_part)).first
             # Raise 404 if no page was found for the URL or subpart
             raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?
           end

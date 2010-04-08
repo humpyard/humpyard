@@ -15,9 +15,9 @@ module Humpyard
     
     # Create a new element
     def create
-      @element = Humpyard::config.elements[params[:type]].create params[:element]
+      @element = Humpyard::config.elements[params[:type]].new params[:element]
             
-      if @element.valid?
+      if @element.save
         @prev = Humpyard::Element.where('id = ?', params[:prev_id]).first
         @next = Humpyard::Element.where('id = ?', params[:next_id]).first
         
