@@ -15,7 +15,13 @@ module Humpyard
     has_many :elements, :class_name => 'Humpyard::Element'
     
     validates_with Humpyard::PublishRangeValidator, {:attributes => [:display_from, :display_until]}
-    
+    validates_presence_of :name, :title
+    validates_uniqueness_of :name
+        
+    def self.root_pages
+      Humpyard::Page.where('parent_id IS NULL and not name = ?', 'index')  
+    end    
+        
     def root_elements
       elements.where('container_id IS NULL').order('position ASC')
     end 
@@ -38,6 +44,33 @@ module Humpyard
       else
         "/#{Humpyard::config.parsed_www_prefix(options)}#{(self.ancestors.reverse + [self]).collect{|p| p.name} * '/'}.html"
       end
+    end
+    
+    def suggested_name
+      if self.name == 'index' or Humpyard::Page.count == 0
+        return 'index'
+      else
+        #name = Iconv.iconv('ascii//translit//IGNORE', 'utf-8', self.title).to_s
+        #name.gsub!(/[^\x00-\x7F]+/, '') # Remove anything non-ASCII entirely (e.g. diacritics).
+        #name.gsub!(/[^\w_ \_]+/i,   '') # Remove unwanted chars.
+        #name.gsub!(/[ \_]+/i,      '_') # No more than one of the separator in a row.
+        #name.gsub!(/^\_|\_$/i,      '') # Remove leading/trailing separator.
+        #name.downcase!
+        
+        # Use Rails function instead of the above
+        # Both does not work for non latin character sets
+        name = self.title.parameterize('_').to_s
+        
+        # Check if parameterized totally failed
+        if name == ''
+          name = CGI::escape(self.title.gsub(/[a-z0-9\-_\x00-\x7F]+/, '_'))
+        end 
+
+        while p = Humpyard::Page.where('name = ?', name).first and p.id != self.id do
+          name += '_'
+        end
+        return name
+      end  
     end
     
     # Return the logical modification time for the page, suitable for http caching, generational cache keys, etc.

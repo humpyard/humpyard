@@ -6,7 +6,7 @@ Feature: Pages Admin
   Given the standard pages
     And I am logged in as admin
   When I go to path "/admin/pages"
-  Then I should see "CMS Admin"
+  Then I should see "Humpyard::Pages"
   
   Scenario: Page Admin 
   Given the standard pages

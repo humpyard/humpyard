@@ -1,4 +1,4 @@
-= humpyard_form_for @element, :as => :element, :url => url_for(:controller=>:'humpyard/elements', :action=>@element.id ? :update : :create), :html=>{:remote => true, :'data-form-object-class' => "element", :class=>'element_form humpyard_form'} do |form|
+= humpyard_form_for @element, :as => :element, :url => url_for(:controller=>:'humpyard/elements', :action=>@element.id ? :update : :create), :html=>{:remote => true, :'data-dialog-form'=>'true', :'data-form-object-class' => "element", :class=>'element_form humpyard_form'} do |form|
   .humpyard-dialog-title
     = @element.class
   - unless @element.id

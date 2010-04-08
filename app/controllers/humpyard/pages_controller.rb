@@ -6,26 +6,85 @@ module Humpyard
     
     # Probably unneccassary - may be removed later
     def index
-      
+      @pages = Humpyard::Page.roots
+      @page = Humpyard::Page.where("id = ?", params[:actual_id]).first
+      @page = Humpyard::Page.new if @page.nil?
+      render :partial => 'index'
     end
 
     # Dialog content for a new page
     def new
-      
+      @page = Humpyard::Page.new
+      render :partial => 'edit'
     end
     
     # Create a new page
     def create
+      @page = Humpyard::Page.new params[:page]
+      @page.name = @page.suggested_name
       
+      if @page.save
+        @prev = Humpyard::Page.where('id = ?', params[:prev_id]).first
+        @next = Humpyard::Page.where('id = ?', params[:next_id]).first
+        
+        #do_move(@page, @prev, @next)
+      
+        insert_options = {
+          :element => "hy-id-#{@page.id}",
+          :url => @page,
+          :parent => @page.parent ? "hy-page-dialog-item-#{@page.id}" : "hy-page-dialog-pages"
+        }
+        
+        insert_options[:before] = "hy-page-dialog-item-#{@next.id}" if @next
+        insert_options[:after] = "hy-page-dialog-item-#{@prev.id}" if not @next and @prev
+      
+        render :json => {
+          :status => :ok,
+          :dialog => :close,
+          :insert => [insert_options]
+        }
+      else
+        render :json => {
+          :status => :failed, 
+          :errors => @page.errors
+        }
+      end
     end
     
     # Dialog content for an existing page
     def edit
-    
+      @page = Humpyard::Page.find params[:id]
+      render :partial => 'edit'
     end
     
     # Update an existing page
     def update
+      @page = Humpyard::Page.find(params[:id])
+      if @page
+        if @page.update_attributes params[:page]
+          @page.name = @page.suggested_name
+          @page.save
+          render :json => {
+            :status => :ok,
+#            :dialog => :close,
+            :replace => [
+              { 
+                :element => "hy-page-dialog-item-#{@page.id}",
+                :content => @page.title
+              }
+            ]
+          }
+        else
+          render :json => {
+            :status => :failed, 
+            :errors => @page.errors
+          }
+        end
+      else
+        render :json => {
+          :status => :failed
+        }, :status => 404
+      end
       
     end
     
@@ -52,7 +111,7 @@ module Humpyard
           # Ignore multiple slashes in URLs
           unless(path_part.blank?)
             # Find page by name and parent; parent=nil means page on root level
-            @page = Page.where(:parent_id=>@page, :name=>path_part).first
+            @page = Page.where(:parent_id=>@page, :name=>CGI::escape(path_part)).first
             # Raise 404 if no page was found for the URL or subpart
             raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?
           end

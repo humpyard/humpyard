@@ -15,9 +15,9 @@ module Humpyard
     
     # Create a new element
     def create
-      @element = Humpyard::config.elements[params[:type]].create params[:element]
+      @element = Humpyard::config.elements[params[:type]].new params[:element]
             
-      if @element
+      if @element.save
         @prev = Humpyard::Element.where('id = ?', params[:prev_id]).first
         @next = Humpyard::Element.where('id = ?', params[:next_id]).first
         
@@ -29,8 +29,8 @@ module Humpyard
           :parent => @element.container ? "hy-id-#{@element.container.id}" : "hy-page"
         }
         
-        insert_options[:before] = "hy-id-#{params[:next_id]}" if params[:next_id]
-        insert_options[:after] = "hy-id-#{params[:prev_id]}" if not params[:next_id] and params[:prev_id]
+        insert_options[:before] = "hy-id-#{@next.id}" if @next
+        insert_options[:after] = "hy-id-#{@prev.id}" if not @next and @prev
       
         render :json => {
           :status => :ok,

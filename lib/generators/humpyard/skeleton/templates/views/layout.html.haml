@@ -12,6 +12,9 @@
       #header.span-24{"class"=>"last"}
         %h1
           = @content_for_title
+      #menu.span-24{"class"=>"last"}
+        - Humpyard::Page.root_pages.each do |page|
+          = link_to page.title, page.human_url
       #content.span-16	
         = yield
       #sidebar.span-8{"class"=>"last"}
