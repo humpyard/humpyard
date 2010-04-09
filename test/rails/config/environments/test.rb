@@ -28,5 +28,5 @@ TestHumpyard::Application.configure do
   # config.active_record.schema_format = :sql
   
   config.session_store :cookie_store, :key => '_humpyard_test_session'
-  config.cookie_secret = 'e4dc8c63aeac04f817a144771482323f3f7e268d98333efb18a0b4eea3b9fa91ad6e9995038c59c649525f714aebf2b8e0543cde6c43dbd7ce9317dad6a45539'
+  config.secret_token = 'e4dc8c63aeac04f817a144771482323f3f7e268d98333efb18a0b4eea3b9fa91ad6e9995038c59c649525f714aebf2b8e0543cde6c43dbd7ce9317dad6a45539'
 end
