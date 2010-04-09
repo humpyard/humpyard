@@ -18,6 +18,11 @@ Rails.application.routes.draw do |map|
         post :move
       end
     end
+    resources :humpyard_news_feeds, :controller => 'humpyard/news_feeds', :path => :news_feeds, :only => [:index, :new, :create, :edit, :update, :show, :destroy] do
+      # member do
+      #   post :move
+      # end
+    end
   end
   
   # Map "/" URL
