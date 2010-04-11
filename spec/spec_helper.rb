@@ -6,7 +6,6 @@ require 'rspec/core/configuration.rb'
 
 require 'factory_girl'
 Dir.glob(File.join(File.dirname(__FILE__), '../test/factories/**/*.rb')).each {|f| require f }  
-Factory.factories.keys.each {|factory| Factory(factory) }
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.

@@ -39,7 +39,7 @@ module Humpyard
   #
   #    The default value is <tt>['en']</tt>
   class Config 
-    attr_writer :table_name_prefix, :www_prefix, :admin_prefix, :elements # :nodoc:
+    attr_writer :table_name_prefix, :www_prefix, :admin_prefix, :element_types, :page_types # :nodoc:
     
     def initialize(&block) #:nodoc:
       configure(&block) if block_given?
@@ -59,10 +59,17 @@ module Humpyard
       @www_prefix ||= ':locale/'
     end
     
-    def elements #:nodoc:
-      @elements ||= {
+    def element_types #:nodoc:
+      @element_types ||= {
         'text_element' => Humpyard::Elements::TextElement,
         'box_element' => Humpyard::Elements::BoxElement
+      }
+    end
+    
+    def page_types #:nodoc:
+      @page_types ||= {
+        'static' => Humpyard::Pages::StaticPage#,
+        #'news' => Humpyard::Pages::NewsPage
       }
     end
     

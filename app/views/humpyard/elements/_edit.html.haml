@@ -1,7 +1,7 @@
-= humpyard_form_for @element, :as => :element, :url => url_for(:controller=>:'humpyard/elements', :action=>@element.id ? :update : :create), :html=>{:remote => true, :'data-dialog-form'=>'true', :'data-form-object-class' => "element", :class=>'element_form humpyard_form'} do |form|
+= humpyard_form_for @element, :as => :element, :url => url_for(:controller=>:'humpyard/elements', :action=>@element.persisted? ? :update : :create), :html=>{:remote => true, :'data-dialog-form'=>'true', :'data-form-object-class' => "element", :class=>'element_form humpyard_form'} do |form|
   .humpyard-dialog-title
     = @element.class
-  - unless @element.id
+  - unless @element.persisted?
     = hidden_field :element, :page_id
     = hidden_field :element, :container_id
     = hidden_field_tag :type, @element_type

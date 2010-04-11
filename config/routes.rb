@@ -1,11 +1,6 @@
 Rails.application.routes.draw do |map|
   # Map admin controllers
   
-  # Workaround as the create route does not seem to work with latest rails
-  #match "/#{Humpyard::config.admin_prefix}/elements/create(.:format)" => 'humpyard/elements#create'
-  #match "/#{Humpyard::config.admin_prefix}/pages/create(.:format)" => 'humpyard/pages#create'
-  #match "/#{Humpyard::config.admin_prefix}/pages/:id/update(.:format)" => 'humpyard/pages#update'
-  
   scope "/#{Humpyard::config.admin_prefix}" do 
     resources :humpyard_pages, :controller => 'humpyard/pages', :path => :pages, :only => [:index, :new, :create, :edit, :update, :show, :destroy] do
       member do
@@ -18,11 +13,7 @@ Rails.application.routes.draw do |map|
         post :move
       end
     end
-    resources :humpyard_news_feeds, :controller => 'humpyard/news_feeds', :path => :news_feeds, :only => [:index, :new, :create, :edit, :update, :show, :destroy] do
-      # member do
-      #   post :move
-      # end
-    end
+    resources :humpyard_news_feeds, :controller => 'humpyard/news_feeds', :path => :news_feeds, :only => [:index, :new, :create, :edit, :update, :show, :destroy] 
   end
   
   # Map "/" URL

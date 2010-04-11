@@ -129,15 +129,12 @@
     },
     
     submitForm: function(form, dialog) {
-      form.ajaxSubmit({
-        data: { ul_quirk: 'true' },
+      var options = {
         dataType: 'json',
-        iframe: true,
         success: function(result, statusText, xhr) {
           // reset error messages
           $('.field-highlight', form).removeClass("ui-state-error");
           $('.field-errors', form).empty().hide();
-
           // execute commands given by ajax call
           $.each(result, function(attr, options) {
             if($.humpyard.ajax_dialog_commands[attr]) {
@@ -145,7 +142,14 @@
             }
           });
         }
-      });
+      } 
+
+      if (form.find('input[type=file]').length > 0 || form.attr("enctype") == "multipart/form-data") {
+        options['data'] = { ul_quirk: 'true' };
+        options['iframe'] = true
+      }
+
+      form.ajaxSubmit(options);
     },
 
     dialog: function(url, options) {

@@ -10,13 +10,25 @@ Given /^the standard pages$/ do
   Humpyard::Page.locale = :en
   Humpyard::Elements::TextElement.locale = :en
   
-  Factory :page, :id => 42, :name => 'index', :title => 'My Homepage', :position => 1
-  Factory :page, :id => 45, :name => 'about', :title => 'About', :position => 4
-  Factory :page, :id => 60, :name => 'contact', :title => 'Contact', :parent_id => 45
-  Factory :page, :id => 89, :name => 'imprint', :title => 'Imprint', :position => 2
-  Factory :page, :id => 11, :name => 'alternative-layout-test', :title => 'Special page', :position => 5, :template_name => "alternative"
+  #Humpyard::Page.destroy_all
   
   
+  page = Factory.build :static_page, :name => 'index', :title => 'My Homepage', :position => 1
+  page.page.id = 42
+  page.save
+  page = Factory.build :static_page, :name => 'about', :title => 'About', :position => 4
+  page.page.id = 45
+  page.save
+  page = Factory.build :static_page, :name => 'contact', :title => 'Contact', :parent_id => 45
+  page.page.id = 60
+  page.save
+  page = Factory.build :static_page, :name => 'imprint', :title => 'Imprint', :position => 2
+  page.page.id = 89
+  page.save
+  page = Factory.build :static_page, :name => 'alternative-layout-test', :title => 'Special page', :position => 5, :template_name => "alternative"
+  page.page.id = 11
+  page.save
+    
   t1 = Factory :text_element, :content => 'This is some great text!', :page_id => 42, :position => 2
   c = Factory :box_element, :title => 'This is a box element', :page_id => 42, :position => 1
   t2 = Factory :text_element, :content => 'This is text inside a container', :container => c.element, :position => 1
@@ -32,6 +44,8 @@ Given /^the standard pages$/ do
   Humpyard::Page.locale = nil
   Humpyard::Elements::TextElement.locale = nil
 end
+  
+  
 
 Given /^I am logged in as (.+)$/ do |user|
   visit "/?user=#{user}"

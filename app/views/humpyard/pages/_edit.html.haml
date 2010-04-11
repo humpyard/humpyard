@@ -1,13 +1,15 @@
-= humpyard_form_for @page, :as => :page, :html=>{:remote => true, :'data-form-object-class' => "page", :class=>'page_form humpyard_form'} do |form|
+= humpyard_form_for @page, :as => :page, :url => @page.page, :html=>{:remote => true, :'data-form-object-class' => "page", :class=>'page_form humpyard_form'} do |form|
   .humpyard-dialog-title
     = "#{form.form_type} #{@page.class} #{@page.id}"
-  - unless @page.id
+  - unless @page.persisted?
+    = hidden_field_tag :type, @page_type
     = hidden_field :page, :parent_id
     - if @prev
       = hidden_field_tag :prev_id, @prev.id 
     - if @next
       = hidden_field_tag :next_id, @next.id
   .humpyard-tabview
+    = render :partial => "/humpyard/pages/#{@page.class.name.split('::').last.underscore.pluralize}/edit", :locals => {:page => @page, :form => form}
     .humpyard-tab
       .humpyard-tab-title
         Page Options

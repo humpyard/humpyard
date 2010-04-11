@@ -9,7 +9,7 @@
       #hy-top-right
         =link_to 'Logout', '?user='
     #hy-bottom.hy-eb
-      - Humpyard::config.elements.each do |name, type|
+      - Humpyard::config.element_types.each do |name, type|
         .element{'data-addable'=>'true', 'data-draggable'=>'true', 'data-element-type'=>name, 'data-create-url'=>new_humpyard_element_path}
           = name
     #hy-body.hy-eb

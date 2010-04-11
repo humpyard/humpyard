@@ -5,7 +5,7 @@ module Humpyard
     
     # Dialog content for a new element
     def new
-      @element = Humpyard::config.elements[params[:type]].new(:page_id => params[:page_id], :container_id => params[:container_id].to_i > 0 ? params[:container_id].to_i : nil)
+      @element = Humpyard::config.element_types[params[:type]].new(:page_id => params[:page_id], :container_id => params[:container_id].to_i > 0 ? params[:container_id].to_i : nil)
       @element_type = params[:type]
       @prev = Humpyard::Element.where('id = ?', params[:prev_id]).first
       @next = Humpyard::Element.where('id = ?', params[:next_id]).first
@@ -15,7 +15,7 @@ module Humpyard
     
     # Create a new element
     def create
-      @element = Humpyard::config.elements[params[:type]].new params[:element]
+      @element = Humpyard::config.element_types[params[:type]].new params[:element]
             
       if @element.save
         @prev = Humpyard::Element.where('id = ?', params[:prev_id]).first

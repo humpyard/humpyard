@@ -12,14 +12,15 @@ module Humpyard
     
     acts_as_tree :order => :position
     
+    belongs_to :content_data, :polymorphic => true, :dependent => :destroy  
     has_many :elements, :class_name => 'Humpyard::Element'
     
     validates_with Humpyard::PublishRangeValidator, {:attributes => [:display_from, :display_until]}
-    validates_presence_of :name, :title
+    validates_presence_of :title, :name
     validates_uniqueness_of :name
         
-    def self.root_pages
-      Humpyard::Page.where('parent_id IS NULL and not name = ?', 'index')  
+    def self.root_page
+      Humpyard::Page.where('name = ?', 'index').first
     end    
         
     def root_elements
@@ -71,6 +72,11 @@ module Humpyard
         end
         return name
       end  
+    end
+    
+    # Find the child pages
+    def child_pages
+      content_data.child_pages
     end
     
     # Return the logical modification time for the page, suitable for http caching, generational cache keys, etc.

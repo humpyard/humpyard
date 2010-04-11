@@ -6,22 +6,30 @@ module Humpyard
     
     # Probably unneccassary - may be removed later
     def index
-      @pages = Humpyard::Page.roots
+      @root_page = Humpyard::Page.root
       @page = Humpyard::Page.where("id = ?", params[:actual_id]).first
-      @page = Humpyard::Page.new if @page.nil?
+      if @page.nil?
+        @page = Humpyard::Pages::StaticPage.new if @page.nil?
+      else
+        @page = @page.content_data
+      end
       render :partial => 'index'
     end
 
     # Dialog content for a new page
     def new
-      @page = Humpyard::Page.new
+      @page = Humpyard::config.page_types[params[:type]].new
+      @page_type = params[:type]
+      @prev = Humpyard::Page.where('id = ?', params[:prev_id]).first
+      @next = Humpyard::Page.where('id = ?', params[:next_id]).first
+      
       render :partial => 'edit'
     end
     
     # Create a new page
     def create
-      @page = Humpyard::Page.new params[:page]
-      @page.name = @page.suggested_name
+      @page = Humpyard::config.page_types[params[:type]].new params[:page]
+      @page.name = @page.page.suggested_name
       
       if @page.save
         @prev = Humpyard::Page.where('id = ?', params[:prev_id]).first
@@ -53,16 +61,16 @@ module Humpyard
     
     # Dialog content for an existing page
     def edit
-      @page = Humpyard::Page.find params[:id]
+      @page = Humpyard::Page.find(params[:id]).content_data
       render :partial => 'edit'
     end
     
     # Update an existing page
     def update
-      @page = Humpyard::Page.find(params[:id])
+      @page = Humpyard::Page.find(params[:id]).content_data
       if @page
         if @page.update_attributes params[:page]
-          @page.name = @page.suggested_name
+          @page.name = @page.page.suggested_name
           @page.save
           render :json => {
             :status => :ok,
@@ -170,7 +178,7 @@ module Humpyard
           #xml.tag! :wetwerwerw, 'does not validate'
         end
       
-        add_to_sitemap xml, base_url, locale, page.children, priority/2
+        add_to_sitemap xml, base_url, locale, page.child_pages, priority/2
       end
     end
     

@@ -1,16 +1,11 @@
 .humpyard-dialog-title
-  = @pages.first.class.to_s.pluralize
+  = @page.class.to_s.pluralize
 .dialog-columns
   .left-dialog-column
-    #pages.tree.tree-themeroller
-      %ul
-        - root_page = Humpyard::Page.where('name = ?', 'index').first
-        %li#index.open{"rel"=>"root"}
-          = link_to root_page.title, edit_humpyard_page_path(root_page), :'data-dialog-link' => true, :class => (@page and @page == root_page ? 'active' : ''), :id => "hy-page-dialog-item-#{@page.id}"
-          = render :partial => 'subtree', :locals => {:pages => @pages, :root_page => root_page} 
-    %br{"style"=>"clear:both;"}
+    = render :partial => 'tree', :locals => {:pages => @pages, :page => @page}
     %hr
-    = link_to "Add Page", new_humpyard_page_path, :'data-dialog-link' => true
+    - Humpyard::config.page_types.each do |name, type|
+      = link_to "Add #{type} Page", new_humpyard_page_path(:type => name), :'data-dialog-link' => true
   .right-dialog-column
     - if @page
       = render :partial => 'edit', :locals => {:page => @page}
