@@ -18,6 +18,8 @@ $left_dialog_column_background: rgb(211, 217, 226)
   .ui-state-highlight 
     height: 2px
     line-height: 2px
+  .droparea
+    min-height: 20px
     
     
   .ui-dialog-content
@@ -31,13 +33,20 @@ $left_dialog_column_background: rgb(211, 217, 226)
       top: 0
       bottom: 0
       background: $left_dialog_column_background
-      ul
+      .ui-state-highlight 
+        border: none
+        line-height: 2px
+        background: #600
+        margin: -2px 0 0 10px 
+      .treeview
         list-style-type: none
         margin: 0
         padding: 0 0 0 10px 
-        li
+        .treeitem
           margin: 0
           padding: 0
+          .droparea
+            min-height: 2px
       a.active 
         color: #fff
         background: rgb(114, 133, 172)

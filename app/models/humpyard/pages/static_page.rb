@@ -11,7 +11,7 @@ module Humpyard
       
       def child_pages
         if self.name == 'index'
-          self.page.siblings
+          self.page.children + self.page.siblings 
         else
           self.page.children
         end

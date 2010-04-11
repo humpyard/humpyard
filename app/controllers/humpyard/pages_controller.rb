@@ -96,6 +96,38 @@ module Humpyard
       
     end
     
+    # Move a page
+    def move
+      @page = Humpyard::Page.find(params[:id])
+      
+      if @page
+        parent = Humpyard::Page.where('id = ?', params[:parent_id]).first
+        unless parent
+          parent = Humpyard::Page.root_page
+        end
+        @page.update_attribute :parent, parent
+        @prev = Humpyard::Page.where('id = ?', params[:prev_id]).first
+        @next = Humpyard::Page.where('id = ?', params[:next_id]).first
+        
+        do_move(@page, @prev, @next)
+        
+        render :json => {
+          :status => :ok
+        }
+      else
+        render :json => {
+          :status => :failed
+        }, :status => 404        
+      end
+    end
+    
+    # Destroy a page
+    def destroy
+      @page = Humpyard::Page.find(params[:id])
+      @page.destroy
+    end
+
+    
     # Render a given page
     # 
     # When a "webpath" parameter is given it will render the page with that name.
@@ -182,5 +214,35 @@ module Humpyard
       end
     end
     
+    def do_move(page, prev_page, next_page) #:nodoc#
+      if page.parent
+        neighbours = page.parent.child_pages
+      else
+        neighbours = Humpyard::Page.root_page.child_pages
+      end
+
+      #p "before #{next_id} and after #{prev_id}"
+
+      position = 0
+      neighbours.each do |p|    
+        if next_page == p
+          puts "insert page #{page.id} before #{p.id}"
+          page.update_attribute :position, position
+          position += 1
+        end  
+        if page != p
+          puts "process page #{p.id} to position #{position}"
+          p.update_attribute :position, position 
+        end
+        if not next_page and prev_page == p
+          puts "insert page #{page.id} after #{p.id}"
+          position += 1
+          page.update_attribute :position, position
+        end
+        if page != p
+          position += 1
+        end
+      end
+    end  
   end
 end

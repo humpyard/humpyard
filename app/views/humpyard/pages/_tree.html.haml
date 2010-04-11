@@ -1,7 +1,6 @@
-#pages.tree.tree-themeroller
-  %ul
-    - root_page = Humpyard::Page.where('name = ?', 'index').first
-    %li#index.open{"rel"=>"root"}
-      = link_to root_page.title, edit_humpyard_page_path(root_page), :'data-dialog-link' => true, :class => (page and page == root_page ? 'active' : ''), :id => "hy-page-dialog-item-#{@page.id}"
-      = render :partial => 'subtree', :locals => {:pages => root_page.content_data.child_pages, :root_page => root_page} 
+.treeview
+  - root_page = Humpyard::Page.where('name = ?', 'index').first
+  .treeitem{'data-page-id'=>root_page.id}
+    = link_to root_page.title, edit_humpyard_page_path(root_page), :'data-dialog-link' => true, :class => (page and page == root_page ? 'active' : ''), :id => "hy-page-dialog-item-#{root_page.id}"
+    = render :partial => 'subtree', :locals => {:pages => root_page.content_data.child_pages, :root_page => root_page} 
 %br{"style"=>"clear:both;"}
