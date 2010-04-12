@@ -9,7 +9,12 @@ module Humpyard
           base.alias_method_chain :page, :autobuild 
           base.alias_method_chain :column_for_attribute, :page_column_for_attribute
           
-          all_attributes = Humpyard::Page.column_names + Humpyard::Page.translated_attribute_names.map{|a| a.to_s}
+          begin
+            all_attributes = Humpyard::Page.column_names + Humpyard::Page.translated_attribute_names.map{|a| a.to_s}
+          rescue
+            # Table not migrated
+            all_attributes = []
+          end
           ignored_attributes = ['id', 'created_at', 'updated_at', 'content_data_id', 'content_data_type']
           attributes_to_delegate = all_attributes - ignored_attributes
           attributes_to_delegate.each do |attrib|

@@ -34,7 +34,7 @@ begin
     end
   end
   
-  task :spec => [:'db:test:prepare']
+  task :spec => [:'db:test:reset']
 rescue
   task :spec do
     abort 'Spec is not available. In order to run features, you must: sudo gem install rspec'
@@ -54,7 +54,7 @@ begin
     end
   end
 
-  task :features => [:'db:test:prepare']
+  task :features => [:'db:test:reset']
 rescue LoadError
   task :features do
     abort 'Cucumber is not available. In order to run features, you must: sudo gem install cucumber'
@@ -77,11 +77,26 @@ namespace :db do
   namespace :test do
     desc "Migrate the test database through scripts in db/migrate. Target specific version with VERSION=x. Turn off output with VERBOSE=false."
     task :prepare do
-      `rm #{File.dirname(__FILE__)}/test/rails/db/test.sqlite3`
-      ActiveRecord::Base.table_name_prefix = Humpyard::config.table_name_prefix
+      ActiveRecord::Base.configurations = Rails::Application.config.database_configuration      
+      class ActiveRecord::Base
+         self.table_name_prefix = "#{::ActiveRecord::Base.table_name_prefix}#{Humpyard::config.table_name_prefix}"
+      end
+      
+      ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations['test'])
       ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
       ActiveRecord::Migrator.migrate("#{File.dirname(__FILE__)}/db/migrate/", ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
     end
+    desc "Remove the test database"
+    task :drop do
+      require 'pathname'
+      config = Rails::Application.config.database_configuration['test']
+      path = Pathname.new(config['database'])
+      file = path.absolute? ? path.to_s : File.join(Rails.root, path)
+
+      FileUtils.rm(file)
+    end
+    desc "Reset the test database and prepare it through scripts in db/migrate"
+    task :reset => [:drop, :prepare]
   end
 end
 
