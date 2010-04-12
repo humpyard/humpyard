@@ -7,10 +7,14 @@ class PageTypes < ActiveRecord::Migration
     create_table :pages_static_pages do |t|
       t.timestamps
     end
-    Humpyard::Page.all.each do |p|
-      Humpyard::Pages::StaticPage.create :page => p
-    end
     
+    rename_column :page_translations, :humpyard_page_id, :page_id
+    Humpyard::Page.all.each do |p|
+      sp = Humpyard::Pages::StaticPage.new 
+      sp.page = p
+      sp.save
+    end
+    rename_column :page_translations, :page_id, :humpyard_page_id
   end
   
   def self.down
