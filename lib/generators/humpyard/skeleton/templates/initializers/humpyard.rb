@@ -5,4 +5,10 @@ Humpyard.configure do |config|
   config.admin_prefix = '<%= options[:admin_prefix] %>'
   config.table_name_prefix = '<%= options[:table_name_prefix] %>'
   config.locales = [:<%= options[:locales] * ', :' %>]
+  
+  config.templates = {
+    <%= options[:templates].map{|template| ":#{template} => {:yields => [:sidebar]}"} * ",\n    " %>
+  }
+  config.default_template = :<%= options[:templates].first %>
+      
 end

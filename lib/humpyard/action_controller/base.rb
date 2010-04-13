@@ -2,9 +2,15 @@ module Humpyard
   module ActionController #:nodoc:
     module Base #:nodoc:
 
-      def humpyard_user
+      def self.included(base)
+        base.module_eval do
+          helper_attr :humpyard_user
+        end
+      end
+
+      def humpyard_user    
         if not @humpyard_user.nil?
-          @humpyard_user 
+          @humpyard_user
         else
           session[:humpyard] ||= {}
           unless params[:user].nil?
@@ -19,8 +25,6 @@ module Humpyard
 end
 
 ActionController::Base.send :include, Humpyard::ActionController::Base
-ActionController::Base.send :helper_attr, :humpyard_user
-
 
 # register a custom json renderer for humpyard to overcome xhr file upload limits.
 # if a file input is present in the form, it should be sent as a normal form

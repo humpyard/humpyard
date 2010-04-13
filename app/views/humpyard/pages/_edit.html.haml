@@ -1,4 +1,4 @@
-= humpyard_form_for @page, :as => :page, :url => @page.page, :html=>{:remote => true, :'data-form-object-class' => "page", :class=>'page_form humpyard_form'} do |form|
+= humpyard_form_for @page, :as => :page, :url => @page.page, :html=>{:'data-dialog-remote' => true, :'data-form-object-class' => "page", :class=>'page_form humpyard_form'} do |form|
   .humpyard-dialog-title
     = "#{form.form_type} #{@page.class} #{@page.id}"
   - unless @page.persisted?
@@ -14,6 +14,10 @@
       .humpyard-tab-title
         Page Options
       = form.input :title
+      - if Humpyard::config.templates.size > 1
+        = form.input :template_name, :as => :select, :select_options => Humpyard::config.templates.map{|name, data| [name.to_s.camelize, name.to_s]}
+      - else
+        = hidden_field_tag :template_name, Humpyard::config.default_template
     .humpyard-tab
       .humpyard-tab-title
         Generic Options

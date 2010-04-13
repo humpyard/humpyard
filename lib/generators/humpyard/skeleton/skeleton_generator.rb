@@ -5,7 +5,7 @@ module Humpyard
     ####
     # == Skeleton Generator
     #
-    #   rails humpyard:skeleton [layout_name] [options]
+    #   rails humpyard:skeleton [options]
     #
     # === Description
     # The humpyard skeleton generator creates a basic layout, stylesheet and
@@ -45,7 +45,8 @@ module Humpyard
     #   rails generate humpyard:skeleton
     
     class SkeletonGenerator < Base
-      argument :layout_name, :type => :string, :default => 'application', :banner => 'layout_name'
+      class_option :templates, :desc => 'The page template', :group => 'Humpyard Layout', :type => :array, :default => ['application']
+      class_option :layouts, :desc => 'The page content layouts', :group => 'Humpyard Layout', :type => :array, :default => ['one_column']
       
       class_option :www_prefix, :desc => 'The prefix for humpyard www pages as string', :group => 'Humpyard config', :type => :string, :default => ':locale/'
       class_option :admin_prefix, :desc => 'The prefix for humpyard admin controllers as string', :group => 'Humpyard config', :type => :string, :default => 'admin'
@@ -64,7 +65,9 @@ module Humpyard
         template 'initializers/humpyard.rb', "config/initializers/humpyard.rb"
         unless options[:skip_haml]
           copy_file 'initializers/haml.rb', "config/initializers/haml.rb" unless options[:skip_haml_init]
-          template 'views/layout.html.haml', "app/views/layouts/#{file_name}.html.haml"
+          options[:templates].each do |template|
+            template 'views/layout.html.haml', "app/views/layouts/#{template}.html.haml"
+          end
         end
         unless options[:skip_compass]
           copy_file 'initializers/compass.rb', "config/initializers/compass.rb" unless options[:skip_compass_init]

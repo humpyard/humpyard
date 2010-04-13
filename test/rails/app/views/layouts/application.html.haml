@@ -1,5 +1,5 @@
 !!! Strict
-%html
+%html{html_attrs(I18n.locale)}
   %head
     =render :partial => 'humpyard/common/head'
     = stylesheet_link_tag 'smoothness/jquery-ui-1.8.custom.css'
@@ -18,8 +18,7 @@
         = yield
       #sidebar.span-8{"class"=>"last"}
         %p
-          %a{"href"=>"http://humpyard.org/"}
-            Visit the Humpyard Homepage
+          = yield :sidebar
       #footer.span-24{"class"=>"last"}
         %p
           This is just a template

@@ -8,9 +8,7 @@ module Humpyard
     def index
       @root_page = Humpyard::Page.root
       @page = Humpyard::Page.where("id = ?", params[:actual_id]).first
-      if @page.nil?
-        @page = Humpyard::Pages::StaticPage.new if @page.nil?
-      else
+      unless @page.nil?
         @page = @page.content_data
       end
       render :partial => 'index'
@@ -140,6 +138,7 @@ module Humpyard
     def show
       # No page found at the beginning
       @page = nil
+      @yields = [:main]
 
       if params[:locale] and Humpyard.config.locales.include? params[:locale].to_sym
         I18n.locale = params[:locale]
@@ -173,7 +172,7 @@ module Humpyard
       # Raise 404 if no page was found
       raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?
       response.headers['X-Humpyard-Page'] = "#{@page.id}"
-      render :layout => @page.template_name unless @page.template_name.blank?
+      render :layout => @page.template_name
     end
     
     # Render the sitemap.xml for robots

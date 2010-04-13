@@ -39,7 +39,8 @@ module Humpyard
   #
   #    The default value is <tt>['en']</tt>
   class Config 
-    attr_writer :table_name_prefix, :www_prefix, :admin_prefix, :element_types, :page_types # :nodoc:
+    attr_writer :table_name_prefix, :www_prefix, :admin_prefix, :element_types, :page_types, 
+        :templates, :default_template # :nodoc:
     
     def initialize(&block) #:nodoc:
       configure(&block) if block_given?
@@ -71,6 +72,17 @@ module Humpyard
         'static' => Humpyard::Pages::StaticPage#,
         #'news' => Humpyard::Pages::NewsPage
       }
+    end
+    
+    def templates #:nodoc:
+      @templates ||= {
+        'application' => {:yields => [:sidebar]}
+      }
+    end
+    
+    def default_template_name
+      @default_template ||= templates.keys.first
+      @default_template.to_s
     end
     
     # Get the prefix of your pages with interpreted variables given as params.

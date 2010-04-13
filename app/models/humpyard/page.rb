@@ -13,7 +13,7 @@ module Humpyard
     acts_as_tree :order => :position
     
     belongs_to :content_data, :polymorphic => true, :dependent => :destroy  
-    has_many :elements, :class_name => 'Humpyard::Element'
+    has_many :elements, :class_name => 'Humpyard::Element', :dependent => :destroy  
     
     validates_with Humpyard::PublishRangeValidator, {:attributes => [:display_from, :display_until]}
     validates_presence_of :title, :name
@@ -23,8 +23,8 @@ module Humpyard
       Humpyard::Page.where('name = ?', 'index').first
     end    
         
-    def root_elements
-      elements.where('container_id IS NULL').order('position ASC')
+    def root_elements(yield_name = 'main')
+      elements.where('container_id IS NULL and page_yield_name = ?', yield_name.to_s).order('position ASC')
     end 
     
     # Return the human readable URL for the page.
