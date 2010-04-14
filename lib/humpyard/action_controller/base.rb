@@ -32,8 +32,8 @@ ActionController::Base.send :helper_attr, :humpyard_user
 # in a <textarea> element. (this is the way jquery.form handles things)
 # until there is a decent way to upload files using xhr (also supporting 
 # streaming large uploads), we have to use this rather ugly hack.
-# this code is based on the original :json option for rendering
-# to use the workaround, include a parameter :ul_quirk.
+# this code is based on the original rails :json option for rendering.
+# to use the workaround, include a parameter url_quirk=true in the request.
 
 ActionController.add_renderer :json do |json, options|
  json = ActiveSupport::JSON.encode(json) unless json.respond_to?(:to_str)
