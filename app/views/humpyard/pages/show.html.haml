@@ -1,6 +1,12 @@
 - title @page.title
-#hy-page{'data-page-id'=>@page.id}
-  = render :partial => "/humpyard/elements/show_container", :locals => {:elements => @page.root_elements}
+
+#hy-content-main.hy-content{:'data-content-yield' => 'main'}
+  = render :partial => "/humpyard/pages/#{@page.content_data_type.split('::').last.underscore.pluralize}/show", :locals => {:page => @page}
 
 / 
   ="X-HumpYard-Page:#{@page.id}"
+
+- Humpyard::config.templates[@page.template_name.to_sym][:yields].each do |yield_name|
+  - content_for yield_name.to_sym do
+    .hy-content{:id => "hy-content-#{yield_name}", :'data-content-yield' => yield_name}
+      = render :partial => "/humpyard/elements/show_container", :locals => {:elements => @page.root_elements(yield_name)}

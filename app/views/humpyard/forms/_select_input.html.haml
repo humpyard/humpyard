@@ -1,0 +1,10 @@
+.input{:class => "attr_#{name}"}
+  %div
+    %label{:for => "#{form.namespace}[#{name}]"}
+      = form.object.class.human_attribute_name(name)
+    %span.field-errors.ui-state-error-text{:style => 'display:none;'}
+  %div
+    %select{:name => "#{form.namespace}[#{name}]", :class => "select"}
+      - options[:select_options].each do |option|
+        %option{:value => "#{option[1]}", :selected => (option[1] == form.object.send(name))}
+          = option[0] #form.object.send(name)

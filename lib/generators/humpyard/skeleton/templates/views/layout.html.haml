@@ -1,5 +1,5 @@
 !!! Strict
-%html
+%html{html_attrs(I18n.locale)}
   %head
     =render :partial => 'humpyard/common/head'
 <% if options[:js_framework] -%>
@@ -19,9 +19,8 @@
       #content.span-16	
         = yield
       #sidebar.span-8{"class"=>"last"}
-        %p
-          %a{"href"=>"http://humpyard.org/"}
-            Visit the Humpyard Homepage
+        .box
+          = yield :sidebar
       #footer.span-24{"class"=>"last"}
         %p
           This is just a template

@@ -1,4 +1,4 @@
-= humpyard_form_for @news_feed, :as => :news_feed, :html=>{:remote => true, :'data-form-object-class' => "news_feed", :class=>'news_feed_form humpyard_form'} do |form|
+= humpyard_form_for @news_feed, :as => :news_feed, :html=>{:'data-dialog-remote' => true, :'data-form-object-class' => "news_feed", :class=>'news_feed_form humpyard_form'} do |form|
   .humpyard-dialog-title
     = "#{form.form_type} #{@news_feed.class} #{@news_feed.id}"
   .humpyard-tabview

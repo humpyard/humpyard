@@ -228,9 +228,9 @@ describe Humpyard::Page do
     p.title = 'Eine kleine Seite über mich'
     p.suggested_name.should eql 'eine_kleine_seite_uber_mich'
     p.title = 'Smá síðu um mig'
-    p.suggested_name.should eql 'sma_siu_um_mig'
+    p.suggested_name.should eql 'sma_sidu_um_mig'
     p.title = 'Hakkımda Biraz sayfa'
-    p.suggested_name.should eql 'hakkmda_biraz_sayfa'
+    p.suggested_name.should eql 'hakkimda_biraz_sayfa'
     # not really nice, but better than nothing
     p.title = 'Немного обо мне страницы'
     p.suggested_name.should eql '%D0%9D%D0%B5%D0%BC%D0%BD%D0%BE%D0%B3%D0%BE_%D0%BE%D0%B1%D0%BE_%D0%BC%D0%BD%D0%B5_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D1%8B'

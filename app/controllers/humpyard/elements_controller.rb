@@ -5,7 +5,10 @@ module Humpyard
     
     # Dialog content for a new element
     def new
-      @element = Humpyard::config.element_types[params[:type]].new(:page_id => params[:page_id], :container_id => params[:container_id].to_i > 0 ? params[:container_id].to_i : nil)
+      @element = Humpyard::config.element_types[params[:type]].new(
+        :page_id => params[:page_id], 
+        :container_id => params[:container_id].to_i > 0 ? params[:container_id].to_i : nil,
+        :page_yield_name => params[:yield_name].blank? ? 'main' : params[:yield_name])
       @element_type = params[:type]
       @prev = Humpyard::Element.where('id = ?', params[:prev_id]).first
       @next = Humpyard::Element.where('id = ?', params[:next_id]).first
@@ -26,7 +29,7 @@ module Humpyard
         insert_options = {
           :element => "hy-id-#{@element.element.id}",
           :url => humpyard_element_path(@element.element),
-          :parent => @element.container ? "hy-id-#{@element.container.id}" : "hy-page"
+          :parent => @element.container ? "hy-id-#{@element.container.id}" : "hy-content-#{@element.page_yield_name}"
         }
         
         insert_options[:before] = "hy-id-#{@next.id}" if @next
@@ -90,7 +93,10 @@ module Humpyard
       @element = Humpyard::Element.find(params[:id])
       
       if @element
-        @element.update_attribute :container, Humpyard::Element.where('id = ?', params[:container_id]).first
+        @element.update_attributes(
+          :container => Humpyard::Element.where('id = ?', params[:container_id]).first, 
+          :page_yield_name => params[:yield_name]
+        )
         @prev = Humpyard::Element.where('id = ?', params[:prev_id]).first
         @next = Humpyard::Element.where('id = ?', params[:next_id]).first
         
@@ -123,10 +129,11 @@ module Humpyard
       if element.container
         neighbours = element.container.elements
       else
-        neighbours = element.page.root_elements
+        neighbours = element.page.root_elements(element.page_yield_name)
       end
       
       #p "before #{next_id} and after #{prev_id}"
+      p "page_yield: #{element.page_yield_name}"
 
       position = 0
       neighbours.each do |el|    
