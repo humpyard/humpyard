@@ -136,9 +136,10 @@ module Humpyard
     #
     # When no "name" nor "id" parameter is given it will render the root page.
     def show
+      p "Show page called with path '#{params[:webpath]}'"
+      
       # No page found at the beginning
       @page = nil
-      @yields = [:main]
 
       if params[:locale] and Humpyard.config.locales.include? params[:locale].to_sym
         I18n.locale = params[:locale]
@@ -146,16 +147,35 @@ module Humpyard
       
       # Find page by name
       if not params[:webpath].blank?
+        dyn_page_path = false
+        parent_page = nil
         params[:webpath].split('/').each do |path_part|
           # Ignore multiple slashes in URLs
           unless(path_part.blank?)
-            # Find page by name and parent; parent=nil means page on root level
-            @page = Page.where(:parent_id=>@parent_page, :name=>CGI::escape(path_part)).first
-            @parent_page = @page unless @page.name == 'index'
-            # Raise 404 if no page was found for the URL or subpart
-            raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?
+            if(dyn_page_path) 
+              dyn_page_path << path_part
+            else     
+              # Find page by name and parent; parent=nil means page on root level
+              @page = Page.where(:parent_id=>parent_page, :name=>CGI::escape(path_part)).first
+              # Raise 404 if no page was found for the URL or subpart
+              raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?
+              
+              parent_page = @page unless @page.name == 'index'
+              dyn_page_path = [] if @page.content_data.is_humpyard_dynamic_page? 
+            end
           end
         end
+
+        if @page.content_data.is_humpyard_dynamic_page? and dyn_page_path.size > 0
+          @sub_page = @page.parse_path(dyn_page_path)
+          
+          # Raise 404 if no page was found for the sub_page part
+          raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @sub_page.blank?
+
+          @page_partial = "/humpyard/pages/#{@page.content_data_type.split('::').last.underscore.pluralize}/#{@sub_page[:partial]}" if @sub_page[:partial]
+          @local_vars = {:page => @page}.merge(@sub_page[:locals]) if @sub_page[:locals] and @sub_page[:locals].class == Hash
+        end
+        
       # Find page by id
       elsif not params[:id].blank?
         # Render page by id if not webpath was given but an id
@@ -163,7 +183,7 @@ module Humpyard
       # Find root page
       else
         # Render index page if neither id or webpath was given
-        @page = Page.find_by_name('index')
+        @page = Page.root_page
         unless @page
           render '/humpyard/pages/welcome'
           return false
@@ -172,6 +192,10 @@ module Humpyard
       
       # Raise 404 if no page was found
       raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?
+      
+      @page_partial ||= "/humpyard/pages/#{@page.content_data_type.split('::').last.underscore.pluralize}/show"
+      @local_vars ||= {:page => @page}
+      
       response.headers['X-Humpyard-Page'] = "#{@page.id}"
       render :layout => @page.template_name
     end

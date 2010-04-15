@@ -4,9 +4,47 @@ module Humpyard
 
     require 'globalize'
 
-    translates :title, :content
+    translates :title, :title_for_url, :content
 
-    belongs_to :news_feed, :class_name => "Humpyard::NewsFeed", :foreign_key => "news_feed_id"
+    belongs_to :news_page, :class_name => "Humpyard::Pages::NewsPage", :foreign_key => "news_page_id"
+
+    validates_presence_of :title, :title_for_url
+    # does not to work in globalize until now
+    # validates_uniqueness_of :title_for_url
+    
+    scope :by_title_for_url, lambda { |name| {
+      :include => :translations,
+      :conditions => ["#{quoted_translation_table_name}.title_for_url = ?", name]
+    }}
+
+    def before_validation
+      self.title_for_url = title.parameterize('_').to_s
+      
+      # Check if parameterized totally failed
+      if self.title_for_url == ''
+        self.title_for_url = CGI::escape(title.gsub(/[a-z0-9\-_\x00-\x7F]+/, '_'))
+      end 
+
+      while p = Humpyard::NewsItem.by_title_for_url(self.title_for_url).first and p.id != id do
+        self.title_for_url += '_'
+      end
+    end
+
+    # Return the human readable URL for the page.
+    #
+    # Posible options values are
+    # <tt>:locale</tt>:: 
+    #     A locale given in the Humpyard::Config.locales.
+    #     If no <tt>:locale</tt> is given the option will be ::I18n.locale by default
+    def human_url(options={})
+      options[:locale] ||= ::I18n.locale
+      
+      unless Humpyard::config.locales.include? options[:locale].to_sym
+        options[:locale] = Humpyard::config.locales.first
+      end
+      
+      news_page.page.human_url.gsub /\.html$/, "/#{created_at.strftime '%Y/%m/%d'}/#{title_for_url}.html"
+    end
 
   end
 end

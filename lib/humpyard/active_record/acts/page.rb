@@ -36,6 +36,10 @@ module Humpyard
           ret = column_for_attribute_without_page_column_for_attribute(attr) || page.column_for_attribute(attr) || page.translation_class.new.column_for_attribute(attr)
         end
 
+        def parse_path(path)
+          nil
+        end
+
         def is_humpyard_page?
           self.class.is_humpyard_page?
         end

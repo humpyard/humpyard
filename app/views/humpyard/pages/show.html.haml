@@ -1,7 +1,7 @@
 - title @page.title
 
 #hy-content-main.hy-content{:'data-content-yield' => 'main'}
-  = render :partial => "/humpyard/pages/#{@page.content_data_type.split('::').last.underscore.pluralize}/show", :locals => {:page => @page}
+  = render :partial => @page_partial, :locals => @local_vars
 
 / 
   ="X-HumpYard-Page:#{@page.id}"

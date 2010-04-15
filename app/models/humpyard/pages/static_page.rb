@@ -1,7 +1,7 @@
 module Humpyard
   module Pages 
     ####
-    # Humpyard::Pages::StaticPage is a model of a text element.    
+    # Humpyard::Pages::StaticPage is a page only containing elements.    
     class StaticPage < ::ActiveRecord::Base
       acts_as_humpyard_page :system_page => true
       
@@ -15,6 +15,10 @@ module Humpyard
         else
           self.page.children
         end
+      end
+      
+      def child_urls
+        child_pages.map{|p| p.human_url}
       end
     end
   end

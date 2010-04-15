@@ -69,8 +69,8 @@ module Humpyard
     
     def page_types #:nodoc:
       @page_types ||= {
-        'static' => Humpyard::Pages::StaticPage#,
-        #'news' => Humpyard::Pages::NewsPage
+        'static' => Humpyard::Pages::StaticPage,
+        'news' => Humpyard::Pages::NewsPage
       }
     end
     

@@ -27,6 +27,10 @@ module Humpyard
       elements.where('container_id IS NULL and page_yield_name = ?', yield_name.to_s).order('position ASC')
     end 
     
+    def parse_path(path)
+      content_data.parse_path(path)
+    end
+    
     # Return the human readable URL for the page.
     #
     # Posible options values are
@@ -51,15 +55,6 @@ module Humpyard
       if self.name == 'index' or Humpyard::Page.count == 0
         return 'index'
       else
-        #name = Iconv.iconv('ascii//translit//IGNORE', 'utf-8', self.title).to_s
-        #name.gsub!(/[^\x00-\x7F]+/, '') # Remove anything non-ASCII entirely (e.g. diacritics).
-        #name.gsub!(/[^\w_ \_]+/i,   '') # Remove unwanted chars.
-        #name.gsub!(/[ \_]+/i,      '_') # No more than one of the separator in a row.
-        #name.gsub!(/^\_|\_$/i,      '') # Remove leading/trailing separator.
-        #name.downcase!
-        
-        # Use Rails function instead of the above
-        # Both does not work for non latin character sets
         name = self.title.parameterize('_').to_s
         
         # Check if parameterized totally failed

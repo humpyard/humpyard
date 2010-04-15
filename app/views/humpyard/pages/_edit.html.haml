@@ -9,7 +9,6 @@
     - if @next
       = hidden_field_tag :next_id, @next.id
   .humpyard-tabview
-    = render :partial => "/humpyard/pages/#{@page.class.name.split('::').last.underscore.pluralize}/edit", :locals => {:page => @page, :form => form}
     .humpyard-tab
       .humpyard-tab-title
         Page Options
@@ -18,6 +17,8 @@
         = form.input :template_name, :as => :select, :select_options => Humpyard::config.templates.map{|name, data| [name.to_s.camelize, name.to_s]}
       - else
         = hidden_field_tag :template_name, Humpyard::config.default_template
+      = form.input :description
+    = render :partial => "/humpyard/pages/#{@page.class.name.split('::').last.underscore.pluralize}/edit", :locals => {:page => @page, :form => form}
     .humpyard-tab
       .humpyard-tab-title
         Generic Options
