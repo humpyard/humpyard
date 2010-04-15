@@ -63,7 +63,8 @@ module Humpyard
     def element_types #:nodoc:
       @element_types ||= {
         'text_element' => Humpyard::Elements::TextElement,
-        'box_element' => Humpyard::Elements::BoxElement
+        'box_element' => Humpyard::Elements::BoxElement,
+        'news_element' => Humpyard::Elements::NewsElement
       }
     end
     

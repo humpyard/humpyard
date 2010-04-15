@@ -1,0 +1,4 @@
+%ul
+  - element.content_data.news_page.news_items.limit(3).each do |news_item|
+    %li
+      = link_to "#{news_item.created_at.to_date}: #{news_item.title}", news_item.human_url

@@ -6,6 +6,7 @@ module Humpyard
       acts_as_humpyard_page :system_page => true
 
       has_many :news_items, :class_name => 'Humpyard::NewsItem', :foreign_key => :news_page_id, :order => "#{Humpyard::NewsItem.table_name}.created_at DESC"    
+      has_many :news_elements, :class_name => 'Humpyard::Elements::NewsElement', :foreign_key => :news_page_id
       
       def is_humpyard_dynamic_page?
         true

@@ -1,0 +1,5 @@
+.humpyard-tab
+  .humpyard-tab-title
+    News Options
+  = form.input :news_page_id, :as => :select, :select_options => Humpyard::Pages::NewsPage.all.map{|p| [p.title, p.id]}
+  
