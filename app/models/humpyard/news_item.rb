@@ -43,7 +43,7 @@ module Humpyard
         options[:locale] = Humpyard::config.locales.first
       end
       
-      news_page.page.human_url.gsub /\.html$/, "/#{created_at.strftime '%Y/%m/%d'}/#{title_for_url}.html"
+      news_page.page.human_url(options).gsub /\.html$/, "/#{created_at.strftime '%Y/%m/%d'}/#{title_for_url(options[:locale]) || title_for_url}.html"
     end
 
   end

@@ -215,9 +215,8 @@ module Humpyard
         base_url = "#{request.protocol}#{request.host}#{request.port==80 ? '' : ":#{request.port}"}"
 
         Humpyard.config.locales.each do |locale|
-          add_to_sitemap xml, base_url, locale, Page.roots
+          add_to_sitemap xml, base_url, locale, [Page.root_page.content_data.site_map(locale)]
         end
-        #add_page xml, url_for(:controller => 'customer/home'), last_mod, 0.8
       end
       render :xml => xml.target!
     end
@@ -225,16 +224,14 @@ module Humpyard
     private
     def add_to_sitemap xml, base_url, locale, pages, priority=0.8, changefreq='daily' 
       pages.each do |page|
-        lastmod = page.last_modified
         xml.tag! :url do
-          xml.tag! :loc, "#{base_url}#{page.human_url :locale=>locale}"
-          xml.tag! :lastmod, lastmod.to_time.strftime("%FT%T%z").gsub(/00$/,':00')
+          xml.tag! :loc, "#{base_url}#{page[:url]}"
+          xml.tag! :lastmod, page[:lastmod].to_time.strftime("%FT%T%z").gsub(/00$/,':00')
           xml.tag! :changefreq, changefreq
-          xml.tag! :priority, page.name == 'index' ? 1.0 : priority
-          #xml.tag! :wetwerwerw, 'does not validate'
+          xml.tag! :priority, page[:index] ? 1.0 : priority
         end
       
-        add_to_sitemap xml, base_url, locale, page.child_pages, priority/2
+        add_to_sitemap xml, base_url, locale, page[:children], priority/2
       end
     end
     

@@ -76,9 +76,7 @@ module Humpyard
     
     # Return the logical modification time for the page, suitable for http caching, generational cache keys, etc.
     def last_modified
-      rails_root_mtime = Time.zone.at(::File.new("#{Rails.root}").mtime)
-      timestamps = [rails_root_mtime, self.updated_at] + self.elements.collect{|element| element.last_modified}
-      timestamps.sort.last
+      content_data.last_modified
     end
   end
 end

@@ -17,8 +17,12 @@ module Humpyard
         end
       end
       
-      def child_urls
-        child_pages.map{|p| p.human_url}
+      def site_map(locale)
+        {
+          :url => page.human_url(:locale => locale),
+          :lastmod => page.last_modified,
+          :children => child_pages.map{ |p| p.content_data.site_map(locale) }
+        }
       end
     end
   end
