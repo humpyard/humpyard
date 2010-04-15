@@ -150,7 +150,8 @@ module Humpyard
           # Ignore multiple slashes in URLs
           unless(path_part.blank?)
             # Find page by name and parent; parent=nil means page on root level
-            @page = Page.where(:parent_id=>@page, :name=>CGI::escape(path_part)).first
+            @page = Page.where(:parent_id=>@parent_page, :name=>CGI::escape(path_part)).first
+            @parent_page = @page unless @page.name == 'index'
             # Raise 404 if no page was found for the URL or subpart
             raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?
           end
