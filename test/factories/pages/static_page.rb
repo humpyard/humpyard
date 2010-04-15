@@ -1,4 +1,3 @@
 Factory.define :static_page, :class => Humpyard::Pages::StaticPage do |p|
-  p.title 'Some Static Page'
-  p.sequence(:name) {|n| "static_page_#{n}"}
+  p.sequence(:title) {|n| "Some Static Page #{n}"}
 end

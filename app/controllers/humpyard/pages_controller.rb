@@ -27,7 +27,7 @@ module Humpyard
     # Create a new page
     def create
       @page = Humpyard::config.page_types[params[:type]].new params[:page]
-      @page.name = @page.page.suggested_name
+      @page.title_for_url = @page.page.suggested_title_for_url
       
       if @page.save
         @prev = Humpyard::Page.where('id = ?', params[:prev_id]).first
@@ -68,7 +68,7 @@ module Humpyard
       @page = Humpyard::Page.find(params[:id]).content_data
       if @page
         if @page.update_attributes params[:page]
-          @page.name = @page.page.suggested_name
+          @page.title_for_url = @page.page.suggested_title_for_url
           @page.save
           render :json => {
             :status => :ok,
@@ -136,8 +136,6 @@ module Humpyard
     #
     # When no "name" nor "id" parameter is given it will render the root page.
     def show
-      p "Show page called with path '#{params[:webpath]}'"
-      
       # No page found at the beginning
       @page = nil
 
@@ -156,11 +154,11 @@ module Humpyard
               dyn_page_path << path_part
             else     
               # Find page by name and parent; parent=nil means page on root level
-              @page = Page.where(:parent_id=>parent_page, :name=>CGI::escape(path_part)).first
+              @page = Page.by_title_for_url(I18n.locale, CGI::escape(path_part)).where(:parent_id=>parent_page).first
               # Raise 404 if no page was found for the URL or subpart
               raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?
               
-              parent_page = @page unless @page.name == 'index'
+              parent_page = @page unless @page == Humpyard::Page.root_page
               dyn_page_path = [] if @page.content_data.is_humpyard_dynamic_page? 
             end
           end

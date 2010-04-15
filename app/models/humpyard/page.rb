@@ -8,7 +8,9 @@ module Humpyard
     require 'acts_as_tree'
     require 'globalize'
     
-    translates :title, :description
+    before_validation :assign_title_for_url 
+    
+    translates :title, :title_for_url, :description
     
     acts_as_tree :order => :position
     
@@ -16,13 +18,19 @@ module Humpyard
     has_many :elements, :class_name => 'Humpyard::Element', :dependent => :destroy  
     
     validates_with Humpyard::PublishRangeValidator, {:attributes => [:display_from, :display_until]}
-    validates_presence_of :title, :name
-    validates_uniqueness_of :name
-        
+    validates_presence_of :title, :title_for_url
+    #validates_uniqueness_of :title_for_url
+    
+    scope :by_title_for_url, lambda { |locale,name| {
+      :include => :translations,
+      :conditions => ["#{quoted_translation_table_name}.locale = ? AND #{quoted_translation_table_name}.title_for_url = ?", locale.to_s, name.to_s]
+    }}
+    
     def self.root_page
-      Humpyard::Page.where('name = ?', 'index').first
+      Humpyard::Page.includes(:translations).where("#{quoted_translation_table_name}.title_for_url = ?", 'index').first
     end    
         
+      
     def root_elements(yield_name = 'main')
       elements.where('container_id IS NULL and page_yield_name = ?', yield_name.to_s).order('position ASC')
     end 
@@ -44,29 +52,31 @@ module Humpyard
         options[:locale] = Humpyard::config.locales.first
       end
       
-      if self.name == 'index'
+      if self.title_for_url == 'index' or self == Humpyard::Page.root_page 
         "/#{Humpyard::config.parsed_www_prefix(options).gsub(/[^\/]*$/, '')}"
       else
-        "/#{Humpyard::config.parsed_www_prefix(options)}#{(self.ancestors.reverse + [self]).collect{|p| p.name} * '/'}.html".gsub(/^index\//,'')
+        "/#{Humpyard::config.parsed_www_prefix(options)}#{(self.ancestors.reverse + [self]).collect{|p| p.title_for_url} * '/'}.html".gsub(/^index\//,'')
       end
     end
     
-    def suggested_name
-      if self.name == 'index' or Humpyard::Page.count == 0
+    def suggested_title_for_url
+      if self == Humpyard::Page.root_page or Humpyard::Page.count == 0
         return 'index'
       else
-        name = self.title.parameterize('_').to_s
+        return nil if title.blank?
+        
+        title_for_url = self.title.parameterize('_').to_s
         
         # Check if parameterized totally failed
-        if name == ''
-          name = CGI::escape(self.title.gsub(/[a-z0-9\-_\x00-\x7F]+/, '_'))
+        if title_for_url == ''
+          title_for_url = CGI::escape(self.title.gsub(/[a-z0-9\-_\x00-\x7F]+/, '_'))
         end 
 
-        while p = Humpyard::Page.where('name = ?', name).first and p.id != self.id do
-          name += '_'
+        while p = Humpyard::Page.by_title_for_url(I18n.locale, title_for_url).first and p.id != self.id do
+          title_for_url += '_'
         end
-        return name
       end  
+      return title_for_url
     end
     
     # Find the child pages
@@ -78,5 +88,10 @@ module Humpyard
     def last_modified
       content_data.last_modified
     end
+    
+    private
+    def assign_title_for_url
+      self.title_for_url = suggested_title_for_url
+    end  
   end
 end

@@ -12,7 +12,7 @@ class Base < ActiveRecord::Migration
       t.timestamps
       t.datetime :deleted_at
     end
-    Humpyard::Page.create_translation_table! :title => :string, :description => :text
+    Humpyard::Page.create_translation_table! :title => :string, :title_for_url => :string, :description => :text
     
     create_table :elements do |t|
       t.references :page

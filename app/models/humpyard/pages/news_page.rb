@@ -20,7 +20,7 @@ module Humpyard
           return nil
         end
         
-        item = news_items.by_title_for_url(path[3]).first
+        item = news_items.by_title_for_url(I18n.locale, path[3]).first
         return nil if item.nil?
         
         return nil if item.created_at.to_date != item_created_on

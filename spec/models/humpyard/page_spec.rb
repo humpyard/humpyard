@@ -11,103 +11,103 @@ describe Humpyard::Page do
   
   it "gets human_url on a simple page name" do
     Humpyard::config.www_prefix = nil
-    p = Factory.build(:page, :name => 'about')
+    p = Factory.build(:page, :title_for_url => 'about')
     p.human_url.should eql '/en/about.html'
   end
   
   it "gets human_url on a sub page name" do
     Humpyard::config.www_prefix = nil
-    p1 = Factory.build(:page, :name => 'about')
-    p2 = Factory.build(:page, :name => 'imprint', :parent => p1)
+    p1 = Factory.build(:page, :title_for_url => 'about')
+    p2 = Factory.build(:page, :title_for_url => 'imprint', :parent => p1)
     p2.human_url.should eql '/en/about/imprint.html'
   end
   
   it "gets human_url on the root page" do
     Humpyard::config.www_prefix = nil
-    p = Factory.build(:page, :name => 'index')
+    p = Factory.build(:page, :title_for_url => 'index')
     p.human_url.should eql '/en/'
   end
   
   it "gets human_url on a simple page name without www prefix" do
     Humpyard::config.www_prefix = ''
-    p = Factory.build(:page, :name => 'about')
+    p = Factory.build(:page, :title_for_url => 'about')
     p.human_url.should eql '/about.html'
   end
   
   it "gets human_url on a sub page name without www prefix" do
     Humpyard::config.www_prefix = ''
-    p1 = Factory.build(:page, :name => 'about')
-    p2 = Factory.build(:page, :name => 'imprint', :parent => p1)
+    p1 = Factory.build(:page, :title_for_url => 'about')
+    p2 = Factory.build(:page, :title_for_url => 'imprint', :parent => p1)
     p2.human_url.should eql '/about/imprint.html'
   end
   
   it "gets human_url on the root page without www prefix" do
     Humpyard::config.www_prefix = ''
-    p = Factory.build(:page, :name => 'index')
+    p = Factory.build(:page, :title_for_url => 'index')
     p.human_url.should eql '/'
   end  
   
   it "gets human_url on a simple page name with custom www prefix" do
     Humpyard::config.www_prefix = 'cms/'
-    p = Factory.build(:page, :name => 'about')
+    p = Factory.build(:page, :title_for_url => 'about')
     p.human_url.should eql '/cms/about.html'
   end
   
   it "gets human_url on a sub page name with custom www prefix" do
     Humpyard::config.www_prefix = 'cms/'
-    p1 = Factory.build(:page, :name => 'about')
-    p2 = Factory.build(:page, :name => 'imprint', :parent => p1)
+    p1 = Factory.build(:page, :title_for_url => 'about')
+    p2 = Factory.build(:page, :title_for_url => 'imprint', :parent => p1)
     p2.human_url.should eql '/cms/about/imprint.html'
   end
   
   it "gets human_url on the root page with custom www prefix" do
     Humpyard::config.www_prefix = 'cms/'
-    p = Factory.build(:page, :name => 'index')
+    p = Factory.build(:page, :title_for_url => 'index')
     p.human_url.should eql '/cms/'
   end  
   
   it "gets human_url on a simple page name with inline www prefix" do
     Humpyard::config.www_prefix = 'cms_'
-    p = Factory.build(:page, :name => 'about')
+    p = Factory.build(:page, :title_for_url => 'about')
     p.human_url.should eql '/cms_about.html'
   end
   
   it "gets human_url on a sub page name with inline www prefix" do
     Humpyard::config.www_prefix = 'cms_'
-    p1 = Factory.build(:page, :name => 'about')
-    p2 = Factory.build(:page, :name => 'imprint', :parent => p1)
+    p1 = Factory.build(:page, :title_for_url => 'about')
+    p2 = Factory.build(:page, :title_for_url => 'imprint', :parent => p1)
     p2.human_url.should eql '/cms_about/imprint.html'
   end
   
   it "gets human_url on the root page with inline www prefix" do
     Humpyard::config.www_prefix = 'cms_'
-    p = Factory.build(:page, :name => 'index')
+    p = Factory.build(:page, :title_for_url => 'index')
     p.human_url.should eql '/'
   end  
   
   it "gets human_url on a simple page name with complex www prefix" do
     Humpyard::config.www_prefix = 'locale/:locale/cms_'
-    p = Factory.build(:page, :name => 'about')
+    p = Factory.build(:page, :title_for_url => 'about')
     p.human_url.should eql '/locale/en/cms_about.html'
   end
   
   it "gets human_url on a sub page name with complex www prefix" do
     Humpyard::config.www_prefix = 'locale/:locale/cms_'
-    p1 = Factory.build(:page, :name => 'about')
-    p2 = Factory.build(:page, :name => 'imprint', :parent => p1)
+    p1 = Factory.build(:page, :title_for_url => 'about')
+    p2 = Factory.build(:page, :title_for_url => 'imprint', :parent => p1)
     p2.human_url.should eql '/locale/en/cms_about/imprint.html'
   end
   
   it "gets human_url on the root page with complex www prefix" do
     Humpyard::config.www_prefix = 'locale/:locale/cms_'
-    p = Factory.build(:page, :name => 'index')
+    p = Factory.build(:page, :title_for_url => 'index')
     p.human_url.should eql '/locale/en/'
   end
   
   it "gets human_url on a page with allowed custom locale" do
     Humpyard::config.www_prefix = nil
     Humpyard::config.locales = 'en'
-    p = Factory.build(:page, :name => 'about')
+    p = Factory.build(:page, :title_for_url => 'about')
     p.human_url.should eql '/en/about.html'
   end
   
@@ -115,7 +115,7 @@ describe Humpyard::Page do
     Humpyard::config.www_prefix = nil
     Humpyard::config.locales = 'en'
     I18n.locale = :de
-    p = Factory.build(:page, :name => 'about')
+    p = Factory.build(:page, :title_for_url => 'about')
     p.human_url.should eql '/en/about.html'
   end
   
@@ -123,7 +123,7 @@ describe Humpyard::Page do
     Humpyard::config.www_prefix = nil
     Humpyard::config.locales = 'en,fr,de'
     I18n.locale = :de
-    p = Factory.build(:page, :name => 'about')
+    p = Factory.build(:page, :title_for_url => 'about')
     p.human_url.should eql '/de/about.html'
   end
   
@@ -131,7 +131,7 @@ describe Humpyard::Page do
     Humpyard::config.www_prefix = nil
     Humpyard::config.locales = 'en,fr,de'
     I18n.locale = :en
-    p = Factory.build(:page, :name => 'about')
+    p = Factory.build(:page, :title_for_url => 'about')
     p.human_url(:locale => :de).should eql '/de/about.html'
   end
   
@@ -139,7 +139,7 @@ describe Humpyard::Page do
     Humpyard::config.www_prefix = nil
     Humpyard::config.locales = 'de,en,fr'
     I18n.locale = :cn
-    p = Factory.build(:page, :name => 'about')
+    p = Factory.build(:page, :title_for_url => 'about')
     p.human_url.should eql '/de/about.html'
   end
   
@@ -147,7 +147,7 @@ describe Humpyard::Page do
     Humpyard::config.www_prefix = nil
     Humpyard::config.locales = 'en,fr,de'
     I18n.locale = :fr
-    p = Factory.build(:page, :name => 'about')
+    p = Factory.build(:page, :title_for_url => 'about')
     p.human_url(:locale => :cn).should eql '/en/about.html'
   end
   
@@ -209,35 +209,28 @@ describe Humpyard::Page do
     p.valid?.should eql true
   end
   
-  it "gives itself index as name if first page" do
-    Humpyard::Page.destroy_all
-    p = Factory.build :page, :title=>'My great page'
-    p.name = p.suggested_name
-    p.save
-    p.name.should eql 'index'
-  end
-  
   it "gives itself sane names if uniqueness not met" do
-    p = Factory.build :page, :title=>'My great page'
-    p.name = p.suggested_name
-    p.save
-    p.name.should eql 'my_great_page'
+    Humpyard::Page.destroy_all
     p = Factory :page, :title=>'My great page'
-    p.suggested_name.should eql 'my_great_page_'
+    p.title_for_url.should eql 'index'
+    p = Factory :page, :title=>'My great page'
+    p.title_for_url.should eql 'my_great_page'
+    p = Factory :page, :title=>'My great page'
+    p.title_for_url.should eql 'my_great_page_'
   end
   
   it "gives itself names with some special chars" do
     p = Factory.build :page
     p.title = 'Das  Überwebseite'
-    p.suggested_name.should eql 'das_uberwebseite'
+    p.suggested_title_for_url.should eql 'das_uberwebseite'
     p.title = 'Eine kleine Seite über mich'
-    p.suggested_name.should eql 'eine_kleine_seite_uber_mich'
+    p.suggested_title_for_url.should eql 'eine_kleine_seite_uber_mich'
     p.title = 'Smá síðu um mig'
-    p.suggested_name.should eql 'sma_sidu_um_mig'
+    p.suggested_title_for_url.should eql 'sma_sidu_um_mig'
     p.title = 'Hakkımda Biraz sayfa'
-    p.suggested_name.should eql 'hakkimda_biraz_sayfa'
+    p.suggested_title_for_url.should eql 'hakkimda_biraz_sayfa'
     # not really nice, but better than nothing
     p.title = 'Немного обо мне страницы'
-    p.suggested_name.should eql '%D0%9D%D0%B5%D0%BC%D0%BD%D0%BE%D0%B3%D0%BE_%D0%BE%D0%B1%D0%BE_%D0%BC%D0%BD%D0%B5_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D1%8B'
+    p.suggested_title_for_url.should eql '%D0%9D%D0%B5%D0%BC%D0%BD%D0%BE%D0%B3%D0%BE_%D0%BE%D0%B1%D0%BE_%D0%BC%D0%BD%D0%B5_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D1%8B'
   end
 end
