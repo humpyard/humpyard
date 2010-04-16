@@ -29,6 +29,10 @@ module Humpyard
     def self.root_page
       Humpyard::Page.includes(:translations).where("#{quoted_translation_table_name}.title_for_url = ?", 'index').first
     end    
+    
+    def is_root_page?
+      self.id and Humpyard::Page.root_page and self.id == Humpyard::Page.root_page.id
+    end
         
       
     def root_elements(yield_name = 'main')
@@ -52,15 +56,15 @@ module Humpyard
         options[:locale] = Humpyard::config.locales.first
       end
       
-      if self.title_for_url == 'index' or self == Humpyard::Page.root_page 
+      if self.title_for_url == 'index' or self.is_root_page?
         "/#{Humpyard::config.parsed_www_prefix(options).gsub(/[^\/]*$/, '')}"
       else
-        "/#{Humpyard::config.parsed_www_prefix(options)}#{(self.ancestors.reverse + [self]).collect{|p| p.title_for_url(options[:locale].to_sym)} * '/'}.html".gsub(/^index\//,'')
+        "/#{Humpyard::config.parsed_www_prefix(options)}#{(self.ancestors.reverse + [self]).collect{|p| t = p.translations.select{|t| t.locale == options[:locale]}.first ? t.title_for_url : p.title_for_url} * '/'}.html".gsub(/^index\//,'')
       end
     end
     
     def suggested_title_for_url
-      if self == Humpyard::Page.root_page or Humpyard::Page.count == 0
+      if self.is_root_page? or Humpyard::Page.count == 0
         return 'index'
       else
         return nil if title.blank?

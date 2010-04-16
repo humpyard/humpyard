@@ -158,7 +158,7 @@ module Humpyard
               # Raise 404 if no page was found for the URL or subpart
               raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?
               
-              parent_page = @page unless @page == Humpyard::Page.root_page
+              parent_page = @page unless @page.is_root_page?
               dyn_page_path = [] if @page.content_data.is_humpyard_dynamic_page? 
             end
           end

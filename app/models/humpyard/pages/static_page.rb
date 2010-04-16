@@ -10,7 +10,7 @@ module Humpyard
       end
       
       def child_pages
-        if self == Humpyard::Page.root_page
+        if self.page.is_root_page?
           self.page.children + self.page.siblings 
         else
           self.page.children
