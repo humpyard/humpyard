@@ -55,7 +55,7 @@ module Humpyard
       if self.title_for_url == 'index' or self == Humpyard::Page.root_page 
         "/#{Humpyard::config.parsed_www_prefix(options).gsub(/[^\/]*$/, '')}"
       else
-        "/#{Humpyard::config.parsed_www_prefix(options)}#{(self.ancestors.reverse + [self]).collect{|p| p.title_for_url} * '/'}.html".gsub(/^index\//,'')
+        "/#{Humpyard::config.parsed_www_prefix(options)}#{(self.ancestors.reverse + [self]).collect{|p| p.title_for_url(options[:locale].to_sym)} * '/'}.html".gsub(/^index\//,'')
       end
     end
     
