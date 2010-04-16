@@ -8,7 +8,7 @@ module Humpyard
     require 'acts_as_tree'
     require 'globalize'
     
-    before_validation :assign_title_for_url 
+    before_save :assign_title_for_url 
     
     translates :title, :title_for_url, :description
     
@@ -18,7 +18,7 @@ module Humpyard
     has_many :elements, :class_name => 'Humpyard::Element', :dependent => :destroy  
     
     validates_with Humpyard::PublishRangeValidator, {:attributes => [:display_from, :display_until]}
-    validates_presence_of :title, :title_for_url
+    validates_presence_of :title#, :title_for_url
     #validates_uniqueness_of :title_for_url
     
     scope :by_title_for_url, lambda { |locale,name| {
@@ -59,8 +59,17 @@ module Humpyard
       if self.title_for_url == 'index' or self.is_root_page?
         "/#{Humpyard::config.parsed_www_prefix(options).gsub(/[^\/]*$/, '')}"
       else
-        "/#{Humpyard::config.parsed_www_prefix(options)}#{(self.ancestors.reverse + [self]).collect{|p| t = p.translations.select{|t| t.locale == options[:locale]}.first ? t.title_for_url : p.title_for_url} * '/'}.html".gsub(/^index\//,'')
+        "/#{Humpyard::config.parsed_www_prefix(options)}#{((self.ancestors.reverse + [self]).collect{|p| p.query_title_for_url(options[:locale])} - ['index']) * '/'}.html".gsub(/^index\//,'')
       end
+    end
+    
+    def query_title_for_url(locale=I18n.locale)
+      given = translations.all
+      ([locale.to_sym] + (Humpyard::config.locales.map{|l| l.to_sym} - [locale.to_sym])).each do |l|
+        t=given.select{|tx| tx.locale.to_sym == l}.first
+        return t.title_for_url if t and not t.title_for_url.blank?
+      end    
+      nil 
     end
     
     def suggested_title_for_url
