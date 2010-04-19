@@ -36,6 +36,11 @@ module Humpyard
       content_data.parse_path(path)
     end
     
+    def template_name
+      @template_name ||= Humpyard::config.default_template_name
+    end
+    
+    
     # Return the human readable URL for the page.
     #
     # Posible options values are
