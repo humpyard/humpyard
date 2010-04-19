@@ -173,6 +173,16 @@ module Humpyard
 
           @page_partial = "/humpyard/pages/#{@page.content_data_type.split('::').last.underscore.pluralize}/#{@sub_page[:partial]}" if @sub_page[:partial]
           @local_vars = {:page => @page}.merge(@sub_page[:locals]) if @sub_page[:locals] and @sub_page[:locals].class == Hash
+          
+          # render partial only if request was an AJAX-call
+          if request.xhr?
+            respond_to do |format|
+              format.html {
+                render :partial => @page_partial, :locals => @local_vars
+              }
+            end
+            return
+          end
         end
         
       # Find page by id
