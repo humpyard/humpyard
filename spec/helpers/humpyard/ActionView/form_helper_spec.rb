@@ -9,7 +9,8 @@ describe Humpyard::ActionView::FormHelper do
   # DAMN! how to get a view context into the spec context?
   # then we would not have to stub all those methods below
   # and would be able to actually render something
-  # and check if its right.
+  # and check if its right. also, we would not have to
+  # include the clutter above.
   
   describe '#humpyard__form_for' do
 
