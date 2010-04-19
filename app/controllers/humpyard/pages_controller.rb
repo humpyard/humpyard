@@ -154,9 +154,10 @@ module Humpyard
               dyn_page_path << path_part
             else     
               # Find page by name and parent; parent=nil means page on root level
-              @page = Page.by_title_for_url(I18n.locale, CGI::escape(path_part)).where(:parent_id=>parent_page).first
+              @page = Page.find_by_title_for_url CGI::escape(path_part), :locale => I18n.locale
               # Raise 404 if no page was found for the URL or subpart
-              raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?
+              raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (X4201)" if @page.nil?
+              raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (X4202)" if @page.parent != parent_page
               
               parent_page = @page unless @page.is_root_page?
               dyn_page_path = [] if @page.content_data.is_humpyard_dynamic_page? 
@@ -168,7 +169,7 @@ module Humpyard
           @sub_page = @page.parse_path(dyn_page_path)
           
           # Raise 404 if no page was found for the sub_page part
-          raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @sub_page.blank?
+          raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (D4201)" if @sub_page.blank?
 
           @page_partial = "/humpyard/pages/#{@page.content_data_type.split('::').last.underscore.pluralize}/#{@sub_page[:partial]}" if @sub_page[:partial]
           @local_vars = {:page => @page}.merge(@sub_page[:locals]) if @sub_page[:locals] and @sub_page[:locals].class == Hash
@@ -212,8 +213,10 @@ module Humpyard
 
         base_url = "#{request.protocol}#{request.host}#{request.port==80 ? '' : ":#{request.port}"}"
 
-        Humpyard.config.locales.each do |locale|
-          add_to_sitemap xml, base_url, locale, [Page.root_page.content_data.site_map(locale)]
+        if Page.root_page
+          Humpyard.config.locales.each do |locale|
+            add_to_sitemap xml, base_url, locale, [Page.root_page.content_data.site_map(locale)]
+          end
         end
       end
       render :xml => xml.target!
@@ -224,7 +227,7 @@ module Humpyard
       pages.each do |page|
         xml.tag! :url do
           xml.tag! :loc, "#{base_url}#{page[:url]}"
-          xml.tag! :lastmod, page[:lastmod].to_time.strftime("%FT%T%z").gsub(/00$/,':00')
+          xml.tag! :lastmod, page[:lastmod].nil? ? nil : page[:lastmod].to_time.strftime("%FT%T%z").gsub(/00$/,':00')
           xml.tag! :changefreq, changefreq
           xml.tag! :priority, page[:index] ? 1.0 : priority
         end
