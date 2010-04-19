@@ -15,7 +15,6 @@ Rails.application.routes.draw do |map|
         post :move
       end
     end
-    resources :humpyard_news_feeds, :controller => 'humpyard/news_feeds', :path => :news_feeds, :only => [:index, :new, :create, :edit, :update, :show, :destroy] 
   end
   
   # Map "/" URL
@@ -24,7 +23,7 @@ Rails.application.routes.draw do |map|
   match "/sitemap.xml" => 'humpyard/pages#sitemap', :as => 'sitemap'
   # Map human readable page URLs
   if Humpyard::config.www_prefix.match /:locale/
-    match "/#{Humpyard::config.www_prefix}" => 'humpyard/pages#show', :name => 'index', :constraints => { :locale => Humpyard.config.locales_contraint}    
+    match "/#{Humpyard::config.www_prefix}" => 'humpyard/pages#show', :name => 'index', :constraints => { :locale => Humpyard.config.locales_contraint}
     match "/#{Humpyard::config.www_prefix}*webpath.html" => 'humpyard/pages#show', :constraints => { :locale => Humpyard.config.locales_contraint}
   else
     match "/#{Humpyard::config.www_prefix}*webpath.html" => 'humpyard/pages#show'    

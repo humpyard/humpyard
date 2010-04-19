@@ -79,3 +79,5 @@ namespace :humpyard do
     end
   end
 end
+
+task :'db:migrate' => :'humpyard:db:migrate'

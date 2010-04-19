@@ -63,14 +63,15 @@ module Humpyard
     def element_types #:nodoc:
       @element_types ||= {
         'text_element' => Humpyard::Elements::TextElement,
-        'box_element' => Humpyard::Elements::BoxElement
+        'box_element' => Humpyard::Elements::BoxElement,
+        'news_element' => Humpyard::Elements::NewsElement
       }
     end
     
     def page_types #:nodoc:
       @page_types ||= {
-        'static' => Humpyard::Pages::StaticPage#,
-        #'news' => Humpyard::Pages::NewsPage
+        'static' => Humpyard::Pages::StaticPage,
+        'news' => Humpyard::Pages::NewsPage
       }
     end
     

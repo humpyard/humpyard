@@ -10,22 +10,21 @@ Given /^the standard pages$/ do
   Humpyard::Page.locale = :en
   Humpyard::Elements::TextElement.locale = :en
   
-  #Humpyard::Page.destroy_all
+  Humpyard::Page.destroy_all
   
-  
-  page = Factory.build :static_page, :name => 'index', :title => 'My Homepage', :position => 1
+  page = Factory.build :static_page, :title => 'My Homepage', :position => 1
   page.page.id = 42
   page.save
-  page = Factory.build :static_page, :name => 'about', :title => 'About', :position => 4
+  page = Factory.build :static_page, :title => 'About', :position => 4
   page.page.id = 45
   page.save
-  page = Factory.build :static_page, :name => 'contact', :title => 'Contact', :parent_id => 45
+  page = Factory.build :static_page, :title => 'Contact', :parent_id => 45
   page.page.id = 60
   page.save
-  page = Factory.build :static_page, :name => 'imprint', :title => 'Imprint', :position => 2
+  page = Factory.build :static_page, :title => 'Imprint', :position => 2
   page.page.id = 89
   page.save
-  page = Factory.build :static_page, :name => 'alternative-layout-test', :title => 'Special page', :position => 5, :template_name => "alternative"
+  page = Factory.build :static_page, :title => 'Special page', :position => 5, :template_name => "alternative"
   page.page.id = 11
   page.save
     

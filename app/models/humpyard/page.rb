@@ -8,7 +8,8 @@ module Humpyard
     require 'acts_as_tree'
     require 'globalize'
     
-    translates :title, :description
+    translates :title, :title_for_url, :description
+    has_title_for_url
     
     acts_as_tree :order => :position
     
@@ -16,16 +17,24 @@ module Humpyard
     has_many :elements, :class_name => 'Humpyard::Element', :dependent => :destroy  
     
     validates_with Humpyard::PublishRangeValidator, {:attributes => [:display_from, :display_until]}
-    validates_presence_of :title, :name
-    validates_uniqueness_of :name
-        
+    validates_presence_of :title
+    
     def self.root_page
-      Humpyard::Page.where('name = ?', 'index').first
+      Humpyard::Page.find_by_title_for_url :index
     end    
+    
+    def is_root_page?
+      self.id and Humpyard::Page.root_page and self.id == Humpyard::Page.root_page.id
+    end
         
+      
     def root_elements(yield_name = 'main')
       elements.where('container_id IS NULL and page_yield_name = ?', yield_name.to_s).order('position ASC')
     end 
+    
+    def parse_path(path)
+      content_data.parse_path(path)
+    end
     
     # Return the human readable URL for the page.
     #
@@ -40,39 +49,19 @@ module Humpyard
         options[:locale] = Humpyard::config.locales.first
       end
       
-      if self.name == 'index'
+      if self.title_for_url == 'index' or self.is_root_page?
         "/#{Humpyard::config.parsed_www_prefix(options).gsub(/[^\/]*$/, '')}"
       else
-        "/#{Humpyard::config.parsed_www_prefix(options)}#{(self.ancestors.reverse + [self]).collect{|p| p.name} * '/'}.html"
+        "/#{Humpyard::config.parsed_www_prefix(options)}#{((self.ancestors.reverse + [self]).collect{|p| p.query_title_for_url(options[:locale])} - ['index']) * '/'}.html".gsub(/^index\//,'')
       end
     end
     
-    def suggested_name
-      if self.name == 'index' or Humpyard::Page.count == 0
-        return 'index'
-      else
-        #name = Iconv.iconv('ascii//translit//IGNORE', 'utf-8', self.title).to_s
-        #name.gsub!(/[^\x00-\x7F]+/, '') # Remove anything non-ASCII entirely (e.g. diacritics).
-        #name.gsub!(/[^\w_ \_]+/i,   '') # Remove unwanted chars.
-        #name.gsub!(/[ \_]+/i,      '_') # No more than one of the separator in a row.
-        #name.gsub!(/^\_|\_$/i,      '') # Remove leading/trailing separator.
-        #name.downcase!
-        
-        # Use Rails function instead of the above
-        # Both does not work for non latin character sets
-        name = self.title.parameterize('_').to_s
-        
-        # Check if parameterized totally failed
-        if name == ''
-          name = CGI::escape(self.title.gsub(/[a-z0-9\-_\x00-\x7F]+/, '_'))
-        end 
-
-        while p = Humpyard::Page.where('name = ?', name).first and p.id != self.id do
-          name += '_'
-        end
-        return name
-      end  
+    
+    def suggested_title_for_url_with_index
+      return 'index' if self.is_root_page? or Humpyard::Page.count == 0   
+      suggested_title_for_url_without_index
     end
+    alias_method_chain :suggested_title_for_url, :index
     
     # Find the child pages
     def child_pages
@@ -81,9 +70,8 @@ module Humpyard
     
     # Return the logical modification time for the page, suitable for http caching, generational cache keys, etc.
     def last_modified
-      rails_root_mtime = Time.zone.at(::File.new("#{Rails.root}").mtime)
-      timestamps = [rails_root_mtime, self.updated_at] + self.elements.collect{|element| element.last_modified}
-      timestamps.sort.last
+      content_data.nil? ? nil : content_data.last_modified
     end
+    
   end
 end

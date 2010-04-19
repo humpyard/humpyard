@@ -1,5 +1,5 @@
 .treeview
-  - root_page = Humpyard::Page.where('name = ?', 'index').first
+  - root_page = Humpyard::Page.root_page
   - if root_page
     .treeitem{'data-page-id'=>root_page.id}
       = link_to root_page.title, edit_humpyard_page_path(root_page), :'data-dialog-link' => true, :class => (page and page == root_page ? 'active' : ''), :id => "hy-page-dialog-item-#{root_page.id}"

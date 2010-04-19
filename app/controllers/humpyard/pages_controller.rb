@@ -27,7 +27,7 @@ module Humpyard
     # Create a new page
     def create
       @page = Humpyard::config.page_types[params[:type]].new params[:page]
-      @page.name = @page.page.suggested_name
+      @page.title_for_url = @page.page.suggested_title_for_url
       
       if @page.save
         @prev = Humpyard::Page.where('id = ?', params[:prev_id]).first
@@ -68,7 +68,7 @@ module Humpyard
       @page = Humpyard::Page.find(params[:id]).content_data
       if @page
         if @page.update_attributes params[:page]
-          @page.name = @page.page.suggested_name
+          @page.title_for_url = @page.page.suggested_title_for_url
           @page.save
           render :json => {
             :status => :ok,
@@ -138,7 +138,6 @@ module Humpyard
     def show
       # No page found at the beginning
       @page = nil
-      @yields = [:main]
 
       if params[:locale] and Humpyard.config.locales.include? params[:locale].to_sym
         I18n.locale = params[:locale]
@@ -146,15 +145,46 @@ module Humpyard
       
       # Find page by name
       if not params[:webpath].blank?
+        dyn_page_path = false
+        parent_page = nil
         params[:webpath].split('/').each do |path_part|
           # Ignore multiple slashes in URLs
           unless(path_part.blank?)
-            # Find page by name and parent; parent=nil means page on root level
-            @page = Page.where(:parent_id=>@page, :name=>CGI::escape(path_part)).first
-            # Raise 404 if no page was found for the URL or subpart
-            raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?
+            if(dyn_page_path) 
+              dyn_page_path << path_part
+            else     
+              # Find page by name and parent; parent=nil means page on root level
+              @page = Page.find_by_title_for_url CGI::escape(path_part), :locale => I18n.locale
+              # Raise 404 if no page was found for the URL or subpart
+              raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (X4201)" if @page.nil?
+              raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (X4202)" if @page.parent != parent_page
+              
+              parent_page = @page unless @page.is_root_page?
+              dyn_page_path = [] if @page.content_data.is_humpyard_dynamic_page? 
+            end
           end
         end
+
+        if @page.content_data.is_humpyard_dynamic_page? and dyn_page_path.size > 0
+          @sub_page = @page.parse_path(dyn_page_path)
+          
+          # Raise 404 if no page was found for the sub_page part
+          raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (D4201)" if @sub_page.blank?
+
+          @page_partial = "/humpyard/pages/#{@page.content_data_type.split('::').last.underscore.pluralize}/#{@sub_page[:partial]}" if @sub_page[:partial]
+          @local_vars = {:page => @page}.merge(@sub_page[:locals]) if @sub_page[:locals] and @sub_page[:locals].class == Hash
+          
+          # render partial only if request was an AJAX-call
+          if request.xhr?
+            respond_to do |format|
+              format.html {
+                render :partial => @page_partial, :locals => @local_vars
+              }
+            end
+            return
+          end
+        end
+        
       # Find page by id
       elsif not params[:id].blank?
         # Render page by id if not webpath was given but an id
@@ -162,7 +192,7 @@ module Humpyard
       # Find root page
       else
         # Render index page if neither id or webpath was given
-        @page = Page.find_by_name('index')
+        @page = Page.root_page
         unless @page
           render '/humpyard/pages/welcome'
           return false
@@ -171,6 +201,10 @@ module Humpyard
       
       # Raise 404 if no page was found
       raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?
+      
+      @page_partial ||= "/humpyard/pages/#{@page.content_data_type.split('::').last.underscore.pluralize}/show"
+      @local_vars ||= {:page => @page}
+      
       response.headers['X-Humpyard-Page'] = "#{@page.id}"
       render :layout => @page.template_name
     end
@@ -189,10 +223,11 @@ module Humpyard
 
         base_url = "#{request.protocol}#{request.host}#{request.port==80 ? '' : ":#{request.port}"}"
 
-        Humpyard.config.locales.each do |locale|
-          add_to_sitemap xml, base_url, locale, Page.roots
+        if Page.root_page
+          Humpyard.config.locales.each do |locale|
+            add_to_sitemap xml, base_url, locale, [Page.root_page.content_data.site_map(locale)]
+          end
         end
-        #add_page xml, url_for(:controller => 'customer/home'), last_mod, 0.8
       end
       render :xml => xml.target!
     end
@@ -200,16 +235,14 @@ module Humpyard
     private
     def add_to_sitemap xml, base_url, locale, pages, priority=0.8, changefreq='daily' 
       pages.each do |page|
-        lastmod = page.last_modified
         xml.tag! :url do
-          xml.tag! :loc, "#{base_url}#{page.human_url :locale=>locale}"
-          xml.tag! :lastmod, lastmod.to_time.strftime("%FT%T%z").gsub(/00$/,':00')
+          xml.tag! :loc, "#{base_url}#{page[:url]}"
+          xml.tag! :lastmod, page[:lastmod].nil? ? nil : page[:lastmod].to_time.strftime("%FT%T%z").gsub(/00$/,':00')
           xml.tag! :changefreq, changefreq
-          xml.tag! :priority, page.name == 'index' ? 1.0 : priority
-          #xml.tag! :wetwerwerw, 'does not validate'
+          xml.tag! :priority, page[:index] ? 1.0 : priority
         end
       
-        add_to_sitemap xml, base_url, locale, page.child_pages, priority/2
+        add_to_sitemap xml, base_url, locale, page[:children], priority/2
       end
     end
     
