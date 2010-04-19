@@ -40,7 +40,7 @@ module Humpyard
   #    The default value is <tt>['en']</tt>
   class Config 
     attr_writer :table_name_prefix, :www_prefix, :admin_prefix, :element_types, :page_types, 
-        :templates, :default_template # :nodoc:
+        :templates, :default_template, :browser_title_prefix # :nodoc:
     
     def initialize(&block) #:nodoc:
       configure(&block) if block_given?
@@ -79,6 +79,10 @@ module Humpyard
       @templates ||= {
         'application' => {:yields => [:sidebar]}
       }
+    end
+    
+    def browser_title_prefix #:nodoc:
+      @browser_title_prefix ||= ''
     end
     
     def default_template_name
