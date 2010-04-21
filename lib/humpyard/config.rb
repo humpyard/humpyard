@@ -39,8 +39,8 @@ module Humpyard
   #
   #    The default value is <tt>['en']</tt>
   class Config 
-    attr_writer :table_name_prefix, :www_prefix, :admin_prefix, :element_types, :page_types, 
-        :templates, :default_template # :nodoc:
+    attr_writer :table_name_prefix, :www_prefix, :admin_prefix, :element_types, :page_types # :nodoc:
+    attr_writer :templates, :default_template, :browser_title_prefix, :browser_title_postfix # :nodoc:
     
     def initialize(&block) #:nodoc:
       configure(&block) if block_given?
@@ -81,10 +81,21 @@ module Humpyard
       }
     end
     
-    def default_template_name
+    def default_template #:nodoc:
       @default_template ||= templates.keys.first
-      @default_template.to_s
     end
+    
+    def default_template_name
+      default_template.to_s
+    end
+ 
+    def browser_title_prefix #:nodoc:
+      @browser_title_prefix ||= ''
+    end
+    
+    def browser_title_postfix #:nodoc:
+      @browser_title_postfix ||= ''
+    end 
     
     # Get the prefix of your pages with interpreted variables given as params.
     # You normally don't want to call it yourself. Instead use the

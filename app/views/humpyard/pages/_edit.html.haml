@@ -16,7 +16,7 @@
       - if Humpyard::config.templates.size > 1
         = form.input :template_name, :as => :select, :select_options => Humpyard::config.templates.map{|name, data| [name.to_s.camelize, name.to_s]}
       - else
-        = hidden_field_tag :template_name, Humpyard::config.default_template
+        = hidden_field :page, :template_name
       = form.input :description
     = render :partial => "/humpyard/pages/#{@page.class.name.split('::').last.underscore.pluralize}/edit", :locals => {:page => @page, :form => form}
     .humpyard-tab
