@@ -37,7 +37,7 @@ module Humpyard
     end
     
     def template_name
-      @template_name ||= Humpyard::config.default_template_name
+      self[:template_name] || Humpyard::config.default_template_name
     end
     
     

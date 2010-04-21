@@ -201,6 +201,17 @@ describe Humpyard::Page do
     end
   end
   
+  describe "template_name" do
+    it "should respond with the template name if it is set" do
+      p = Factory(:static_page, :template_name => "test_template")
+      p.template_name.should eql "test_template"
+    end
+    it "should respond with the configured humpyard default template name if its not set" do
+      p = Factory(:static_page, :template_name => nil)
+      p.template_name.should eql "application"
+    end
+  end
+    
 
   
 end
