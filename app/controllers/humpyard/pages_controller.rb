@@ -194,6 +194,7 @@ module Humpyard
         # Render index page if neither id or webpath was given
         @page = Page.root_page
         unless @page
+          @page = Page.new
           render '/humpyard/pages/welcome'
           return false
         end
