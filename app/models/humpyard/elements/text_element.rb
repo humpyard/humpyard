@@ -5,6 +5,8 @@ module Humpyard
     class TextElement < ::ActiveRecord::Base
       acts_as_humpyard_element :system_element => true
       
+      attr_accessible :content
+      
       require 'globalize'
       
       translates :content

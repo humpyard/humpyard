@@ -2,8 +2,8 @@ module Humpyard
   ####
   # Humpyard::Element is a model of an element to display on a Humpyard::Page.
   class Element < ::ActiveRecord::Base
-    #attr_accessor :page, :page_id, :content_data, :content_data_type
-    
+    attr_accessible :page, :page_id, :content_data, :content_data_id, :content_data_type, :page_yield_name, :container, :container_id, :display_until, :display_from
+
     set_table_name "#{Humpyard::config.table_name_prefix}elements"
 
     belongs_to :page, :class_name => 'Humpyard::Page'

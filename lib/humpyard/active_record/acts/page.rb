@@ -25,6 +25,10 @@ module Humpyard
             end
           end
           
+          Humpyard::Page.attr_accessible.each do |attr|
+            base.attr_accessible attr
+          end
+          
           base.extend ClassMethods
         end
         
