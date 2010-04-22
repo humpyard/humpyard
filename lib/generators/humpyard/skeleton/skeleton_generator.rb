@@ -73,7 +73,7 @@ module Humpyard
           copy_file 'initializers/compass.rb', "config/initializers/compass.rb" unless options[:skip_compass_init]
           copy_file 'compass.config', "config/compass.config" 
           template_path = "#{::File.dirname(__FILE__)}/templates/"
-          Dir.glob("#{template_path}stylesheets/**/*.sass").each do |file|
+          Dir.glob("#{template_path}stylesheets/**/*.scss").each do |file|
             copy_file file.gsub(template_path, ''), "app/#{file.gsub(template_path, '')}"
           end
           Dir.glob("#{template_path}images/**/*.{png,gif,jpg}").each do |file|
