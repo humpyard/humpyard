@@ -9,10 +9,19 @@ namespace :humpyard do
     
     task :prepare_namespace do
       require 'active_record'
+      puts 'prepage humpyard table_name_prefix'
       ActiveRecord::Base.configurations = Rails::Application.config.database_configuration
       
       class ActiveRecord::Base
         self.table_name_prefix = "#{::ActiveRecord::Base.table_name_prefix}#{Humpyard::config.table_name_prefix}"
+      end
+    end
+    
+    task :remove_namespace do
+      puts 'remove humpyard table_name_prefix'
+      
+      class ActiveRecord::Base
+        self.table_name_prefix = "#{::ActiveRecord::Base.table_name_prefix[Humpyard::config.table_name_prefix.length,1000]}"
       end
     end
   
@@ -80,4 +89,4 @@ namespace :humpyard do
   end
 end
 
-task :'db:migrate' => :'humpyard:db:migrate'
+task :'db:migrate' => [:'humpyard:db:migrate', :'humpyard:db:remove_namespace']
