@@ -45,13 +45,13 @@ module Humpyard
     #   rails generate humpyard:skeleton
     
     class SkeletonGenerator < Base
-      class_option :templates, :desc => 'The page template', :group => 'Humpyard Layout', :type => :array, :default => ['application']
-      class_option :layouts, :desc => 'The page content layouts', :group => 'Humpyard Layout', :type => :array, :default => ['one_column']
+      class_option :templates, :desc => 'The page template', :group => 'Humpyard Layout', :type => :array, :default => Humpyard::config.templates.map{|name, template| name}
+      class_option :default_template, :desc => 'The page default template', :group => 'Humpyard Layout', :type => :string, :default => Humpyard::config.default_template
       
-      class_option :www_prefix, :desc => 'The prefix for humpyard www pages as string', :group => 'Humpyard config', :type => :string, :default => ':locale/'
-      class_option :admin_prefix, :desc => 'The prefix for humpyard admin controllers as string', :group => 'Humpyard config', :type => :string, :default => 'admin'
-      class_option :table_name_prefix, :desc => 'The SQL table name prefix for humpyard as string', :group => 'Humpyard config', :type => :string, :default => 'humpyard_'
-      class_option :locales, :desc => 'The locales used in humpyard as array', :group => 'Humpyard config', :type => :array, :default => [:en]
+      class_option :www_prefix, :desc => 'The prefix for humpyard www pages as string', :group => 'Humpyard config', :type => :string, :default => Humpyard::config.www_prefix
+      class_option :admin_prefix, :desc => 'The prefix for humpyard admin controllers as string', :group => 'Humpyard config', :type => :string, :default => Humpyard::config.admin_prefix
+      class_option :table_name_prefix, :desc => 'The SQL table name prefix for humpyard as string', :group => 'Humpyard config', :type => :string, :default => Humpyard::config.table_name_prefix
+      class_option :locales, :desc => 'The locales used in humpyard as array', :group => 'Humpyard config', :type => :array, :default => Humpyard::config.locales
 	  
 	
       class_option :skip_haml_init, :desc => 'Don\'t generate HAML initializer (if you are already using HAML)', :type => :boolean

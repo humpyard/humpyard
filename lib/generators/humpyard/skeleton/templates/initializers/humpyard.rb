@@ -9,6 +9,6 @@ Humpyard.configure do |config|
   config.templates = {
     <%= options[:templates].map{|template| ":#{template} => {:yields => [:sidebar]}"} * ",\n    " %>
   }
-  config.default_template = :<%= options[:templates].first %>
+  config.default_template = :<%= options[:default_template] %>
       
 end
