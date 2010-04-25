@@ -50,7 +50,7 @@ module Humpyard
       class_option :skip_views, :desc => 'Don\'t generate view files.', :type => :boolean
       
       class_option :skip_tests, :desc => 'Don\'t generate test files.', :group => 'Test framework', :type => :boolean
-      class_option :testunit, :desc => 'Use test/unit for test files.', :group => 'Test framework', :type => :boolean
+      class_option :test_unit, :desc => 'Use test/unit for test files.', :group => 'Test framework', :type => :boolean
       class_option :rspec, :desc => 'Use RSpec for test files.', :group => 'Test framework', :type => :boolean
       class_option :shoulda, :desc => 'Use shoulda for test files.', :group => 'Test framework', :type => :boolean
 
@@ -65,7 +65,7 @@ module Humpyard
             when :shoulda
               template "tests/shoulda/model.rb", "test/models/#{singular_name}_test.rb"
               template 'fixtures.yml', "test/fixtures/#{plural_name}.yml"
-            when :testunit
+            when :test_unit
               template "tests/#{test_framework}/model.rb", "test/unit/#{singular_name}_test.rb"
               template 'fixtures.yml', "test/fixtures/#{plural_name}.yml"
             end
@@ -124,10 +124,11 @@ module Humpyard
       
       def test_framework
         return @test_framework if defined?(@test_framework)
+        
         if options.rspec?
           return @test_framework = :rspec
-        elsif options.testunit?
-          return @test_framework = :testunit
+        elsif options.test_unit?
+          return @test_framework = :test_unit
         elsif options.shoulda?
           return @test_framework = :shoulda
         else
@@ -136,7 +137,7 @@ module Humpyard
       end
 
       def default_test_framework
-        File.exist?(destination_path("spec")) ? :rspec : :testunit
+        Rails.application::config.generators.rails[:test_framework]
       end
 
       def destination_path(path)
