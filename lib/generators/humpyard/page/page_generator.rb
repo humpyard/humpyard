@@ -12,8 +12,8 @@ module Humpyard
     #   rails humpyard:element ElementName [field:type field:type] [options]
     #
     # === Description
-    # The humpyard element generator creates a custom element that can 
-    # be used inside your humpyard pages.
+    # The humpyard page generator creates a custom page that can 
+    # be used inside your humpyard application.
     #
     # === Options
     # <tt>[--skip-model]</tt>:: Don't generate a model or migration file.
@@ -34,22 +34,21 @@ module Humpyard
     # <tt>[--skip-tests]</tt>:: Don't generate test files.
     #
     # === Examples
-    #   rails generate humpyard:element SimpleText text:string 
-    #   rails generate humpyard:element another_thing content:text --skip-tests
+    #   rails generate humpyard:page SimpleText text:string 
+    #   rails generate humpyard:page another_thing content:text --skip-tests
     # 
     # 
-    class ElementGenerator < Base 
+    class PageGenerator < Base 
       include Rails::Generators::Migration   
 
-      argument :element_name, :type => :string, :required => true, :banner => 'ElementName'
+      argument :page_name, :type => :string, :required => true, :banner => 'PageName'
 
       include Humpyard::Generators::ModelTemplate
 
       def create_element # :nodoc:        
         unless options.skip_views?
-          template '_inline_edit.html.haml', "app/views/humpyard/elements/#{plural_name}/_inline_edit.html.haml"
-          template '_edit.html.haml', "app/views/humpyard/elements/#{plural_name}/_edit.html.haml"
-          template '_show.html.haml', "app/views/humpyard/elements/#{plural_name}/_show.html.haml"
+          template '_edit.html.haml', "app/views/humpyard/pages/#{plural_name}/_edit.html.haml"
+          template '_show.html.haml', "app/views/humpyard/pages/#{plural_name}/_show.html.haml"
         end
 
         unless options.skip_model?
@@ -59,7 +58,7 @@ module Humpyard
       
       private
         def model_name
-          "#{element_name.camelize}Element"
+          "#{page_name.camelize}Page"
         end
     end
   end

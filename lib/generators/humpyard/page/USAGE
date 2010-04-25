@@ -1,0 +1,7 @@
+Description:
+  The humpyard page generator creates a custom page that can 
+  be used inside your humpyard app.
+  
+Examples:
+    rails generate humpyard:page SimpleText text:string 
+    rails generate humpyard:page another_thing content:text --skip-tests
