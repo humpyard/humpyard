@@ -46,7 +46,7 @@ module Humpyard
         def suggested_title_for_url(locale = I18n.locale)
           return nil if title.blank?
           
-          title_for_url = self.title(locale).parameterize('_').to_s
+          title_for_url = (self.title(locale) ? self.title(locale) : self.title).parameterize('_').to_s
           
           # Check if parameterized totally failed
           if title_for_url == ''
