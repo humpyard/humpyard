@@ -73,24 +73,24 @@ describe Humpyard::Page do
     
     it "should give itself names in many locales" do
       I18n.locale = :en
-      @about_page = Humpyard::Page.create! :title => 'About', :parent => @root_page
-      @about_page.title_for_url.should eql 'about'
+      about_page = Humpyard::Page.create! :title => 'About', :parent => @root_page
+      about_page.title_for_url.should eql 'about'
       I18n.locale = :de
-      @about_page.update_attribute :title, 'Über'
-      @about_page.title_for_url.should eql 'uber'
+      about_page.update_attribute :title, 'Über'
+      about_page.title_for_url.should eql 'uber'
       I18n.locale = :en
-      @about_page.title_for_url.should eql 'about'
-      @about_page.destroy
+      about_page.title_for_url.should eql 'about'
+      about_page.destroy
     end
     
     it "should give itself names for many locales manually" do
       I18n.locale = :en
-      @about_page = Humpyard::Page.new :title => 'About', :parent => @root_page
+      about_page = Humpyard::Page.new :title => 'About', :parent => @root_page
       I18n.locale = :de
-      @about_page.title = 'Über'
+      about_page.title = 'Über'
       I18n.locale = :en
-      @about_page.suggested_title_for_url.should eql 'about'
-      @about_page.suggested_title_for_url(:de).should eql 'uber'
+      about_page.suggested_title_for_url.should eql 'about'
+      about_page.suggested_title_for_url(:de).should eql 'uber'
     end
   end
   
