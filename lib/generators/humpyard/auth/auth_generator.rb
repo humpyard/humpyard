@@ -56,7 +56,7 @@ module Humpyard
         case options[:users_framework]
         when 'authlogic'
           
-          raise "Authlogic is not Rails 3 compatible, yet!"
+          raise "Authlogic is not working, yet!"
           
           template "authlogic/models/ability.rb", "app/models/ability.rb"
           template "authlogic/models/user.rb", "app/models/#{singular_name}.rb"
@@ -99,8 +99,21 @@ module Humpyard
             "    @current_user = current_user_session && current_user_session.record\n" +
             "  end\n"  
         when 'devise'
+          
+          raise "Devise is not working, yet!"
+          
           template "#{options[:users_framework]}/models/ability.rb", "app/models/ability.rb"
-          gem 'devise' ,'>= 1.1.rc1'
+          gem 'devise', :git => 'http://github.com/plataformatec/devise.git' #,'>= 1.1.rc1'
+          
+          run "bundle install"
+          
+          generate :devise_install
+          
+          prepend_file "config/initializers/devise.rb", "require 'devise'\n\n"
+
+          
+          
+          generate :devise, singular_name
           
         when 'fake'
           template "#{options[:users_framework]}/models/ability.rb", "app/models/ability.rb"

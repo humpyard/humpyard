@@ -9,7 +9,7 @@ Humpyard.configure do |config|
   # Skeleton generator presets
   config.compass_format = 'scss'
   config.js_framework = 'jquery-ui-18'
-  config.users_framework = 'authlogic'
+  config.users_framework = 'fake'
  
   # Template config
   config.templates = {
