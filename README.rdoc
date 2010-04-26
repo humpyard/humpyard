@@ -21,6 +21,16 @@ Humpyard is a CMS in a gem for Rails 3.
   A full documentation of options for creating a humpyard skeleton can be
   found at the Humpyard::Generators::ElementGenerator section of this documentation.
 
+* Use an Auth Framework
+
+    rails generate humpyard:auth
+  At the moment there is only a fake user framework for toggling if the admin-user
+  is logged in or not. There are going to be generators for both, Authlogic and Devise,
+  as soon as we get those to work with edge Rails.
+  
+  As the abilities in Humpyard are defined by CanCan, it should be possible to use any
+  auth framework to authentice your users.
+
 * Migrate the Humpyard database tables
     rake humpyard:db:migrate
 
