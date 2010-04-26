@@ -45,7 +45,22 @@ module Humpyard
 
       include Humpyard::Generators::ModelTemplate
 
-      def create_element # :nodoc:        
+      def create_page # :nodoc:     
+        template 'model.rb', "app/models/#{singular_name}.rb"
+        unless options.skip_tests?
+          case test_framework
+          when :rspec
+            template "tests/rspec/model.rb", "spec/models/#{singular_name}_spec.rb"
+            template 'fixtures.yml', "spec/fixtures/#{plural_name}.yml"
+          else
+            template "tests/#{test_framework}/model.rb", "test/unit/#{singular_name}_test.rb"
+            template 'fixtures.yml', "test/fixtures/#{plural_name}.yml"
+          end
+        end
+        
+        unless options.skip_migration?
+          migration_template 'migration.rb', "db/migrate/create_#{plural_name.gsub('/','_')}.rb"
+        end   
         unless options.skip_views?
           template '_edit.html.haml', "app/views/humpyard/pages/#{plural_name}/_edit.html.haml"
           template '_show.html.haml', "app/views/humpyard/pages/#{plural_name}/_show.html.haml"

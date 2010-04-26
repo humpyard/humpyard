@@ -5,6 +5,7 @@ gem 'builder'
 gem 'haml',               :git => 'git://github.com/nex3/haml.git'
 gem 'compass',            :git => 'git://github.com/chriseppstein/compass.git'
 gem 'acts_as_tree',       '>= 0.1.1'
+gem 'cancan',             '>= 1.1.1'
 gem 'globalize2',         :git => 'git://github.com/starpeak/globalize2.git' 
 
 group :test do

@@ -6,8 +6,11 @@ module Humpyard
     
     # Probably unneccassary - may be removed later
     def index
+      authorize! :manage, Humpyard::Page  
+      
       @root_page = Humpyard::Page.root
       @page = Humpyard::Page.where("id = ?", params[:actual_id]).first
+     
       unless @page.nil?
         @page = @page.content_data
       end
@@ -17,6 +20,14 @@ module Humpyard
     # Dialog content for a new page
     def new
       @page = Humpyard::config.page_types[params[:type]].new
+      
+      unless can? :create, @page.page
+        render :json => {
+          :status => :failed
+        }, :status => 403
+        return
+      end
+      
       @page_type = params[:type]
       @prev = Humpyard::Page.where('id = ?', params[:prev_id]).first
       @next = Humpyard::Page.where('id = ?', params[:next_id]).first
@@ -28,6 +39,8 @@ module Humpyard
     def create
       @page = Humpyard::config.page_types[params[:type]].new params[:page]
       @page.title_for_url = @page.page.suggested_title_for_url
+      
+      authorize! :create, @page.page
       
       if @page.save
         @prev = Humpyard::Page.where('id = ?', params[:prev_id]).first
@@ -60,13 +73,24 @@ module Humpyard
     # Dialog content for an existing page
     def edit
       @page = Humpyard::Page.find(params[:id]).content_data
+      
+      authorize! :update, @page.page
+      
       render :partial => 'edit'
     end
     
     # Update an existing page
     def update
       @page = Humpyard::Page.find(params[:id]).content_data
-      if @page
+      
+      if @page 
+        unless can? :update, @page.page
+          render :json => {
+            :status => :failed
+          }, :status => 403
+          return
+        end
+        
         if @page.update_attributes params[:page]
           @page.title_for_url = @page.page.suggested_title_for_url
           @page.save
@@ -98,7 +122,14 @@ module Humpyard
     def move
       @page = Humpyard::Page.find(params[:id])
       
-      if @page
+      if @page 
+        unless can? :update, @page
+          render :json => {
+            :status => :failed
+          }, :status => 403
+          return
+        end
+        
         parent = Humpyard::Page.where('id = ?', params[:parent_id]).first
         unless parent
           parent = Humpyard::Page.root_page
@@ -122,6 +153,9 @@ module Humpyard
     # Destroy a page
     def destroy
       @page = Humpyard::Page.find(params[:id])
+      
+      authorize! :destroy, @page  
+      
       @page.destroy
     end
 

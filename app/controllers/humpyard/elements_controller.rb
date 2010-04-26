@@ -9,6 +9,9 @@ module Humpyard
         :page_id => params[:page_id], 
         :container_id => params[:container_id].to_i > 0 ? params[:container_id].to_i : nil,
         :page_yield_name => params[:yield_name].blank? ? 'main' : params[:yield_name])
+      
+      authorize! :create, @element.element 
+      
       @element_type = params[:type]
       @prev = Humpyard::Element.where('id = ?', params[:prev_id]).first
       @next = Humpyard::Element.where('id = ?', params[:next_id]).first
@@ -19,6 +22,13 @@ module Humpyard
     # Create a new element
     def create
       @element = Humpyard::config.element_types[params[:type]].new params[:element]
+            
+      unless can? :create, @element.element
+        render :json => {
+          :status => :failed
+        }, :status => 403
+        return
+      end      
             
       if @element.save
         @prev = Humpyard::Element.where('id = ?', params[:prev_id]).first
@@ -50,12 +60,18 @@ module Humpyard
     
     # Inline edit content for an existing element
     def inline_edit
+      @element = Humpyard::Element.find(params[:id]).content_data
+      
+      authorize! :update, @element.element
+      
       render :partial => 'inline_edit'
     end
 
     # Dialog content for an existing element
     def edit
       @element = Humpyard::Element.find(params[:id]).content_data
+      
+      authorize! :update, @element.element
       
       render :partial => 'edit'
     end
@@ -64,6 +80,13 @@ module Humpyard
     def update
       @element = Humpyard::Element.find(params[:id])
       if @element
+        unless can? :update, @element
+          render :json => {
+            :status => :failed
+          }, :status => 403
+          return
+        end
+        
         if @element.content_data.update_attributes params[:element]
           render :json => {
             :status => :ok,
@@ -93,6 +116,13 @@ module Humpyard
       @element = Humpyard::Element.find(params[:id])
       
       if @element
+        unless can? :update, @element
+          render :json => {
+            :status => :failed
+          }, :status => 403
+          return
+        end
+        
         @element.update_attributes(
           :container => Humpyard::Element.where('id = ?', params[:container_id]).first, 
           :page_yield_name => params[:yield_name]
@@ -115,12 +145,18 @@ module Humpyard
     # Destroy an element
     def destroy
       @element = Humpyard::Element.find(params[:id])
+      
+      authorize! :destroy, @element  
+      
       @element.destroy
     end
         
     # Render a given element
     def show
       @element = Humpyard::Element.find(params[:id])
+      
+      authorize! :read, @element  
+      
       render :partial => 'show', :locals => {:element => @element}
     end
     

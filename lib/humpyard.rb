@@ -1,5 +1,7 @@
 ####
 # Welcome to Humpyard
+require 'cancan'
+
 module Humpyard
   # This is the actual version of the Humpyard gem
   VERSION = ::File.read(::File.join(::File.dirname(__FILE__), "..", "VERSION")).strip  

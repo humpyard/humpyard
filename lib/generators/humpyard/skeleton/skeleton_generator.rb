@@ -53,6 +53,7 @@ module Humpyard
       class_option :table_name_prefix, :desc => 'The SQL table name prefix for humpyard as string', :group => 'Humpyard config', :type => :string, :default => Humpyard::config.table_name_prefix
       class_option :locales, :desc => 'The locales used in humpyard as array', :group => 'Humpyard config', :type => :array, :default => Humpyard::config.locales
 	  
+	    class_option :users_framework, :desc => 'The user management framework used in humpyard application (options: custom/fake/devise/authlogic)', :group => 'Users config', :type => :string, :default => Humpyard::config.users_framework
 	
       class_option :skip_haml_init, :desc => 'Don\'t generate HAML initializer (if you are already using HAML)', :type => :boolean
       class_option :skip_haml, :desc => 'Don\'t generate HAML related files (the layout template)', :type => :boolean

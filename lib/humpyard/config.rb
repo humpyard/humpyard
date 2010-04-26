@@ -41,7 +41,7 @@ module Humpyard
   class Config 
     attr_writer :table_name_prefix, :www_prefix, :admin_prefix, :element_types, :page_types # :nodoc:
     attr_writer :templates, :default_template, :browser_title_prefix, :browser_title_postfix # :nodoc:
-    attr_writer :js_framework, :compass_format # :nodoc:
+    attr_writer :users_framework, :js_framework, :compass_format # :nodoc:
     
     def initialize(&block) #:nodoc:
       configure(&block) if block_given?
@@ -133,6 +133,10 @@ module Humpyard
     # Usage is e.g. in the routes.
     def locales_contraint
       Regexp.new locales * '|'
+    end
+    
+    def users_framework
+      @users_framework ||= 'fake'
     end
     
     def js_framework

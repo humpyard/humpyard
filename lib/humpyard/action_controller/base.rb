@@ -9,17 +9,9 @@ module Humpyard
       end
 
       def humpyard_user    
-        if not @humpyard_user.nil?
-          @humpyard_user
-        else
-          session[:humpyard] ||= {}
-          unless params[:user].nil?
-            session[:humpyard][:user] = params[:user]
-          end
-          @humpyard_user = session[:humpyard][:user] || false
-        end
-      end 
-      
+        current_user
+      end
+       
     end
   end
 end

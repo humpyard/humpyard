@@ -141,6 +141,7 @@ spec = Gem::Specification.new do |s|
   s.add_dependency 'rails', '>= 3.0.0.beta'
   s.add_dependency 'haml', '>= 2.2.20'
   s.add_dependency 'acts_as_tree', '>= 0.1.1'
+  s.add_dependency 'cancan', '>= 1.1.1'
   s.add_dependency 'globalize2', '>= 0.2.0'
 end
 

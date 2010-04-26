@@ -9,11 +9,12 @@ Humpyard.configure do |config|
   # Skeleton generator presets
   config.compass_format = 'scss'
   config.js_framework = 'jquery-ui-18'
+  config.users_framework = 'authlogic'
  
   # Template config
   config.templates = {
-    :application => {:yields => [:sidebar]},
-    :alternative => {:yields => [:left, :right]}
+    :alternative => {:yields => [:left, :right]},
+    :application => {:yields => [:sidebar]}
   }
   config.default_template = :application
       
