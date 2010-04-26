@@ -1,0 +1,9 @@
+If you did not already install Authlogic, you should do it now:
+
+  Install Authlogic to your Rails application running:
+  
+    bundle install
+  
+For options and further details see the Authlogic documentation:
+
+  http://rdoc.info/projects/binarylogic/authlogic

@@ -9,6 +9,7 @@ Humpyard.configure do |config|
   # Skeleton generator presets
   config.compass_format = '<%= options[:compass_format] %>'
   config.js_framework = '<%= options[:js_framework] %>'
+  config.users_framework = '<%= options[:users_framework] %>'
  
   # Template config
   config.templates = {

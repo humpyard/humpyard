@@ -1,0 +1,14 @@
+If you did not already install Devise, you should do it now:
+
+  1. Install Devise to your Rails application running:
+  
+    bundle install
+    rails generate devise_install
+    
+  2. Create a User model running:
+  
+    rails generate devise user
+  
+For options and further details see the Devise documentation:
+
+  http://github.com/plataformatec/devise

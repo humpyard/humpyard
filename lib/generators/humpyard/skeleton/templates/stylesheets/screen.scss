@@ -38,9 +38,21 @@ body.hy-logged-in {
 
   padding: 10px;
   font-size: 14px;
+  
+  .flash {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #999;
+    background: #ccc;
+    padding: 5px;
+  }
+  #flash_error {
+    border-color: #f99;
+    background: #fcc;    
+  }
 
   form {
-    @include blueprint-form
+    @include blueprint-form;
   }
   .container {
     @include container;

@@ -1,0 +1,8 @@
+Add something defining a current_user to your application controller
+
+  helper_method :current_user
+
+  private
+  def current_user
+    # do something here
+  end
