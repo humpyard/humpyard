@@ -66,9 +66,9 @@ module Humpyard
     end
     
     
-    def suggested_title_for_url_with_index
+    def suggested_title_for_url_with_index(locale = I18n.locale)
       return 'index' if self.is_root_page? or Humpyard::Page.count == 0   
-      suggested_title_for_url_without_index
+      suggested_title_for_url_without_index(locale)
     end
     alias_method_chain :suggested_title_for_url, :index
     
