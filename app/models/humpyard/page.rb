@@ -53,15 +53,22 @@ module Humpyard
     #     If no <tt>:locale</tt> is given the option will be ::I18n.locale by default
     def human_url(options={})
       options[:locale] ||= ::I18n.locale
+      options[:format] ||= :html
       
       unless Humpyard::config.locales.include? options[:locale].to_sym
         options[:locale] = Humpyard::config.locales.first
       end
       
+      if options[:path_format]
+        format = "/"
+      else
+        format = ".#{options[:format].to_s}" 
+      end
+      
       if self.title_for_url == 'index' or self.is_root_page?
         "/#{Humpyard::config.parsed_www_prefix(options).gsub(/[^\/]*$/, '')}"
       else
-        "/#{Humpyard::config.parsed_www_prefix(options)}#{((self.ancestors.reverse + [self]).collect{|p| p.query_title_for_url(options[:locale])} - ['index']) * '/'}.html".gsub(/^index\//,'')
+        "/#{Humpyard::config.parsed_www_prefix(options)}#{((self.ancestors.reverse + [self]).collect{|p| p.query_title_for_url(options[:locale])} - ['index']) * '/'}#{format}".gsub(/^index\//,'')
       end
     end
     

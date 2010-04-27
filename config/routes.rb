@@ -23,10 +23,10 @@ Rails.application.routes.draw do |map|
   match "/sitemap.xml" => 'humpyard/pages#sitemap', :as => 'sitemap'
   # Map human readable page URLs
   if Humpyard::config.www_prefix.match /:locale/
-    match "/#{Humpyard::config.www_prefix}" => 'humpyard/pages#show', :name => 'index', :constraints => { :locale => Humpyard.config.locales_contraint}
-    match "/#{Humpyard::config.www_prefix}*webpath.html" => 'humpyard/pages#show', :constraints => { :locale => Humpyard.config.locales_contraint}
+    match "/#{Humpyard::config.www_prefix}" => 'humpyard/pages#show', :name => 'index', :constraints => { :locale => Humpyard.config.locales_contraint }
+    match "/#{Humpyard::config.www_prefix}*webpath.:format" => 'humpyard/pages#show', :constraints => { :locale => Humpyard.config.locales_contraint, :format => Humpyard.config.page_formats_contraint }
   else
-    match "/#{Humpyard::config.www_prefix}*webpath.html" => 'humpyard/pages#show'    
+    match "/#{Humpyard::config.www_prefix}*webpath.:format" => 'humpyard/pages#show', :constraints => { :format => Humpyard.config.page_formats_contraint }
   end
 
 end

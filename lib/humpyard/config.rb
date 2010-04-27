@@ -146,5 +146,26 @@ module Humpyard
     def compass_format
       @compass_format ||= 'scss'
     end
+    
+    def page_formats=(formats) #:nodoc:
+      if formats.nil? 
+        @page_formats = nil
+      elsif formats.class == Array
+        @page_formats = formats.map{|l| l.to_sym}
+      else
+        @page_formats = formats.split(',').collect{|l| l.to_sym}
+      end
+    end
+    
+    def page_formats #:nodoc:
+      @page_formats ||= [:html]
+    end
+    
+    # Get the given locales as Regexp constraint. 
+    # This may be used to see if a locale matches the configured locales.
+    # Usage is e.g. in the routes.
+    def page_formats_contraint
+      Regexp.new page_formats * '|'
+    end
   end
 end
