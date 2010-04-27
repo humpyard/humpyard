@@ -69,7 +69,7 @@ module Humpyard
       options[:as] ||= default_input_type(method)
       options[:translation_info] = translation_info(method)
       #puts options.inspect
-      @renderer.render :partial => "/humpyard/forms/#{options[:as]}_input", :locals => {:form => self, :name => method, :options => options}
+      @renderer.render :partial => "/humpyard/forms/form_element", :locals => {:form => self, :name => method, :options => options, :as => options[:as]}
     end
     
     def submit(options={})

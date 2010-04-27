@@ -20,7 +20,7 @@ module Humpyard
     belongs_to :content_data, :polymorphic => true, :dependent => :destroy  
     has_many :elements, :class_name => 'Humpyard::Element', :dependent => :destroy  
     
-    validates_with Humpyard::PublishRangeValidator, {:attributes => [:display_from, :display_until]}
+    validates_with Humpyard::ActiveModel::PublishRangeValidator, {:attributes => [:display_from, :display_until]}
     validates_presence_of :title
     
     def self.root_page

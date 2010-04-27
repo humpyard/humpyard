@@ -13,7 +13,7 @@ module Humpyard
     
     delegate :'is_humpyard_container_element?', :'is_humpyard_element?', :to => :content_data
 
-    validates_with Humpyard::PublishRangeValidator, {:attributes => [:display_from, :display_until]}
+    validates_with Humpyard::ActiveModel::PublishRangeValidator, {:attributes => [:display_from, :display_until]}
     
     # Return the logical modification time for the element.
     #

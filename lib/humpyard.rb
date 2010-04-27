@@ -49,6 +49,7 @@ I18n.load_path += Dir.glob("#{File.dirname(__FILE__)}/../config/locales/*.yml")
 puts "=> #{I18n.t 'humpyard.start', :version => Humpyard::VERSION}"
 
 require File.expand_path('../humpyard/action_controller/base', __FILE__)
+require File.expand_path('../humpyard/active_model/validators/publish_range', __FILE__)
 require File.expand_path('../humpyard/active_record/acts/element', __FILE__)
 require File.expand_path('../humpyard/active_record/acts/container_element', __FILE__)
 require File.expand_path('../humpyard/active_record/acts/page', __FILE__)

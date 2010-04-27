@@ -1,5 +1,0 @@
-/ unused!
-.input
-	%label
-		= form.object.class.human_attribute_name(name)
-	%input{"name"=>"#{form.namespace}[#{name}]", "value"=>"#{form.object.send(name)}"}

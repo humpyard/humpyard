@@ -1,20 +1,14 @@
-.input{:class => "attr_#{name}"}
-  %div
-    %label
-      = form.object.class.human_attribute_name(name)
-    .field-errors.ui-state-error-text{:style => 'display:none;'}
-  %div
-    - if form.object.send(name).file?
-      - if form.object.send(name).styles.keys.include?(:thumb)
-        - style = form.object.send(name).styles[:thumb]
-        = image_tag form.object.send(name).url(:thumb), :size => style.geometry.match(/(\d+x\d+)/)[1]
-      - else
-        = image_tag form.object.send(name).ur
-      [
-      = form.object.send("#{name}_file_name")
-      = form.object.send("#{name}_file_size")
-      = form.object.send("#{name}_file_type")
-      ]
-    - else
-      [none]
-    %input{:type => "file", :name => "#{form.namespace}[#{name}]", :value => "#{form.object.send(name)}", :class => "text ui-widget-content ui-corner-all field-highlight"}
+- if form.object.send(name).file?
+  - if form.object.send(name).styles.keys.include?(:thumb)
+    - style = form.object.send(name).styles[:thumb]
+    = image_tag form.object.send(name).url(:thumb), :size => style.geometry.match(/(\d+x\d+)/)[1]
+  - else
+    = image_tag form.object.send(name).ur
+  [
+  = form.object.send("#{name}_file_name")
+  = form.object.send("#{name}_file_size")
+  = form.object.send("#{name}_file_type")
+  ]
+- else
+  [none]
+%input{:type => "file", :name => "#{form.namespace}[#{name}]", :value => "#{form.object.send(name)}", :class => "text ui-widget-content ui-corner-all field-highlight"}
