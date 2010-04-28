@@ -1,4 +1,4 @@
-require 'compass' unless defined? Compass
+require 'compass' 
 
 options = Hash.new
 options[:stylesheets_directory] = ::File.expand_path(::File.join(::File.dirname(__FILE__), '..', '..', 'compass', 'stylesheets'))
