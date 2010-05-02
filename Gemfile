@@ -7,6 +7,7 @@ gem 'compass',            :git => 'git://github.com/chriseppstein/compass.git'
 gem 'acts_as_tree',       '>= 0.1.1'
 gem 'cancan',             '>= 1.1.1'
 gem 'globalize2',         :git => 'git://github.com/starpeak/globalize2.git' 
+gem 'humpyard_form',      :git => 'git://github.com/humpyard/humpyard_form.git'
 
 group :test do
   gem 'test-unit'

@@ -1,5 +1,5 @@
 en:
-  humpyard:
+  humpyard_cms:
     start: 'Loading Humpyard {{version}}'
 
   errors:

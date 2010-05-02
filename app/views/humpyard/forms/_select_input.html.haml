@@ -1,4 +1,0 @@
-%select{:name => "#{form.namespace}[#{name}]", :class => "select"}
-  - options[:select_options].each do |option|
-    %option{:value => "#{option[1]}", :selected => (option[1] == form.object.send(name))}
-      = option[0] #form.object.send(name)

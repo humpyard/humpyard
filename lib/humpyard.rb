@@ -1,6 +1,7 @@
 ####
 # Welcome to Humpyard
 require 'cancan'
+require 'humpyard_form'
 
 module Humpyard
   # This is the actual version of the Humpyard gem
@@ -46,7 +47,7 @@ require File.expand_path('../humpyard/compass', __FILE__)
 
 require 'i18n'
 I18n.load_path += Dir.glob("#{File.dirname(__FILE__)}/../config/locales/*.yml")
-puts "=> #{I18n.t 'humpyard.start', :version => Humpyard::VERSION}"
+puts "=> #{I18n.t 'humpyard_cms.start', :version => Humpyard::VERSION}"
 
 require File.expand_path('../humpyard/action_controller/base', __FILE__)
 require File.expand_path('../humpyard/active_model/validators/publish_range', __FILE__)
@@ -54,5 +55,5 @@ require File.expand_path('../humpyard/active_record/acts/element', __FILE__)
 require File.expand_path('../humpyard/active_record/acts/container_element', __FILE__)
 require File.expand_path('../humpyard/active_record/acts/page', __FILE__)
 require File.expand_path('../humpyard/active_record/has/title_for_url', __FILE__)
-require File.expand_path('../humpyard/action_view/form_helper', __FILE__)
+
 

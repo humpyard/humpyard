@@ -36,6 +36,9 @@ module Humpyard
   #    This option can be configured by giving an Array or comma separated String,
   #    e.g. <tt>'en,de,fr'</tt> or <tt>['en', 'de', 'fr']</tt>.
   #
+  #    Setting this option will also alter the HumpyardForm.config.locales to the 
+  #    given value
+  #
   #
   #    The default value is <tt>['en']</tt>
   class Config 
@@ -122,6 +125,9 @@ module Humpyard
       else
         @locales = locales.split(',').collect{|l| l.to_sym}
       end
+      
+      # Keep HumpyardForm locales in sync
+      HumpyardForm.config.locales = locales
     end
     
     def locales #:nodoc:
