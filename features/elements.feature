@@ -9,7 +9,7 @@ Feature: Elements
   And I am logged in as admin
   When I go to path "/"
   And I follow "Edit" within "#hy-top"
-  And I hover over the css element ".hy-el:first"
+  And I hover over ".hy-el:first"
   Then I should see a css element ".hy-el-menu"
 
   @javascript
@@ -17,7 +17,7 @@ Feature: Elements
   Given the standard pages
   And I am logged in as admin
   When I edit the page "/"
-  And I edit the css element ".hy-el:first"
+  And I edit the element ".hy-el:first"
   And I fill in "" for "element[content]" within ".ui-dialog form"
   And I press "Ok" within ".ui-dialog"
   Then I should see the error "can't be blank" on the field "content"
@@ -33,5 +33,5 @@ Feature: Elements
   When I fill in "" for "element[display_from]" within ".ui-dialog form"
   And I fill in "" for "element[display_until]" within ".ui-dialog form"
   And I press "Ok" within ".ui-dialog"
-  Then I should see /Test content/ within css element ".hy-el"
+  Then I should see /Test content/ within ".hy-el"
   And the dialog should be closed
