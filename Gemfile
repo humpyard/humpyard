@@ -14,7 +14,9 @@ group :test do
   gem 'rspec-rails',        '>= 2.0.0.beta.7' 
   gem 'capybara',           '>= 0.3.7' 
   gem 'database_cleaner',   '>= 0.5.2'     
-  gem 'cucumber',           '= 0.6.4' #'> 0.7.0.beta.2' # as 0.7.2.beta.2 is not running for us
+#  gem 'cucumber',           '= 0.6.4' 
+#  gem 'cucumber'            '> 0.7.0.beta.2' 
+  gem 'cucumber',           :git => 'git://github.com/aslakhellesoy/cucumber.git'
   gem 'cucumber-rails',     :git => 'git://github.com/aslakhellesoy/cucumber-rails.git'
   gem 'pickle',             '>= 0.2.4'
   gem 'capybara',           '>= 0.3.5'

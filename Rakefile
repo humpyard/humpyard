@@ -37,39 +37,39 @@ begin
   task :spec => [:'db:test:reset']
 rescue
   task :spec do
-    abort 'Spec is not available. In order to run features, you must: sudo gem install rspec'
+    abort 'Spec is not available. In order to run cucumber, you must: sudo gem install rspec'
   end
 end
 
 begin
   require 'cucumber/rake/task'
-  Cucumber::Rake::Task.new(:features)
+  Cucumber::Rake::Task.new(:cucumber)
   
-  namespace :features do
-    desc "Run features to generate coverage"
-    Cucumber::Rake::Task.new(:rcov) do |features|    
-      features.rcov = true
-      features.rcov_opts = %w{--rails --exclude osx\/objc,gems\/,spec\/,features\/,test\/ --aggregate coverage.data}
-      features.rcov_opts << %[-o "coverage"]
+  namespace :cucumber do
+    desc "Run cucumber to generate coverage"
+    Cucumber::Rake::Task.new(:rcov) do |cucumber|    
+      cucumber.rcov = true
+      cucumber.rcov_opts = %w{--rails --exclude osx\/objc,gems\/,spec\/,features\/,test\/ --aggregate coverage.data}
+      cucumber.rcov_opts << %[-o "coverage"]
     end
   end
 
-  task :features => [:'db:test:reset']
+  task :cucumber => [:'db:test:reset']
 rescue LoadError
-  task :features do
-    abort 'Cucumber is not available. In order to run features, you must: sudo gem install cucumber'
+  task :cucumber do
+    abort 'Cucumber is not available. In order to run cucumber, you must: sudo gem install cucumber'
   end
 end
 
 desc "Run RSpec and Cucumber tests"
-task :test => [:spec, :features]
+task :test => [:spec, :cucumber]
 task :default => :test
  
-desc "Run both specs and features to generate aggregated coverage"
+desc "Run both rspec and cucumber tests to generate aggregated coverage"
 task :rcov do |t|
   rm "coverage.data" if File.exist?("coverage.data")
   Rake::Task['spec:rcov'].invoke
-  Rake::Task["features:rcov"].invoke
+  Rake::Task["cucumber:rcov"].invoke
   `open #{File.dirname(__FILE__)}/coverage/index.html`
 end
 
@@ -143,7 +143,7 @@ spec = Gem::Specification.new do |s|
   s.add_dependency 'acts_as_tree', '>= 0.1.1'
   s.add_dependency 'cancan', '>= 1.1.1'
   s.add_dependency 'globalize2', '>= 0.2.0'
-  s.add_dependency 'humpyard_form', '>= 0.0.0'
+  s.add_dependency 'humpyard_form', '>= 0.0.2'
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
