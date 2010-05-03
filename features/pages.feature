@@ -25,7 +25,8 @@ Feature: Pages
     Given the standard pages
     When I go to path "/en/special_page.html"
     Then I should see "Alternative" within "html body div div div h1"
-    
+ 
+   
 
 #  Scenario: Debug Content in German
 #    Given the standard pages

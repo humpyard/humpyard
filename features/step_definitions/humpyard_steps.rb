@@ -43,11 +43,13 @@ Given /^the standard pages$/ do
   Humpyard::Page.locale = nil
   Humpyard::Elements::TextElement.locale = nil
 end
-  
-  
 
 Given /^I am logged in as (.+)$/ do |user|
   visit "/?user=#{user}"
+end
+
+Given /^I am not logged in$/ do 
+  visit "/?user="
 end
 
 Given /^the following (.+) records?$/ do |factory, table|  
@@ -83,13 +85,6 @@ Given /^#{capture_model} is the parent of #{capture_model}$/ do |parent, child|
   child.save!
 end
 
-
-When /^I click on "([^\"]*)" within "([^\"]*)"$/ do |link_text, selector|
-  within(:css, selector) do
-    find_link(link_text).click()
-  end
-end
-
 When /^I hover over the css element "([^\"]*)"$/ do |selector|
   res = page.evaluate_script("window.setTimeout (function() {$('#{selector}').trigger('mouseover');}, 1)")
 end
@@ -112,19 +107,6 @@ When /^I edit the css element "([^\"]*)"$/ do |selector|
   dialog.visible?.should == true
   wait_until(15){ has_css?(".ui-dialog form") }.should == true
 end
-
-When /^I change the field "([^\"]*)" to "([^\"]*)"$/ do |attr, new_content|
-  within(:css, ".ui-dialog form") do
-    fill_in "element[#{attr}]", :with => new_content
-  end
-end
-
-When /^I click "([^\"]*)" on the dialog$/ do |button_title|
-  within(:css, ".ui-dialog") do
-    click(button_title)
-  end
-end
-
 
 Then /^put me the raw result$/ do
   # Only use this for debugging a output if you don't know what went wrong
