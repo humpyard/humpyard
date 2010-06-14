@@ -6,8 +6,11 @@
     .hy-marker-frame.left
     .hy-marker-frame.right
     .hy-el-menu
-      =link_to 'Edit', edit_humpyard_element_path(element), :'data-dialog' => 'size:600;modal:true;', :'data-icon' => "ui-icon-pencil"
+      =link_to 'Edit', edit_humpyard_element_path(element, @page.content_data.respond_to?(:edit_context) ?  @page.content_data.edit_context : {}), :'data-dialog' => 'size:600;modal:true;', :'data-icon' => "ui-icon-pencil"
       =link_to 'Delete', humpyard_element_path(element), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :remote => true
       =link_to 'Move', '#', :'data-icon' => "ui-icon-arrow-4", :"data-draghandle"=>true
+      - custom_partial_path = "/humpyard/elements/#{element.content_data.class.name.split('::').last.underscore.pluralize}/buttons"
+      - if template_exists? custom_partial_path , nil, true
+        = render :partial => custom_partial_path, :locals => {:element => element}
 - else # view mode
   = render :partial => "/humpyard/elements/show_view", :locals => {:element => element}
