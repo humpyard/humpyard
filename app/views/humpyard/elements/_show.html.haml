@@ -6,7 +6,7 @@
     .hy-marker-frame.left
     .hy-marker-frame.right
     .hy-el-menu
-      =link_to 'Edit', edit_humpyard_element_path(element, @page.content_data.respond_to?(:edit_context) ?  @page.content_data.edit_context : {}), :'data-dialog' => 'size:600;modal:true;', :'data-icon' => "ui-icon-pencil"
+      =link_to 'Edit', edit_humpyard_element_path(element), :'data-dialog' => 'size:600;modal:true;', :'data-icon' => "ui-icon-pencil"
       =link_to 'Delete', humpyard_element_path(element), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :remote => true
       =link_to 'Move', '#', :'data-icon' => "ui-icon-arrow-4", :"data-draghandle"=>true
       - unless element.content_data.nil?
