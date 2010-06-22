@@ -1,6 +1,10 @@
 en:
+  
+  yes: yes
+  no: no
+  
   humpyard_cms:
-    start: 'Loading Humpyard {{version}}'
+    start: 'Loading Humpyard %{version}'
 
   errors:
     messages:
