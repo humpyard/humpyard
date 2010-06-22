@@ -2,12 +2,12 @@ Rails.application.routes.draw do |map|
   # Map admin controllers
   
   scope "/#{Humpyard::config.admin_prefix}" do 
-    resources :humpyard_pages, :controller => 'humpyard/pages', :path => :pages, :only => [:index, :new, :create, :edit, :update, :show, :destroy] do
+    resources :humpyard_pages, :controller => 'humpyard/pages', :path => "pages", :only => [:index, :new, :create, :edit, :update, :show, :destroy] do
       collection do
         post :move
       end
     end
-    resources :humpyard_elements, :controller => 'humpyard/elements', :path => :elements, :only => [:new, :create, :edit, :update, :show, :destroy] do
+    resources :humpyard_elements, :controller => 'humpyard/elements', :path => "elements", :only => [:new, :create, :edit, :update, :show, :destroy] do
       member do
         get :inline_edit
       end
