@@ -14,7 +14,7 @@
         Page Options
       = form.input :title
       - if Humpyard::config.templates.size > 1
-        = form.input :template_name, :as => :select, :select_options => Humpyard::config.templates.map{|name, data| [name.to_s.camelize, name.to_s]}
+        = form.input :template_name, :as => :select, :collection => Humpyard::config.templates.map{|name, data| [name.to_s.camelize, name.to_s]}
       - else
         = hidden_field :page, :template_name
       = form.input :description
