@@ -198,21 +198,13 @@
           console.log("TREE IS LOADED");
           treeview.jstree("open_all"); 
         })
+        
         .bind("move_node.jstree", function(event, data) {
-          console.log("move_node data:");
-          console.log(data.rslt);
-          // console.log("new parent:");
-          // console.log(data.rslt.np);
-          // console.log("object:");
-          // console.log(data.rslt.o);
-          console.log("reference:");
-          console.log(data.rslt.r.attr("id"));
-          console.log("position:");
-          console.log(data.rslt.p);
-          
+          var item = data.rslt.o;
           var parent = data.rslt.np;
           var previous = null;
           var next = null;
+          
           switch(data.rslt.p) {
             case "before": 
               next = data.rslt.o.next();
@@ -227,30 +219,25 @@
             case "last":
               break;
             default:
-              alert("position not handled: " + data.rslt.p + " " + data.rslt.r.attr("id"))
+              alert("position not handled: " + data.rslt.p + " " + data.rslt.r.attr("id"));
+              return;
           }
-          console.log("move: parent "+parent.attr("id")+" prev "+(previous ? previous.attr("id") : 'null')+" next "+(next ? next.attr("id") : "null"));
+
+          var params = {
+            id: item.attr('data-page-id'),
+            parent_id: parent ? parent.attr('data-page-id') : undefined,
+            prev_id: previous ? previous.attr('data-page-id') : undefined,
+            next_id: next ? next.attr('data-page-id') : undefined
+          };
+
+          $.post(treeview.attr('data-sortable-update-url'), params);
         })
+        
         .jstree({
           "animation": 100,
           "core" : {
 
           },
-          // "crrm" : { 
-          //   "move" : {
-          //     "check_move" : function (m) { 
-          //       var p = this._get_parent(m.o);
-          //       if(!p) return false;
-          //       p = p == -1 ? this.get_container() : p;
-          //       console.log(p);
-          //       console.log(m.np);
-          //       console.log("move");
-          //       if(p === m.np) return true;
-          //       if(p[0] && m.np[0] && p[0] === m.np[0]) return true;
-          //       return false;
-          //     }
-          //   }
-          // },
           "dnd" : {
             //"drop_target" : true,
             //"drag_target" : true,
