@@ -192,6 +192,101 @@
       }
     },
     
+    initTreeView: function(container) {
+      var treeview = $('.humpyard-treeview', container);
+      treeview.bind("loaded.jstree", function (event, data) {
+          console.log("TREE IS LOADED");
+          treeview.jstree("open_all"); 
+        })
+        .bind("move_node.jstree", function(event, data) {
+          console.log("move_node data:");
+          console.log(data.rslt);
+          // console.log("new parent:");
+          // console.log(data.rslt.np);
+          // console.log("object:");
+          // console.log(data.rslt.o);
+          console.log("reference:");
+          console.log(data.rslt.r.attr("id"));
+          console.log("position:");
+          console.log(data.rslt.p);
+          
+          var parent = data.rslt.np;
+          var previous = null;
+          var next = null;
+          switch(data.rslt.p) {
+            case "before": 
+              next = data.rslt.o.next();
+              previous = data.rslt.o.prev();
+              break;
+            case "after" : 
+              previous = data.rslt.o.prev()
+              next = data.rslt.o.next();
+              break;
+            case "inside":
+            case "first" :
+            case "last":
+              break;
+            default:
+              alert("position not handled: " + data.rslt.p + " " + data.rslt.r.attr("id"))
+          }
+          console.log("move: parent "+parent.attr("id")+" prev "+(previous ? previous.attr("id") : 'null')+" next "+(next ? next.attr("id") : "null"));
+        })
+        .jstree({
+          "animation": 100,
+          "core" : {
+
+          },
+          // "crrm" : { 
+          //   "move" : {
+          //     "check_move" : function (m) { 
+          //       var p = this._get_parent(m.o);
+          //       if(!p) return false;
+          //       p = p == -1 ? this.get_container() : p;
+          //       console.log(p);
+          //       console.log(m.np);
+          //       console.log("move");
+          //       if(p === m.np) return true;
+          //       if(p[0] && m.np[0] && p[0] === m.np[0]) return true;
+          //       return false;
+          //     }
+          //   }
+          // },
+          "dnd" : {
+            //"drop_target" : true,
+            //"drag_target" : true,
+            "drop_finish" : function(data) {
+              console.log("drop_finish");
+              console.log(data);
+            },
+            "drag_check" : function (data) {
+              // check root node - no dnd
+              console.log("DRAGCHECK");
+              return { 
+                after : true, 
+                before : true, 
+                inside : true 
+              };
+            },
+            "drag_finish" : function () { 
+              alert("DRAG OK"); 
+            }
+          },
+          "themes" : {
+            "theme" : "default",
+            "dots" : true,
+            "icons" : true,
+            "url": "/stylesheets/jstree/style.css"
+          },
+          "plugins" : [ 
+            "themes", 
+            "html_data",
+            "crrm",
+            "dnd"
+          ]
+        });
+      
+    },
+    
     submitForm: function(form, dialog) {
       var options = {
         dataType: 'json',
@@ -271,6 +366,7 @@
           $.humpyard.initForm(dialog);
           $.humpyard.initPages(dialog);
           $.humpyard.initTabView(dialog);
+          $.humpyard.initTreeView(dialog);
 
           // Add buttons
           

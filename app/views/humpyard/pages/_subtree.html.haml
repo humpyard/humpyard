@@ -1,7 +1,12 @@
-.treeitem{'data-droppable'=>'hy-pages', 'data-sortable'=>'hy-pages', 'data-sortable-update-url'=> "#{move_humpyard_pages_path}"}
-  - if pages and pages.size > 0
+- if pages and pages.size > 0
+  %ul
     - pages.each do |page|
+    %li.treeitem{'id' => "tree_node_#{page.id}", 'data-sortable-update-url'=> "#{move_humpyard_pages_path}"}
       - unless page == root_page
-        .treeview{'data-draggable'=>"hy-pages", 'data-page-id'=>page.id}
-          = link_to page.title, edit_humpyard_page_path(page), :'data-dialog-link' => true, :class => (@page and @page==page ? 'active' : ''), :id => "hy-page-dialog-item-#{page.id}"
-          = render :partial => 'subtree', :locals => {:pages => page.content_data.child_pages, :root_page => @root_page}
+        =# page.title
+        = link_to page.title, edit_humpyard_page_path(page), :'data-dialog-link' => true, :class => (@page and @page==page ? 'active' : ''), :id => "hy-page-dialog-item-#{page.id}"
+        = "tree_node_#{page.id}"
+        = render :partial => 'subtree', :locals => {:pages => page.content_data.child_pages, :root_page => @root_page}
+
+
+          / .treeview{'data-draggable'=>"hy-pages", 'data-page-id'=>page.id}
