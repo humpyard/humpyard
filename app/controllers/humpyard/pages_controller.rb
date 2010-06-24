@@ -48,19 +48,27 @@ module Humpyard
         
         #do_move(@page, @prev, @next)
       
-        insert_options = {
-          :element => "hy-id-#{@page.id}",
-          :url => @page.human_url,
-          :parent => @page.parent ? "hy-page-dialog-item-#{@page.id}" : "hy-page-dialog-pages"
-        }
+        # insert_options = {
+        #   :element => "hy-id-#{@page.id}",
+        #   :url => @page.page.human_url,
+        #   :parent => @page.parent ? "hy-page-dialog-item-#{@page.id}" : "hy-page-dialog-pages"
+        # }
         
-        insert_options[:before] = "hy-page-dialog-item-#{@next.id}" if @next
-        insert_options[:after] = "hy-page-dialog-item-#{@prev.id}" if not @next and @prev
+        # insert_options[:before] = "hy-page-dialog-item-#{@next.id}" if @next
+        # insert_options[:after] = "hy-page-dialog-item-#{@prev.id}" if not @next and @prev
+
+        # just reload the tree
+      
+        replace_options = {
+          :element => "hy-page-treeview",
+          :content => render_to_string(:partial => "tree.html", :locals => {:page => @page})
+        }
       
         render :json => {
           :status => :ok,
           #:dialog => :close,
-          #:insert => [insert_options]
+          # :insert => [insert_options],
+          :replace => [replace_options]
         }
       else
         render :json => {
@@ -131,9 +139,10 @@ module Humpyard
         end
         
         parent = Humpyard::Page.where('id = ?', params[:parent_id]).first
-        unless parent
-          parent = Humpyard::Page.root_page
-        end
+        # by default, make it possible to move page to root, uncomment to do otherwise:
+        #unless parent
+        #  parent = Humpyard::Page.root_page
+        #end
         @page.update_attribute :parent, parent
         @prev = Humpyard::Page.where('id = ?', params[:prev_id]).first
         @next = Humpyard::Page.where('id = ?', params[:next_id]).first

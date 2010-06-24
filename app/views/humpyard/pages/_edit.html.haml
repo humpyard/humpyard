@@ -18,6 +18,7 @@
       - else
         = hidden_field :page, :template_name
       = form.input :description
+      = form.input :in_menu
     = render :partial => "/humpyard/pages/#{@page.class.name.split('::').last.underscore.pluralize}/edit", :locals => {:page => @page, :form => form}
     .humpyard-tab
       .humpyard-tab-title
@@ -26,3 +27,5 @@
       = form.input :display_until
   .humpyard-form-buttons  
     = form.submit
+    - if @page.persisted?
+      = link_to 'Delete', humpyard_page_path(@page), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :remote => true

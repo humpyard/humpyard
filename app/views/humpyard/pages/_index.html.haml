@@ -2,7 +2,8 @@
   = @page.class.to_s.pluralize
 .dialog-columns
   .left-dialog-column
-    = render :partial => 'tree', :locals => {:pages => @pages, :page => @page}
+    #hy-page-treeview
+      = render :partial => 'tree', :locals => {:pages => @pages, :page => @page}
     %hr
     - Humpyard::config.page_types.each do |name, type|
       = link_to "Add #{type} Page", new_humpyard_page_path(:type => name), :'data-dialog-link' => true

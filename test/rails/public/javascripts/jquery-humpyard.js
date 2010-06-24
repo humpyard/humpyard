@@ -12,6 +12,7 @@
           var elem = $('#' + k['element']);
           if(k['content']) {
             elem.html(k['content']);
+            $.humpyard.initTreeView(elem);
           }
           if(k['url']) {
             elem.load(k['url'], function(r, s, x) {
@@ -75,7 +76,6 @@
           var item = ui.item;
           
           var sortable = item.parents('div[data-sortable=' + name+ ']:first');;
-          console.log(sortable);
           var parent = item.parents('div[data-draggable=' + name+ ']:first');
           var prev = item.prev('div[data-draggable=' + name+ ']');
           var next = item.next('div[data-draggable=' + name+ ']');
@@ -241,12 +241,12 @@
             //"drop_target" : true,
             //"drag_target" : true,
             "drop_finish" : function(data) {
-              console.log("drop_finish");
-              console.log(data);
+              // console.log("drop_finish");
+              // console.log(data);
             },
             "drag_check" : function (data) {
               // check root node - no dnd
-              console.log("DRAGCHECK");
+              // console.log("DRAGCHECK");
               return { 
                 after : true, 
                 before : true, 
@@ -551,7 +551,7 @@ jQuery(function($) {
       var intersections = [];
 
       $.each(inst.sortables, function(i) {
-        console.log(this);
+        // console.log(this);
         
         //Copy over some variables to allow calling the sortable's native _intersectsWith
         this.instance.positionAbs = inst.positionAbs;
@@ -575,10 +575,10 @@ jQuery(function($) {
       // Handle drag in and out of intersections
       $.each(inst.sortables, function(i) { 
         if(this.instance == topIntersection) {
-          console.log('drag in');
+          // console.log('drag in');
           dragIn(this);
         } else {
-          console.log('drag out');
+          // console.log('drag out');
           dragOut(this);
         }
       });
