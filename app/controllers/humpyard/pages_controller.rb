@@ -50,7 +50,7 @@ module Humpyard
       
         insert_options = {
           :element => "hy-id-#{@page.id}",
-          :url => @page,
+          :url => @page.human_url,
           :parent => @page.parent ? "hy-page-dialog-item-#{@page.id}" : "hy-page-dialog-pages"
         }
         
@@ -59,8 +59,8 @@ module Humpyard
       
         render :json => {
           :status => :ok,
-          :dialog => :close,
-          :insert => [insert_options]
+          #:dialog => :close,
+          #:insert => [insert_options]
         }
       else
         render :json => {

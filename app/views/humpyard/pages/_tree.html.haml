@@ -2,7 +2,7 @@
   - root_page = Humpyard::Page.root_page
   - if root_page
     %ul
-      %li{:id => "tree_node_#{root_page.id}", :'data-page-id' => root_page.id}
+      %li{:'data-page-id' => root_page.id}
         = link_to root_page.title, edit_humpyard_page_path(root_page), :'data-dialog-link' => true, :class => (page and page == root_page ? 'active' : ''), :id => "hy-page-dialog-item-#{root_page.id}"
         = render :partial => 'subtree', :locals => {:pages => root_page.content_data.child_pages, :root_page => root_page} 
     
