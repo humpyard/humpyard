@@ -195,7 +195,6 @@
     initTreeView: function(container) {
       var treeview = $('.humpyard-treeview', container);
       treeview.bind("loaded.jstree", function (event, data) {
-          console.log("TREE IS LOADED");
           treeview.jstree("open_all"); 
         })
         
