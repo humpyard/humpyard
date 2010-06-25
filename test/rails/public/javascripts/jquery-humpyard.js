@@ -353,6 +353,8 @@
           $.humpyard.initPages(dialog);
           $.humpyard.initTabView(dialog);
           $.humpyard.initTreeView(dialog);
+          $.humpyard.initEditButtons($('.humpyard-form-buttons a', dialog));
+          
 
           // Add buttons
           
