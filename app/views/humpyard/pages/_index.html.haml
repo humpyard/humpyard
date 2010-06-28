@@ -5,11 +5,14 @@
     #hy-page-treeview
       = render :partial => 'tree', :locals => {:pages => @pages, :page => @page}
     %hr
-    - Humpyard::config.page_types.each do |name, type|
-      = link_to "Add #{type} Page", new_humpyard_page_path(:type => name), :'data-dialog-link' => true
+    .humpyard-form-buttons
+      - Humpyard::config.page_types.each do |name, type|
+        = link_to "Add #{name.capitalize} Page", new_humpyard_page_path(:type => name), :'data-dialog-link' => true
   .right-dialog-column
     - if @page
       = render :partial => 'edit', :locals => {:page => @page}
     - else
       Nothing selected
+    .hy-locale-info
+      = I18n.locale
 .humpyard-dialog-buttons

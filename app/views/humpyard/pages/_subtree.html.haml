@@ -3,5 +3,5 @@
     - pages.each do |page|
       %li.treeitem{:'data-page-id' => page.id, :id => "hy-page-treeview-id-#{page.id}"}
         - unless page == root_page
-          = link_to page.title, edit_humpyard_page_path(page), :'data-dialog-link' => true, :class => (@page and @page==page ? 'active' : ''), :id => "hy-page-dialog-item-#{page.id}"
+          = link_to page.title, edit_humpyard_page_path(page), :'data-dialog-link' => true, :class => (@page and @page==page ? 'active' : ''), :id => "hy-page-tree-item-#{page.id}"
           = render :partial => 'subtree.html', :locals => {:pages => page.content_data.child_pages, :root_page => @root_page}
