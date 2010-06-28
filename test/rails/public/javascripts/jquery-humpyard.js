@@ -196,6 +196,8 @@
       var treeview = $('.humpyard-treeview', container);
       treeview.bind("loaded.jstree", function (event, data) {
           treeview.jstree("open_all"); 
+          // TODO: select current page in the tree
+          //treeview.select_node()...
         })
         
         .bind("move_node.jstree", function(event, data) {
@@ -263,11 +265,15 @@
             "icons" : true,
             "url": "/stylesheets/jstree/style.css"
           },
+          "ui" : {
+            "select_limit": 1
+          },
           "plugins" : [ 
             "themes", 
             "html_data",
             "crrm",
-            "dnd"
+            "dnd",
+            "ui"
           ]
         });
       
@@ -353,7 +359,7 @@
           $.humpyard.initPages(dialog);
           $.humpyard.initTabView(dialog);
           $.humpyard.initTreeView(dialog);
-          $.humpyard.initEditButtons($('.humpyard-form-buttons a', dialog));
+          $.humpyard.initEditButtons($('.humpyard-form-buttons a, .humpyard-form-buttons button', dialog));
           
 
           // Add buttons
@@ -648,6 +654,8 @@ jQuery(function($) {
 
         $.humpyard.initForm(content);
         $.humpyard.initTabView(content);
+        $.humpyard.initEditButtons($('.humpyard-form-buttons a, .humpyard-form-buttons button', content));
+        
       }
     });
     e.preventDefault();
