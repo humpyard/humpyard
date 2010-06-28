@@ -107,7 +107,7 @@ module Humpyard
 #            :dialog => :close,
             :replace => [
               { 
-                :element => "hy-page-tree-item-#{@page.id}",
+                :element => "hy-page-treeview-text-#{@page.id}",
                 :content => @page.title
               }
             ]

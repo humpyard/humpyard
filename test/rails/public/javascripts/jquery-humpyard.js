@@ -235,9 +235,9 @@
         })
         
         .jstree({
-          "animation": 100,
           "core" : {
-
+            "html_titles": true,
+            "animation": 100
           },
           "dnd" : {
             //"drop_target" : true,
