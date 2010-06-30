@@ -1,3 +1,5 @@
+# coding=utf-8
+
 require 'spec_helper'
 
 describe Humpyard::Page do
@@ -58,7 +60,7 @@ describe Humpyard::Page do
   
     it "should give itself names with some special chars" do
       p = Factory.build :page
-      p.title = 'Das  Überwebseite'
+      p.title = 'Das Überwebseite'
       p.suggested_title_for_url.should eql 'das_uberwebseite'
       p.title = 'Eine kleine Seite über mich'
       p.suggested_title_for_url.should eql 'eine_kleine_seite_uber_mich'
