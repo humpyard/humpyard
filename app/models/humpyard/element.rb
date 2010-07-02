@@ -15,6 +15,23 @@ module Humpyard
 
     validates_with Humpyard::ActiveModel::PublishRangeValidator, {:attributes => [:display_from, :display_until]}
     
+    # Elements can be shared on other pages. this adds #unshared?, #shared_on_siblings?, shared_on_children? getters
+    # plus #to_unshared, #to_shared_on_siblings, #to_shared_on_children "setters"
+    # 
+    SHARED_STATES = { 
+      :unshared => 0,
+      :shared_on_siblings   => 1,
+      :shared_on_children  => 2
+    }.each_pair do |key, value|
+      define_method "#{key}?" do
+        state == value
+      end
+      define_method "to_#{key}" do
+        update_attribute :state, value unless state == value # no point in troubling the database if the state is already == value
+      end
+    end
+
+
     # Return the logical modification time for the element.
     #
     def last_modified
@@ -22,6 +39,8 @@ module Humpyard
       timestamps = [rails_root_mtime, self.updated_at]
       timestamps.sort.last
     end
+    
+
     
   end
 end
