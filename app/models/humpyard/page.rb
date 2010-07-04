@@ -32,9 +32,22 @@ module Humpyard
       self.id and Humpyard::Page.root_page and self.id == Humpyard::Page.root_page.id
     end
         
-      
+    # Return the elements on a yield container. Includes shared elemenents from siblings or parents
+    #
     def root_elements(yield_name = 'main')
-      elements.where('container_id IS NULL and page_yield_name = ?', yield_name.to_s).order('position ASC')
+      siblings = self.siblings
+      ancestors = self.ancestors
+      # my own elements
+      ret = elements.where('container_id IS NULL and page_yield_name = ?', yield_name.to_s).order('position ASC')
+      # sibling shared elements
+      unless siblings.empty?
+        ret += Humpyard::Element.where('container_id IS NULL and page_id in (?) and page_yield_name = ? and shared_state = ?', siblings, yield_name.to_s, Humpyard::Element::SHARED_STATES[:shared_on_siblings]).order('position ASC')
+      end
+      # ancestors shared elements
+      unless ancestors.empty?
+        ret += Humpyard::Element.where('container_id IS NULL and page_id in (?) and page_yield_name = ? and shared_state = ?', ancestors, yield_name.to_s, Humpyard::Element::SHARED_STATES[:shared_on_children]).order('position ASC')
+      end
+      ret
     end 
     
     def parse_path(path)

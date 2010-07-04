@@ -5,6 +5,15 @@ en:
   
   humpyard_cms:
     start: 'Loading Humpyard %{version}'
+    shared_state_info:
+      owning_page:
+        "0": unshared
+        "1": shared on all siblings
+        "2": shared on all children
+      with_title:
+        "0": unshared
+        "1": Shared from sibling '%{title}'
+        "2": Shared from parent '%{title}'
 
   errors:
     messages:

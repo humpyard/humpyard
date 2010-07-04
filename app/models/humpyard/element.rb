@@ -2,7 +2,7 @@ module Humpyard
   ####
   # Humpyard::Element is a model of an element to display on a Humpyard::Page.
   class Element < ::ActiveRecord::Base
-    attr_accessible :page, :page_id, :content_data, :content_data_id, :content_data_type, :page_yield_name, :container, :container_id, :display_until, :display_from
+    attr_accessible :page, :page_id, :content_data, :content_data_id, :content_data_type, :page_yield_name, :container, :container_id, :display_until, :display_from, :shared_state
 
     set_table_name "#{Humpyard::config.table_name_prefix}elements"
 
@@ -24,10 +24,10 @@ module Humpyard
       :shared_on_children  => 2
     }.each_pair do |key, value|
       define_method "#{key}?" do
-        state == value
+        shared_state.to_i == value
       end
       define_method "to_#{key}" do
-        update_attribute :state, value unless state == value # no point in troubling the database if the state is already == value
+        update_attribute :shared_state, value.to_i unless state == value # no point in troubling the database if the state is already == value
       end
     end
 

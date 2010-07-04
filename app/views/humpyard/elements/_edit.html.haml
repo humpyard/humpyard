@@ -15,6 +15,7 @@
     .humpyard-tab
       .humpyard-tab-title
         Generic Options
+      = form.input :shared_state, :as => :select, :collection => Humpyard::Element::SHARED_STATES
       = form.input :display_from
       = form.input :display_until
   .humpyard-dialog-buttons  

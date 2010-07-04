@@ -236,6 +236,24 @@ describe Humpyard::Page do
     end
   end
     
-
-  
+  describe "root_elements" do
+    it "should return a list of elements including those shared from siblings" do
+      parent = Factory(:static_page)
+      subpage1 = Factory(:static_page, :parent => parent.page)
+      subpage2 = Factory(:static_page, :parent => parent.page)
+      e1 = Factory(:element, :page => subpage1.page, :shared_state => Humpyard::Element::SHARED_STATES[:shared_on_siblings])
+      parent.page.root_elements.should eql []
+      subpage1.page.root_elements.should eql [e1]
+      subpage2.page.root_elements.should eql [e1]
+    end
+    it "should return a list of elements including those shared from parents" do
+      parent = Factory(:static_page)
+      subpage1 = Factory(:static_page, :parent => parent.page)
+      subpage2 = Factory(:static_page, :parent => parent.page)
+      e1 = Factory(:element, :page => parent.page, :shared_state => Humpyard::Element::SHARED_STATES[:shared_on_children])
+      parent.page.root_elements.should eql [e1]
+      subpage1.page.root_elements.should eql [e1]
+      subpage2.page.root_elements.should eql [e1]
+    end
+  end
 end
