@@ -28,7 +28,7 @@
   .humpyard-form-buttons  
     = form.submit
     - if @page.persisted?
-      = link_to 'Delete', humpyard_page_path(@page), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :remote => true
+      = link_to 'Delete', humpyard_page_path(@page.page), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :remote => true
     .hy-locale-info
       Sprache:
       = I18n.locale
