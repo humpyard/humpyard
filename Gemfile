@@ -19,7 +19,6 @@ group :test do
   gem 'cucumber',           :git => 'git://github.com/aslakhellesoy/cucumber.git'
   gem 'cucumber-rails',     :git => 'git://github.com/aslakhellesoy/cucumber-rails.git'
   gem 'pickle',             '>= 0.2.4'
-  gem 'capybara',           '>= 0.3.5'
   gem 'factory_girl',       '>= 1.2.3'
   gem 'markup_validity',    '>= 1.1.0'
   gem 'sqlite3-ruby',       :require => 'sqlite3'
