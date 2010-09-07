@@ -1,4 +1,4 @@
-Rails.application.routes.draw do |map|
+Rails.application.routes.draw do
   # Map admin controllers
   
   scope "/#{Humpyard::config.admin_prefix}" do 

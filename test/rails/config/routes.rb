@@ -1,3 +1,3 @@
-TestHumpyard::Application.routes.draw do |map|
+TestHumpyard::Application.routes.draw do
 
 end

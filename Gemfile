@@ -1,12 +1,12 @@
 source 'http://gemcutter.org'
 
-gem "rails",              :git => "git://github.com/rails/rails.git"
+gem "rails"
 gem 'builder'
 #gem 'haml',               :git => 'git://github.com/nex3/haml.git'
 gem 'compass',            :git => 'git://github.com/chriseppstein/compass.git'
 gem 'acts_as_tree',       '>= 0.1.1'
 gem 'cancan',             '>= 1.1.1'
-gem 'globalize2',         :git => 'git://github.com/argl/globalize2.git' 
+gem 'globalize3',         :git => 'git://github.com/svenfuchs/globalize3.git' 
 gem 'humpyard_form',      :git => 'git://github.com/argl/humpyard_form.git'
 
 group :test do

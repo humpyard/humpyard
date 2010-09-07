@@ -14,3 +14,4 @@ test/rails/public/stylesheets/compiled/*
 .sass-cache
 public
 test/rails/db/test.sqlite3-journal
+Gemfile.lock

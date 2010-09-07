@@ -138,11 +138,11 @@ spec = Gem::Specification.new do |s|
 #  s.add_development_dependency 'factory_girl', '>= 1.2.3'
 #  s.add_development_dependency 'markup_validity', '>= 1.1.0'
   s.add_dependency 'builder'
-  s.add_dependency 'rails', '>= 3.0.0.beta'
+  s.add_dependency 'rails', '>= 3.0.0'
   s.add_dependency 'haml', '>= 2.2.20'
   s.add_dependency 'acts_as_tree', '>= 0.1.1'
   s.add_dependency 'cancan', '>= 1.1.1'
-  s.add_dependency 'globalize2', '>= 0.2.0'
+  s.add_dependency 'globalize3', '>= 0.0.7'
   s.add_dependency 'humpyard_form', '>= 0.0.2'
 end
 
