@@ -13,8 +13,8 @@ Humpyard.configure do |config|
  
   # Template config
   config.templates = {
-    :alternative => {:yields => [:left, :right]},
-    :application => {:yields => [:sidebar]}
+    :application => {:yields => [:sidebar]},
+    :alternative => {:yields => [:left, :right]}
   }
   config.default_template = :application
       

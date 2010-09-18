@@ -6,8 +6,6 @@ module Humpyard
         def self.included(base)
           base.has_one :page, :as => :content_data, :class_name => 'Humpyard::Page', :autosave => true
           base.validate :page_must_be_valid
-          base.alias_method_chain :page, :autobuild 
-          base.alias_method_chain :column_for_attribute, :page_column_for_attribute
           
           begin
             all_attributes = Humpyard::Page.column_names + Humpyard::Page.translated_attribute_names.map{|a| a.to_s}
@@ -30,6 +28,10 @@ module Humpyard
           end
           
           base.extend ClassMethods
+          
+          base.alias_method_chain :page, :autobuild 
+          base.alias_method_chain :column_for_attribute, :page_column_for_attribute
+          
         end
         
         def page_with_autobuild
@@ -37,7 +39,7 @@ module Humpyard
         end
 
         def column_for_attribute_with_page_column_for_attribute(attr)
-          ret = column_for_attribute_without_page_column_for_attribute(attr) || page.column_for_attribute(attr) || page.translation_class.new.column_for_attribute(attr)
+          ret = column_for_attribute_without_page_column_for_attribute(attr) || Humpyard::Page.new.column_for_attribute(attr) || Humpyard::Page.translation_class.new.column_for_attribute(attr)
         end
 
         def parse_path(path)

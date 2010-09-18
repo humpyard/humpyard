@@ -29,12 +29,12 @@ end
 
 Given /^the configured www prefix is "([^\"]*)"$/ do |www_prefix|
   Humpyard::config.www_prefix = (www_prefix == ':default' ? nil : www_prefix)
-  Rails::Application.reload_routes!
+  TestHumpyard::Application.reload_routes!
 end
 
 Given /^the configured locales is "([^\"]*)"$/ do |locales|
   Humpyard::config.locales = (locales == ':default' ? nil : locales)
-  Rails::Application.reload_routes!
+  TestHumpyard::Application.reload_routes!
 end
 
 Given /^the current locale is "([^\"]*)"$/ do |locale|

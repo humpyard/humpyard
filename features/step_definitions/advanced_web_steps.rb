@@ -2,6 +2,10 @@ When /^I hover over "([^\"]*)"$/ do |selector|
   res = page.evaluate_script("window.setTimeout (function() {$('#{selector}').trigger('mouseover');}, 1)")
 end
 
+When /^I wait for (\d+) seconds$/ do |secs|
+  sleep secs.to_i
+end
+
 Then /^put me the raw result$/ do
   # Only use this for debugging a output if you don't know what went wrong
   raise page.body

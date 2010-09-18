@@ -1,12 +1,6 @@
 Given /^the standard pages$/ do
-# TODO: Problem with globalize2 when not setting the AR locale to a definite locale.
-#       Keep an eye on it and hope for fixes for globalize2 and rails3.
-#       I will contact Sven Fuchs the next days.
-#  
-#  old_locale = I18n.locale
-#  I18n.locale = :en
-  Humpyard::Page.locale = :en
-  Humpyard::Elements::TextElement.locale = :en
+  old_locale = I18n.locale
+  I18n.locale = :en
   
   Humpyard::Page.destroy_all
   
@@ -30,16 +24,11 @@ Given /^the standard pages$/ do
   c = Factory :box_element, :title => 'This is a box element', :page_id => 42, :position => 1
   t2 = Factory :text_element, :content => 'This is text inside a container', :container => c.element, :position => 1
   
-#  I18n.locale = :de
-  Humpyard::Page.locale = :de
+  I18n.locale = :de
   Humpyard::Page.find(42).update_attributes(:title => 'Meine Startseite')
-#  I18n.locale = old_locale
-  Humpyard::Elements::TextElement.locale = :de
   t1.update_attribute :content, 'Dies ist ein super Text!'
   t2.update_attribute :content, 'Dies ist ein Text in einem Container'
-  
-  Humpyard::Page.locale = nil
-  Humpyard::Elements::TextElement.locale = nil
+  I18n.locale = old_locale
 end
 
 When /^I edit the page "([^\"]*)"$/ do |page_url|
