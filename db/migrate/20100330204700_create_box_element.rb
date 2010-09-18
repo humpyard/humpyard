@@ -4,6 +4,11 @@ class CreateBoxElement < ActiveRecord::Migration
       t.timestamps
     end
     Humpyard::Elements::BoxElement.create_translation_table! :title => :string
+    begin
+      # Workaround for namespace issue
+      rename_column :elements_box_element_translations, :elements_box_element_id, :humpyard_elements_box_element_id
+    rescue
+    end
     drop_table :elements_container_elements
   end
   

@@ -30,6 +30,11 @@ class NewsPage < ActiveRecord::Migration
       t.datetime :deleted_at
     end
     Humpyard::NewsItem.create_translation_table! :title => :string, :title_for_url => :string, :content => :text
+    begin
+      # Workaround for namespace issue
+      rename_column :elements_news_element_translations, :elements_news_element_id, :humpyard_elements_news_element_id
+    rescue
+    end
     Humpyard::NewsItem.reset_column_information
   end
 
