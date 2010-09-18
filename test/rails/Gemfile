@@ -1,15 +1,14 @@
-source 'http://gemcutter.org'
+source 'http://rubygems.org'
 
-gem 'rails',         :git => 'git://github.com/rails/rails.git'
+gem 'rails',         '>=3.0.0'
 gem 'builder'
-gem 'haml',          :git => 'git://github.com/nex3/haml.git'
-gem 'compass',       :git => 'git://github.com/chriseppstein/compass.git'
-gem 'acts_as_tree',  '>= 0.1.1'
-gem 'cancan',        '>= 1.1.1'
-gem 'globalize3',    :git => 'git://github.com/svenfuchs/globalize3.git'
-gem 'humpyard_form', :git => 'git://github.com/humpyard/humpyard_form.git'
+gem 'haml',          '>=3.0.0'
+gem 'compass',       '>=0.10.0'
+gem 'acts_as_tree',  '>=0.1.1'
+gem 'cancan',        '>=1.3.4'
+gem 'globalize3',    '>=0.0.7'
+gem 'humpyard_form', '>=0.0.4'
 
 # This should be only enabled when the Rails app is standalone:
 # gem 'humpyard',      :git => 'git://github.com/humpyard/humpyard.git'
 gem 'sqlite3-ruby',  :require => 'sqlite3'
-

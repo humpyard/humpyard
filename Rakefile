@@ -127,23 +127,17 @@ spec = Gem::Specification.new do |s|
   s.description = %Q{Humpyard is a Rails CMS}
   s.email = 'info@humpyard.org'
   s.homepage = 'http://humpyard.org/'
-  s.authors = ['Sven G. Broenstrup']
+  s.authors = ['Sven G. Broenstrup', 'Andreas Pieper']
   s.files = Dir["{lib}/**/*", "{app}/*/humpyard/**/*", "{config}/routes.rb", "{config}/locales/*", "{db}/migrate/*", "{compass}/**/*", "VERSION", "README*", "LICENCE", "Gemfile"]
   s.version = ::File.read(::File.join(::File.dirname(__FILE__), "VERSION")).strip
-#  s.add_development_dependency 'rspec', '>= 1.2.9'
-#  s.add_development_dependency 'cucumber', '>= 0.6.3'
-#  s.add_development_dependency 'cucumber-rails', '>= 0.3.0'
-#  s.add_development_dependency 'pickle', '>= 0.2.4'
-#  s.add_development_dependency 'capybara', '>= 0.3.5'
-#  s.add_development_dependency 'factory_girl', '>= 1.2.3'
-#  s.add_development_dependency 'markup_validity', '>= 1.1.0'
   s.add_dependency 'builder'
   s.add_dependency 'rails', '>= 3.0.0'
-  s.add_dependency 'haml', '>= 2.2.20'
+  s.add_dependency 'haml', '>= 3.0.0'
+  s.add_dependency 'compass', '>=0.10.0'
   s.add_dependency 'acts_as_tree', '>= 0.1.1'
-  s.add_dependency 'cancan', '>= 1.1.1'
+  s.add_dependency 'cancan', '>= 1.3.4'
   s.add_dependency 'globalize3', '>= 0.0.7'
-  s.add_dependency 'humpyard_form', '>= 0.0.2'
+  s.add_dependency 'humpyard_form', '>= 0.0.4'
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
