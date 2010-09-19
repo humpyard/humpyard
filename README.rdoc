@@ -14,6 +14,9 @@ Humpyard is a CMS in a gem for Rails 3.
     gem 'globalize3',    '>=0.0.7'
     gem 'humpyard_form', '>=0.0.4'
     gem 'humpyard',      :git => 'git://github.com/humpyard/humpyard.git'
+    
+* If you want to use textil syntax on TextElements also add RedCloth to the Gemfile.
+    gem 'RedCloth',      '>=4.2.3'
   
 * Change into your Rails application's directory
 
