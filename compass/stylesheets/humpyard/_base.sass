@@ -1,3 +1,6 @@
+@import jquery_ui_overrides
+@import humpyard_form
+
 $hy_panel_bg_color: #cccccc !default
 $hy_panel_border_color: #a5a5a5 !default
 $hy_selection_color: #ffcc00 !default
@@ -6,10 +9,9 @@ $hy_bottom_bar_height: 120px !default
 $hy_bottom_padding: 5px !default
 
 
-@import jquery_ui_overrides
-
 =humpyard-base
   +jquery-ui-overrides
+  +humpyard-form
   a:focus
     outline: none
   body
