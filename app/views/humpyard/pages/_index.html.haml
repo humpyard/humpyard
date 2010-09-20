@@ -7,7 +7,7 @@
     %hr
     .humpyard-form-buttons
       - Humpyard::config.page_types.each do |name, type|
-        = link_to "Add #{name.capitalize} Page", new_humpyard_page_path(:type => name), :'data-dialog-link' => true
+        = link_to I18n.t('humpyard_cms.pages.edit.add', :page_type => type.model_name.human), new_humpyard_page_path(:type => name), :'data-dialog-link' => true
   .right-dialog-column
     - if @page
       = render :partial => 'edit', :locals => {:page => @page}

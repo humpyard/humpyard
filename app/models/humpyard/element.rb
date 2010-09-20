@@ -20,8 +20,8 @@ module Humpyard
     # 
     SHARED_STATES = { 
       :unshared => 0,
-      :shared_on_siblings   => 1,
-      :shared_on_children  => 2
+      :shared_on_siblings => 1,
+      :shared_on_children => 2
     }.each_pair do |key, value|
       define_method "#{key}?" do
         shared_state.to_i == value

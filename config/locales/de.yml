@@ -1,0 +1,60 @@
+de:  
+  activerecord:
+    models:
+      humpyard:
+        element: "Element"
+        elements:
+          box_element: 'Rahmenelement'
+          text_element: 'Textelement'
+          news_element: 'Nachrichtenelement'
+        page: "Seite"
+        pages:
+          static_page: 'Statische Seite'
+          news_page: 'Nachrichtenseite'
+    attributes:
+      humpyard:
+        elements:
+          shared_state: "Element teilen"
+          display_from: "Anzeige von"
+          display_until: "Anzeige bis"
+          box_element: 
+            title: "Überschrift"     
+          text_element: 
+            content: "Inhalt"
+            html_content: "Inhalt (formatiert)"
+          news_element: 
+            news_page: "Nachrichtenseite"
+        pages:
+          title: "Überschrift"
+          description: "Beschreibung"
+          in_menu: "Im Menü anzeigen"
+          display_from: "Anzeige von"
+          display_until: "Anzeige bis"
+        
+  yes: Ja
+  no: Nein
+  
+  humpyard_cms:
+    start: 'Humpyard %{version} laden'
+    shared_state_info:
+      owning_page:
+        "0": Ungeteilt
+        "1": Mit allen Geschwisterseiten geteilt
+        "2": Mit allen Kinderseiten geteilt
+      with_title:
+        "0": Ungeteilt
+        "1": Mit Geschwisterseite '%{title}' geteilt
+        "2": Von Elternseite '%{title}' geteilt
+    toolbar:
+      edit: "Seite bearbeiten"
+      pages: "Seiten verwalten"
+      logout: "Abmelden"
+    pages:
+      edit:
+        title: "Seiten bearbeiten"
+        add: "%{page_type} hinzufügen"
+
+  errors:
+    messages:
+      cannot_be_after_display_until: "cannot be after 'Display until'. Set an earlier date/time OR remove 'Display until'"
+      cannot_be_before_display_from: "cannot be before 'Display from'. Set a later date/time OR remove 'Display from'"

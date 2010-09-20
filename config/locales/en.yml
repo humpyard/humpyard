@@ -1,4 +1,30 @@
 en:
+  activerecord:
+    models:
+      humpyard/elements/box_element: 'box element'
+      humpyard/elements/text_element: 'text element'
+      humpyard/elements/news_element: 'news element'
+      humpyard/pages/static_page: 'static page'
+      humpyard/pages/news_page: 'news page'
+    attributes:
+      humpyard:
+        elements:
+          shared_state: "Share element"
+          display_from: "Display from"
+          display_until: "Display until"       
+          box_element: 
+            title: "Title"
+          text_element: 
+            content: "Content"
+            html_content: "Content (formated)"      
+          news_element: 
+            news_page: "News page"    
+        pages:
+          title: "Title"
+          description: "Description"
+          in_menu: "Display in menu"
+          display_from: "Display from"
+          display_until: "Display until"     
   
   yes: yes
   no: no
@@ -17,6 +43,7 @@ en:
     pages:
       edit:
         title: "Edit Pages"
+        add: "Add %{page_type}"
 
   errors:
     messages:
