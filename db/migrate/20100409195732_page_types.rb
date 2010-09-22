@@ -8,13 +8,13 @@ class PageTypes < ActiveRecord::Migration
       t.timestamps
     end
     
-    rename_column :page_translations, :humpyard_page_id, :page_id
+    rename_column :page_translations, :"#{Humpyard::config.table_name_prefix}page_id", :page_id
     Humpyard::Page.all.each do |p|
       sp = Humpyard::Pages::StaticPage.new 
       sp.page = p
       sp.save
     end
-    rename_column :page_translations, :page_id, :humpyard_page_id
+    rename_column :page_translations, :page_id, :"#{Humpyard::config.table_name_prefix}page_id"
   end
   
   def self.down

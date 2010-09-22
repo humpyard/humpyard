@@ -12,11 +12,14 @@ class Base < ActiveRecord::Migration
       t.timestamps
       t.datetime :deleted_at
     end
-    Humpyard::Page.create_translation_table! :title => :string, :title_for_url => :string, :description => :text
-    begin
-      # Workaround for namespace issue
-      rename_column :page_translations, :page_id, :humpyard_page_id
-    rescue
+    
+    create_table :page_translations do |t|
+      t.references :"#{Humpyard::config.table_name_prefix}page"
+      t.string :locale
+      t.string :title
+      t.string :title_for_url 
+      t.text :description 
+      t.timestamps
     end
     
     create_table :elements do |t|
@@ -38,19 +41,19 @@ class Base < ActiveRecord::Migration
     create_table :elements_text_elements do |t|
       t.timestamps
     end
-    Humpyard::Elements::TextElement.create_translation_table! :content => :text
-    begin
-      # Workaround for namespace issue
-      rename_column :elements_text_element_translations, :elements_text_element_id, :humpyard_elements_text_element_id
-    rescue
+    
+    create_table :elements_text_element_translations do |t|
+      t.references :"#{Humpyard::config.table_name_prefix}elements_text_element"
+      t.text :text 
+      t.timestamps
     end
   end
 
   def self.down
-    Humpyard::Elements::TextElement.drop_translation_table!
+    drop_table :elements_text_element_translations
     drop_table :elements_text_element
     drop_table :elements
-    Humpyard::Page.drop_translation_table!
+    drop_table :page_translations
     drop_table :pages
   end
 end
