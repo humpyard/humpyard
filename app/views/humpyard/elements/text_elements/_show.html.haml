@@ -1,7 +1,4 @@
 - if element.content_data.content.blank?
   &#160;
 - else
-  - if Object.const_defined?('RedCloth')
-    = RedCloth.new(element.content_data.content).to_html.html_safe
-  - else
-    = element.content_data.content
+  = element.content_data.html_content
