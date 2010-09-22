@@ -44,6 +44,7 @@ class Base < ActiveRecord::Migration
     
     create_table :elements_text_element_translations do |t|
       t.references :"#{Humpyard::config.table_name_prefix}elements_text_element"
+      t.string :locale
       t.text :text 
       t.timestamps
     end
