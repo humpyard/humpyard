@@ -10,8 +10,12 @@
         =link_to I18n.t('humpyard_cms.toolbar.logout'), '?user='
     #hy-bottom.hy-eb
       - Humpyard::config.element_types.each do |name, type|
-        .element{'data-addable'=>'hy-elements', 'data-draggable'=>'hy-elements', 'data-element-type'=>name, 'data-create-url'=>new_humpyard_element_path, :class => "hy-content-element-icon-#{type.to_s.underscore.dasherize}"}
-          = type.model_name.human
+        - if not type.nil?
+          .element{'data-addable'=>'hy-elements', 'data-draggable'=>'hy-elements', 'data-element-type'=>name, 'data-create-url'=>new_humpyard_element_path, :class => "hy-content-element-icon-#{type.to_s.underscore.dasherize}"}
+            %span
+              = type.model_name.human
+        - else
+          = "#{name} not found"
     #hy-body.hy-eb{'data-page-id' => @page ? @page.id : false}
       = capture_haml(&block)
 - else

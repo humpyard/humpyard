@@ -2,7 +2,7 @@
   = "#{Humpyard::config.browser_title_prefix}#{@content_for_title || 'Untitled'}#{Humpyard::config.browser_title_postfix}"
 %meta{"http-equiv"=>"Content-Type", :content=>"text/html; charset=utf-8"}/
 = stylesheet_link_tag "#{Humpyard::config.compass_stylesheet_link_tag_path}screen.css", :media => 'screen, projection'
-= stylesheet_link_tag '#{Humpyard::config.compass_stylesheet_link_tag_path}print.css', :media => 'print'
+= stylesheet_link_tag "#{Humpyard::config.compass_stylesheet_link_tag_path}print.css", :media => 'print'
 /[if lt IE 8]
-  = stylesheet_link_tag '#{Humpyard::config.compass_stylesheet_link_tag_path}ie.css', :media => 'screen, projection'
+  = stylesheet_link_tag "#{Humpyard::config.compass_stylesheet_link_tag_path}ie.css", :media => 'screen, projection'
 = @content_for_head
