@@ -44,7 +44,7 @@ module Humpyard
   class Config 
     attr_writer :table_name_prefix, :www_prefix, :admin_prefix, :element_types, :page_types # :nodoc:
     attr_writer :templates, :default_template, :browser_title_prefix, :browser_title_postfix # :nodoc:
-    attr_writer :users_framework, :js_framework, :compass_format # :nodoc:
+    attr_writer :users_framework, :js_framework, :compass_format, :compass_stylesheet_link_tag_path # :nodoc:
     
     def initialize(&block) #:nodoc:
       configure(&block) if block_given?
@@ -151,6 +151,10 @@ module Humpyard
     
     def compass_format
       @compass_format ||= 'scss'
+    end
+    
+    def compass_stylesheet_link_tag_path
+      @compass_stylesheet_link_tag_path ||= 'compiled/'
     end
     
     def page_formats=(formats) #:nodoc:
