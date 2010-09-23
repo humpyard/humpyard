@@ -14,8 +14,6 @@
           .element{'data-addable'=>'hy-elements', 'data-draggable'=>'hy-elements', 'data-element-type'=>name, 'data-create-url'=>new_humpyard_element_path, :class => "hy-content-element-icon-#{type.to_s.underscore.dasherize}"}
             %span
               = type.model_name.human
-        - else
-          = "#{name} not found"
     #hy-body.hy-eb{'data-page-id' => @page ? @page.id : false}
       = capture_haml(&block)
 - else
