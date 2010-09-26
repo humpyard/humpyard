@@ -35,8 +35,6 @@ module Humpyard
     # Return the elements on a yield container. Includes shared elemenents from siblings or parents
     #
     def root_elements(yield_name = 'main')
-      siblings = self.siblings
-      ancestors = self.ancestors
       # my own elements
       ret = elements.where('container_id IS NULL and page_yield_name = ?', yield_name.to_s).order('position ASC')
       # sibling shared elements
@@ -44,8 +42,8 @@ module Humpyard
         ret += Humpyard::Element.where('container_id IS NULL and page_id in (?) and page_yield_name = ? and shared_state = ?', siblings, yield_name.to_s, Humpyard::Element::SHARED_STATES[:shared_on_siblings]).order('position ASC')
       end
       # ancestors shared elements
-      unless ancestors.empty?
-        ret += Humpyard::Element.where('container_id IS NULL and page_id in (?) and page_yield_name = ? and shared_state = ?', ancestors, yield_name.to_s, Humpyard::Element::SHARED_STATES[:shared_on_children]).order('position ASC')
+      unless ancestor_pages.empty?
+        ret += Humpyard::Element.where('container_id IS NULL and page_id in (?) and page_yield_name = ? and shared_state = ?', ancestor_pages, yield_name.to_s, Humpyard::Element::SHARED_STATES[:shared_on_children]).order('position ASC')
       end
       ret
     end 
@@ -95,7 +93,40 @@ module Humpyard
     
     # Find the child pages
     def child_pages
-      content_data.child_pages
+      if content_data.is_humpyard_dynamic_page?
+        content_data.child_pages
+      else
+        if is_root_page?
+          children + siblings 
+        else
+          children
+        end
+      end
+    end
+    
+    # Get the parent page (even on dynamic pages)
+    def parent_page
+      if parent
+        parent
+      elsif is_root_page?
+        nil
+      else
+        Humpyard::Page.root_page
+      end
+    end
+    
+    # Get all ancestor pages
+    def ancestor_pages
+      if parent_page
+        parent_page.ancestor_pages + [parent_page]
+      else
+        []
+      end
+    end
+    
+    # Is the given page an ancestor of the actual page
+    def is_ancestor_page_of? page
+      page.ancestor_pages.include? self
     end
     
     # Return the logical modification time for the page, suitable for http caching, generational cache keys, etc.

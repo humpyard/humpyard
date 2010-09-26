@@ -17,9 +17,9 @@
         = form.input :template_name, :as => :select, :collection => Humpyard::config.templates.map{|name, data| [name.to_s.camelize, name.to_s]}
       - else
         = hidden_field :page, :template_name
-      = form.input :description
+      = form.input :description, :rows => 10
       = form.input :in_menu
-    = render :partial => "/humpyard/pages/#{@page.class.name.split('::').last.underscore.pluralize}/edit", :locals => {:page => @page, :form => form}
+    = render "/humpyard/pages/#{@page.class.name.split('::').last.underscore.pluralize}/edit", :page => @page, :form => form
     .humpyard-tab
       .humpyard-tab-title
         Generic Options

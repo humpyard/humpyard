@@ -12,7 +12,7 @@ Feature: Pages Admin
     Given the standard pages
     And I am logged in as admin
     When I go to path "/admin/pages"
-    Then I should see "Edit Pages"
+    Then I should see "Manage Pages"
     When I go to path "/admin/pages/42"
     Then I should get a status code of 200
     And I should see the page with id 42

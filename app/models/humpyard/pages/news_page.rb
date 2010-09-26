@@ -36,6 +36,10 @@ module Humpyard
         []
       end
       
+      def parent_page
+        super
+      end
+      
       def site_map(locale)
         {
           :url => page.human_url(:locale => locale),
