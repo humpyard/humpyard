@@ -20,8 +20,11 @@ belongs_to :<%= attribute.name %>
     # }
   end
   
+  #
+  # Remove this function if page is not dynamic
+  #
   def child_pages
-    []
+   []
   end
   
   def site_map(locale)

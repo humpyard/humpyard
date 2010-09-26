@@ -1,9 +1,9 @@
 !!! Strict
-%html
+%html{html_attrs(I18n.locale)}
   %head
     =render :partial => 'humpyard/common/head'
     = stylesheet_link_tag 'smoothness/jquery-ui-1.8.custom.css'
-    = javascript_include_tag 'jquery-1.4.2.min', 'jquery-ui.min', 'jquery.form-2.43', 'jquery-rails', 'jquery-humpyard'
+    = javascript_include_tag 'jquery-1.4.2.min', 'jquery-ui.min', 'jquery.form-2.43', 'jquery.jstree', 'jquery-rails', 'jquery-humpyard'
     = csrf_meta_tag
   = page_body do
     .container
