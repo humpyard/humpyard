@@ -25,7 +25,7 @@ module Humpyard
     validates_presence_of :title
     
     def self.root_page
-      Humpyard::Page.find_by_title_for_url :index
+      @root_page ||= Humpyard::Page.select(:id).with_translated_attribute(:title_for_url, :index).first
     end    
     
     def is_root_page?
@@ -130,9 +130,15 @@ module Humpyard
     end
     
     # Return the logical modification time for the page, suitable for http caching, generational cache keys, etc.
-    def last_modified
-      content_data.nil? ? nil : content_data.last_modified
+    def last_modified options = {}
+      modified_at = content_data.nil? ? updated_at : content_data.last_modified
+      
+      if(options[:include_pages])
+        last_page_updated_at = Humpyard::Page.select('updated_at').order('updated_at DESC').first.updated_at
+        modified_at = last_page_updated_at if last_page_updated_at > modified_at
+      end
+      
+      modified_at      
     end
-    
   end
 end

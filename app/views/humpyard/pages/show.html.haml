@@ -1,12 +1,14 @@
-- title @page.title
+- cache "hy-page-#{@page.id}-#{I18n.locale}-#{@humpyard_user ? @humpyard_user : nil}-#{@page.last_modified.to_i}" do
+  - title @page.title
 
-#hy-content-main.hy-content{:'data-content-yield' => 'main'}
-  = render :partial => @page_partial, :locals => @local_vars
+  #hy-content-main.hy-content{:'data-content-yield' => 'main'}
+    = render :partial => @page_partial, :locals => @local_vars
 
-/ 
-  ="X-HumpYard-Page:#{@page.id}"
+  / 
+    ="X-HumpYard-Page:#{@page.id}"
+    ="X-HumpYard-Time:#{Time.now}"
 
-- Humpyard::config.templates[@page.template_name.to_sym][:yields].each do |yield_name|
-  - content_for yield_name.to_sym do
-    .hy-content{:id => "hy-content-#{yield_name}", :'data-content-yield' => yield_name}
-      = render :partial => "/humpyard/elements/show_container", :locals => {:elements => @page.root_elements(yield_name)}
+  - Humpyard::config.templates[@page.template_name.to_sym][:yields].each do |yield_name|
+    - content_for yield_name.to_sym do
+      .hy-content{:id => "hy-content-#{yield_name}", :'data-content-yield' => yield_name}
+        = render :partial => "/humpyard/elements/show_container", :locals => {:elements => @page.root_elements(yield_name)}

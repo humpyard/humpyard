@@ -184,6 +184,10 @@ module Humpyard
 
       if params[:locale] and Humpyard.config.locales.include? params[:locale].to_sym
         I18n.locale = params[:locale]
+      elsif session[:humpyard_locale]
+        I18n.locale = session[:humpyard_locale]
+      else
+        I18n.locale = Humpyard.config.locales.first
       end
       
       # Find page by name
@@ -197,7 +201,7 @@ module Humpyard
               dyn_page_path << path_part
             else     
               # Find page by name and parent; parent=nil means page on root level
-              @page = Page.find_by_title_for_url CGI::escape(path_part), :locale => I18n.locale
+              @page = Page.with_translated_attribute(:title_for_url, CGI::escape(path_part), I18n.locale).first
               # Raise 404 if no page was found for the URL or subpart
               raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (X4201) [#{path_part}]" if @page.nil?
               raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (X4202)" if not (@page.parent == parent_page or @page.parent == Humpyard::Page.root_page)
@@ -246,10 +250,17 @@ module Humpyard
       # Raise 404 if no page was found
       raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?
       
+      response.headers['X-Humpyard-Page'] = "#{@page.id}"
+ 
+      if Rails::Application.config.action_controller.perform_caching
+        fresh_when :etag => "#{@humpyard_user.nil? ? '' : @humpyard_user}p#{@page.id}", :last_modified => @page.last_modified(:include_pages => true).utc, :public => @humpyard_user.nil?
+        return if request.fresh?(response)
+      end
+      
       @page_partial ||= "/humpyard/pages/#{@page.content_data_type.split('::').last.underscore.pluralize}/show"
       @local_vars ||= {:page => @page}
       
-      response.headers['X-Humpyard-Page'] = "#{@page.id}"
+      
       render :layout => @page.template_name
     end
     
