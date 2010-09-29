@@ -1,278 +1,173 @@
-require 'sgml_parser'
+require "nokogiri"
 
-# A class to convert HTML to textile. Based on the python parser
-# found at http://aftnn.org/content/code/html2textile/
-#
-# Read more at http://jystewart.net/process/2007/11/converting-html-to-textile-with-ruby
-#
-# Author::    James Stewart  (mailto:james@ketlai.co.uk)
-# Copyright:: Copyright (c) 2010 James Stewart
-# License::   Distributes under the same terms as Ruby
-
-# This class is an implementation of an SgmlParser designed to convert
-# HTML to textile.
-# 
-# Example usage:
-#   parser = HTMLToTextileParser.new
-#   parser.feed(input_html)
-#   puts parser.to_textile
-class HtmlToTextile < SgmlParser
-  
-  attr_accessor :result
-  attr_accessor :in_block
-  attr_accessor :data_stack
-  attr_accessor :a_href
-  attr_accessor :in_ul
-  attr_accessor :in_ol
-  
-  @@permitted_tags = []
-  @@permitted_attrs = []
-  
-  def initialize(string, verbose=nil)
-    @output = String.new
-    self.in_block = false
-    self.result = []
-    self.data_stack = []
-    super(verbose)
-    self.feed(string)
-  end
-  
-  # Normalise space in the same manner as HTML. Any substring of multiple
-  # whitespace characters will be replaced with a single space char.
-  def normalise_space(s)
-    s.to_s.gsub(/\s+/x, ' ')
-  end
-  
-  def build_styles_ids_and_classes(attributes)
-    idclass = ''
-    idclass += attributes['class'] if attributes.has_key?('class')
-    idclass += "\##{attributes['id']}" if attributes.has_key?('id')
-    idclass = "(#{idclass})" if idclass != ''
-    
-    #style = attributes.has_key?('style') ? "{#{attributes['style']}}" : ""
-    #{}"#{idclass}#{style}"
-  end
-  
-  def make_block_start_pair(tag, attributes)
-    attributes = attrs_to_hash(attributes)
-    class_style = build_styles_ids_and_classes(attributes)
-    write("#{tag}#{class_style}. ")
-    start_capture(tag)
-  end
-  
-  def make_block_end_pair
-    stop_capture_and_write
-    write("\n\n")
-  end
-  
-  def make_quicktag_start_pair(tag, wrapchar, attributes)
-    attributes = attrs_to_hash(attributes)
-    class_style = build_styles_ids_and_classes(attributes)
-    write([" ", "#{wrapchar}#{class_style}"])
-    start_capture(tag)
-  end
-
-  def make_quicktag_end_pair(wrapchar)
-    stop_capture_and_write
-    write([wrapchar, " "])
-  end
-  
-  def write(d)
-    if self.data_stack.size < 2
-      self.result += d.to_a
-    else
-      self.data_stack[-1] += d.to_a
+class HtmlToTextile
+  class Document < ::Nokogiri::XML::SAX::Document
+    def valid_tags
+      ['a','p','br','u','b','i','strong','em','ul','ol','li','sup','sub', 'ins', 'del', 'h1', 'h2', 'h3']
     end
-  end
-          
-  def start_capture(tag)
-    self.in_block = tag
-    self.data_stack.push([])
-  end
-  
-  def stop_capture_and_write options={}
-    self.in_block = false
-    x=self.data_stack.pop
-    if options[:trim]
-      while(x.first.strip.empty?) do
-        x.shift
-      end
-      while(x.last.strip.empty?) do
-        x.pop
+    
+    def tree
+      @tree ||= []
+    end
+    
+    def stack
+      @stack ||= []
+    end
+    
+    def start_element name, attrs = []
+      if valid_tags.include? name
+        attrs_hash = {}
+        while key = attrs.shift do
+          value = attrs.shift
+          attrs_hash[key] = value
+        end
+        
+        
+        stack << {
+          'name' => name, 
+          'content' => [],
+          'attrs' => attrs_hash
+        }
       end
     end
-    self.write(x)
-  end
-
-  def handle_data(data)
-    write(normalise_space(data).strip) unless data.nil? or data == ''
-  end
-
-  %w[1 2 3 4 5 6].each do |num|
-    define_method "start_h#{num}" do |attributes|
-      make_block_start_pair("h#{num}", attributes)
-    end
     
-    define_method "end_h#{num}" do
-      make_block_end_pair
-    end
-  end
-
-  PAIRS = { 'blockquote' => 'bq', 'p' => 'p' }
-  QUICKTAGS = { 'b' => '*', 'strong' => '*', 
-    'i' => '_', 'em' => '_', 'cite' => '??', 's' => '-', 
-    'sup' => '^', 'sub' => '~', 'code' => '@', 'span' => '', 'u' => '+'}
-  
-  PAIRS.each do |key, value|
-    define_method "start_#{key}" do |attributes|
-      make_block_start_pair(value, attributes)
-    end
-    
-    define_method "end_#{key}" do
-      make_block_end_pair
-    end
-  end
-  
-  QUICKTAGS.each do |key, value|
-    define_method "start_#{key}" do |attributes|
-      make_quicktag_start_pair(key, value, attributes)
-    end
-    
-    define_method "end_#{key}" do
-      make_quicktag_end_pair(value)
-    end
-  end
-  
-  def start_ol(attrs)
-    self.in_ol = true
-  end
-
-  def end_ol
-    self.in_ol = false
-    write("\n")
-  end
-
-  def start_ul(attrs)
-    self.in_ul = true
-  end
-
-  def end_ul
-    self.in_ul = false
-    write("\n")
-  end
-  
-  def start_li(attrs)
-    if self.in_ol
-      write("# ")
-    else
-      write("* ")
-    end
-    
-    start_capture("li")
-  end
-
-  def end_li
-    stop_capture_and_write
-    write("\n")
-  end
-
-  def start_a(attrs)
-    attrs = attrs_to_hash(attrs)
-    self.a_href = attrs['href']
-
-    if self.a_href:
-      write(" \"")
-      start_capture("a")
-    end
-  end
-
-  def end_a
-    if self.a_href:
-      stop_capture_and_write :trim => true
-      write(["\":", self.a_href, " "])
-      self.a_href = false
-    end
-  end
-
-  def attrs_to_hash(array)
-    array.inject({}) { |collection, part| collection[part[0].downcase] = part[1]; collection }
-  end
-
-  def start_img(attrs)
-    attrs = attrs_to_hash(attrs)
-    write([" !", attrs["src"], "! "])
-  end
-  
-  def end_img
-  end
-
-  def start_tr(attrs)
-  end
-
-  def end_tr
-    write("|\n")
-  end
-
-  def start_td(attrs)
-    write("|")
-    start_capture("td")
-  end
-
-  def end_td
-    stop_capture_and_write
-    write("|")
-  end
-
-  def start_br(attrs)
-    write("\n")
-  end
-  
-  def unknown_starttag(tag, attrs)
-    if @@permitted_tags.include?(tag)
-      write(["<", tag])
-      attrs.each do |key, value|
-        if @@permitted_attributes.include?(key)
-          write([" ", key, "=\"", value, "\""])
+    def end_element name
+      if valid_tags.include? name
+        content = stack.pop
+        if stack.empty? or stack.last['content'].nil?
+          tree << content
+        else
+          stack.last['content'] << content
         end
       end
     end
-  end
-            
-  def unknown_endtag(tag)
-    if @@permitted_tags.include?(tag)
-      write(["</", tag, ">"])
+    
+    def characters string
+      if stack.last.nil? or stack.last['content'].nil?
+        stack << "#{string}"
+      else
+        stack.last['content'] << "#{string}"
+      end
+    end
+    
+    def to_textile  
+      ActiveRecord::Base.logger.info  "### tree START"
+      ActiveRecord::Base.logger.info  @tree.inspect
+      ActiveRecord::Base.logger.info  "### tree END"
+      ActiveRecord::Base.logger.info  "### HTML START"
+      ActiveRecord::Base.logger.info  to_html
+      ActiveRecord::Base.logger.info  "### HTML END"
+      
+      @textile = ''
+      tree.each do |content|
+        _to_textile_tag content
+      end
+      
+      ActiveRecord::Base.logger.info  "### TEXTILE START"
+      ActiveRecord::Base.logger.info  @textile
+      ActiveRecord::Base.logger.info  "### TEXTILE END"      
+      
+      return @textile
+    end
+    
+    def to_html
+      @html = ''
+      tree.each do |content|
+        _to_html_tag content
+      end
+      return @html
+    end
+    
+    private
+    def _to_html_tag content, indent = 0
+      if content.class == String
+        ActiveRecord::Base.logger.info "#{('  ' * indent)}#{content.to_s.gsub("\n", "#{'  ' * indent}")}"
+        @html += "#{content}"
+      elsif content.class == Hash
+        if ['br','img'].include? content['name']
+          ActiveRecord::Base.logger.info "#{('  ' * indent)}<#{content['name']} />"
+          @html += "<#{content['name']} />"
+        else
+          ActiveRecord::Base.logger.info "#{('  ' * indent)}<#{content['name']}>"
+          @html += "<#{content['name']}>"
+          _to_html_tag(content['content'], indent + 2)
+          ActiveRecord::Base.logger.info "#{('  ' * indent)}</#{content['name']}>"
+          @html += "</#{content['name']}>"
+        end
+      elsif content.class == Array
+        content.each do |element|
+          _to_html_tag element, indent
+        end
+      end  
+    end
+    
+    def _to_textile_tag content, indent = 0
+      if content.class == String
+        @textile += "#{content}"
+      elsif content.class == Hash
+        if ['u','b','strong','i','em','del','ins', 'sub', 'sup'].include? content['name']
+          literals = {
+            'u' => '+',
+            'b' => '*',
+            'strong' => '*',
+            'i' => '_',
+            'em' => '_',
+            'del' => '-',
+            'ins' => '+',
+            'sub' => '~',
+            'sup' => '^'
+          }
+          @textile += "[#{literals[content['name']]}"
+          _to_textile_tag(content['content'])
+          @textile += "#{literals[content['name']]}]"
+        elsif ['br'].include? content['name']
+          @textile += "\n"
+        elsif ['p','h1','h2','h3'].include? content['name']
+          @textile += "#{content['name']}. "
+          _to_textile_tag(content['content'])
+          @textile += "\n\n"
+        elsif ['a'].include? content['name']
+          p content['attrs']['href'].inspect
+          @textile += "[\""
+          _to_textile_tag(content['content'])
+          @textile += "\":#{content['attrs']['href'].blank? ? '#' : content['attrs']['href']}]"
+        elsif ['ul','ol'].include? content['name']
+          literals = {
+            'ul' => '*',
+            'ol' => '#'
+          }
+
+          content['content'].each do |element|
+            if element.class == Hash and element['name'] == 'li'
+              @textile += "\n #{literals[content['name']]} "
+              _to_textile_tag element, indent +2
+            end
+          end
+          @textile += "\n"
+        else
+          _to_textile_tag content['content']
+        end
+      elsif content.class == Array
+        content.each do |element|
+          _to_textile_tag element, indent
+        end
+      end  
+      
     end
   end
   
-  # Return the textile after processing
+  def initialize(string)
+    @tree = []
+    @document = Document.new
+    parser = ::Nokogiri::HTML::SAX::Parser.new(@document)
+    parser.parse(string)
+  end
+  
   def to_textile
-    fixed = ''
-    result.join.each do |line|
-      unless line.blank? or line.strip == 'p.'
-        line = line.gsub(/^p\.\ p\.\ /, 'p. ').gsub(/^\*\ p\.\ /, '* ').gsub(/^\#\ p\.\ /, '# ').gsub(/^p\.\ \#\ /, '# ').gsub(/^p\.\ \*\ /, '* ')
-        if %w(p).include? line.first 
-          line = "\n#{line}\n"
-        end
-        if %w(* #).include? line.first 
-          line = "#{line} "
-        end
-        fixed += line
-      end
-    end
-    fixed
+    @document.to_textile
   end
   
-  # UNCONVERTED PYTHON METHODS
-  #
-  # def handle_charref(self, tag):
-  #     self._write(unichr(int(tag)))
-  #     
-  # def handle_entityref(self, tag):
-  #     if self.entitydefs.has_key(tag): 
-  #         self._write(self.entitydefs[tag])
-  # 
-  # def handle_starttag(self, tag, method, attrs):
-  #     method(dict(attrs))
-  #     
-  
+  def to_html
+    @document.to_html
+  end
 end
