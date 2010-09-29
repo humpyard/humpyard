@@ -8,7 +8,8 @@ module Humpyard
       @element = Humpyard::config.element_types[params[:type]].new(
         :page_id => params[:page_id], 
         :container_id => params[:container_id].to_i > 0 ? params[:container_id].to_i : nil,
-        :page_yield_name => params[:yield_name].blank? ? 'main' : params[:yield_name])
+        :page_yield_name => params[:yield_name].blank? ? 'main' : params[:yield_name],
+        :shared_state => 0)
       
       authorize! :create, @element.element 
       
