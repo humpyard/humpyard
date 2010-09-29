@@ -255,11 +255,11 @@ module Humpyard
       @page_partial ||= "/humpyard/pages/#{@page.content_data_type.split('::').last.underscore.pluralize}/show"
       @local_vars ||= {:page => @page}
 
+      self.class.layout(@page.template_name)
+
       if Rails::Application.config.action_controller.perform_caching
         fresh_when :etag => "#{@humpyard_user.nil? ? '' : @humpyard_user}p#{@page.id}", :last_modified => @page.last_modified(:include_pages => true).utc, :public => @humpyard_user.nil?
       end
-      
-      render :layout => @page.template_name
     end
     
     # Render the sitemap.xml for robots
