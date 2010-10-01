@@ -118,13 +118,13 @@ class HtmlToTextile
             'sup' => '^'
           }
           @textile += "[#{literals[content['name']]}"
-          _to_textile_tag(content['content'])
+          _to_textile_tag content['content'], indent
           @textile += "#{literals[content['name']]}]"
         elsif ['br'].include? content['name']
           @textile += "\n"
         elsif ['p','h1','h2','h3'].include? content['name']
-          @textile += "#{content['name']}. "
-          _to_textile_tag(content['content'])
+          @textile += "\n#{content['name']}. " unless indent > 0
+          _to_textile_tag content['content'], indent
           @textile += "\n\n"
         elsif ['a'].include? content['name']
           p content['attrs']['href'].inspect
@@ -145,7 +145,7 @@ class HtmlToTextile
           end
           @textile += "\n"
         else
-          _to_textile_tag content['content']
+          _to_textile_tag content['content'], indent
         end
       elsif content.class == Array
         content.each do |element|
