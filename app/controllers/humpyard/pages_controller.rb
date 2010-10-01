@@ -251,6 +251,8 @@ module Humpyard
       raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?
       
       response.headers['X-Humpyard-Page'] = "#{@page.id}"
+      response.headers['X-Humpyard-Modified'] = "#{@page.last_modified}"
+      response.headers['X-Humpyard-ServerTime'] = "#{Time.now.utc}"
  
       @page_partial ||= "/humpyard/pages/#{@page.content_data_type.split('::').last.underscore.pluralize}/show"
       @local_vars ||= {:page => @page}
@@ -258,7 +260,7 @@ module Humpyard
       self.class.layout(@page.template_name)
 
       if Rails::Application.config.action_controller.perform_caching
-        fresh_when :etag => "#{humpyard_user.nil? ? '' : humpyard_user}p#{@page.id}", :last_modified => @page.last_modified(:include_pages => true).utc, :public => @humpyard_user.nil?
+        fresh_when :etag => "#{humpyard_user.nil? ? '' : humpyard_user}p#{@page.id}m#{@page.last_modified}", :last_modified => @page.last_modified(:include_pages => true), :public => @humpyard_user.nil?
       end
     end
     
