@@ -15,6 +15,17 @@ module Humpyard
 
     validates_with Humpyard::ActiveModel::PublishRangeValidator, {:attributes => [:display_from, :display_until]}
     
+    after_create :stamp_page_modified_now
+    after_update :stamp_page_modified_now
+    after_destroy :stamp_page_modified_now
+    
+    def stamp_page_modified_now
+      # Set page's modified_at to now without changing it's last_updated_at column
+      Page.update_all ['modified_at = ?', Time.now], ['id = ?', page.id]
+      
+      # TODO: set other pages' modified_at if element is shared
+    end
+    
     # Elements can be shared on other pages. this adds #unshared?, #shared_on_siblings?, shared_on_children? getters
     # plus #to_unshared, #to_shared_on_siblings, #to_shared_on_children "setters"
     # 

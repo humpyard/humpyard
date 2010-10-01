@@ -258,7 +258,7 @@ module Humpyard
       self.class.layout(@page.template_name)
 
       if Rails::Application.config.action_controller.perform_caching
-        fresh_when :etag => "#{@humpyard_user.nil? ? '' : @humpyard_user}p#{@page.id}", :last_modified => @page.last_modified(:include_pages => true).utc, :public => @humpyard_user.nil?
+        fresh_when :etag => "#{humpyard_user.nil? ? '' : humpyard_user}p#{@page.id}", :last_modified => @page.last_modified(:include_pages => true).utc, :public => @humpyard_user.nil?
       end
     end
     

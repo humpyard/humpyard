@@ -12,6 +12,8 @@ module Humpyard
     attr_accessible :template_name, :content_data, :content_data_id, :content_data_type
     attr_accessible :parent, :parent_id, :in_menu, :in_sitemap, :searchable
     attr_accessible :display_from, :display_until
+    attr_accessible :modified_at, :refresh_scheduled_at
+    attr_accessible :updated_at
     
     translates :title, :title_for_url, :description
     has_title_for_url
@@ -131,14 +133,14 @@ module Humpyard
     
     # Return the logical modification time for the page, suitable for http caching, generational cache keys, etc.
     def last_modified options = {}
-      modified_at = content_data.nil? ? updated_at : content_data.last_modified
+      modified = (modified_at and modified_at > updated_at) ? modified_at : updated_at
       
       if(options[:include_pages])
         last_page_updated_at = Humpyard::Page.select('updated_at').order('updated_at DESC').first.updated_at
-        modified_at = last_page_updated_at if last_page_updated_at > modified_at
+        modified = last_page_updated_at if last_page_updated_at > modified_at
       end
       
-      modified_at      
+      modified     
     end
   end
 end
