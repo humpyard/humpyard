@@ -133,14 +133,13 @@ module Humpyard
     
     # Return the logical modification time for the page, suitable for http caching, generational cache keys, etc.
     def last_modified options = {}
-      modified = (modified_at and modified_at > updated_at) ? modified_at : updated_at
+      changed_at = [Time.zone.at(::File.new("#{Rails.root}").mtime), created_at, updated_at, modified_at]
       
       if(options[:include_pages])
-        last_page_updated_at = Humpyard::Page.select('updated_at').order('updated_at DESC').first.updated_at
-        modified = last_page_updated_at if last_page_updated_at > modified_at
+        changed_at << Humpyard::Page.select('updated_at').order('updated_at DESC').first.updated_at
       end
       
-      modified     
+      (changed_at - [nil]).max.utc    
     end
   end
 end
