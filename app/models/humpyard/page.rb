@@ -99,7 +99,7 @@ module Humpyard
         content_data.child_pages
       else
         if is_root_page?
-          children + siblings 
+          Page.where(["parent_id = ? or parent_id IS NULL and NOT id = ?", id, id])
         else
           children
         end
