@@ -14,7 +14,7 @@ module Humpyard
       
       def html_content(options = {})
         if content.blank?
-          ''
+          html = ''
         else
           if Object.const_defined?('RedCloth')
             html = RedCloth.new(content).to_html
@@ -23,17 +23,21 @@ module Humpyard
           end
         end
         
-        if options[:parse_uris]
-          html = html.gsub(/humpyard:\/\/page\/([0-9]*)/) do |uri| 
-            begin
-              Page.find($1).human_url              
-            rescue
-              Page.root_page.human_url
+        unless html.blank?
+          if options[:parse_uris]
+            html = html.gsub(/humpyard:\/\/page\/([0-9]*)/) do |uri| 
+              begin
+                Page.find($1).human_url              
+              rescue
+                Page.root_page.human_url
+              end
             end
           end
-        end
         
-        html.html_safe
+          html.html_safe
+        else
+          ''
+        end
       end
 
       def html_content= content
