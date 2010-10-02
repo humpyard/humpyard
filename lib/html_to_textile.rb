@@ -123,7 +123,14 @@ class HtmlToTextile
         elsif ['br'].include? content['name']
           @textile += "\n"
         elsif ['p','h1','h2','h3'].include? content['name']
-          @textile += "\n#{content['name']}. " unless indent > 0
+          alignment = case (content['attrs']['style'] ? content['attrs']['style'][/text-align:[\ ]?([^;]*)/,1].strip.downcase : '')
+            when 'left': '<'
+            when 'right': '>'
+            when 'center': '='
+            else ''
+          end
+          
+          @textile += "\n#{content['name']}#{alignment}. " unless indent > 0
           _to_textile_tag content['content'], indent
           @textile += "\n\n"
         elsif ['a'].include? content['name']
