@@ -12,16 +12,28 @@ module Humpyard
       translates :content
       validates_presence_of :content
       
-      def html_content
+      def html_content(options = {})
         if content.blank?
           ''
         else
           if Object.const_defined?('RedCloth')
-            RedCloth.new(content).to_html.html_safe
+            html = RedCloth.new(content).to_html
           else
-            content.gsub("\n", "<br />").html_safe
+            html = content.gsub("\n", "<br />")
           end
         end
+        
+        if options[:parse_uris]
+          html = html.gsub(/humpyard:\/\/page\/([0-9]*)/) do |uri| 
+            begin
+              Page.find($1).human_url              
+            rescue
+              Page.root_page.human_url
+            end
+          end
+        end
+        
+        html.html_safe
       end
 
       def html_content= content

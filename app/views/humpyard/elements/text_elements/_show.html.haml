@@ -1,4 +1,4 @@
 - if element.content_data.content.blank?
   &#160;
 - else
-  = element.content_data.html_content
+  = element.content_data.html_content :parse_uris => true
