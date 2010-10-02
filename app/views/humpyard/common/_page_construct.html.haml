@@ -2,9 +2,10 @@
   %body.hy-logged-in
     #hy-top.hy-eb
       #hy-top-left
-        =image_tag "ajax-loader.gif", :size => "16x16", :class => "ajax-indicator"
-        =link_to I18n.t('humpyard_cms.toolbar.edit'), '#', :'data-command' => "toggleEditMode", :'data-icon' => "ui-icon-pencil" if @page and can? :update, @page
-        =link_to I18n.t('humpyard_cms.toolbar.pages'), humpyard_pages_path(:actual_id => @page ? @page.id : nil), :'data-dialog' => "size:800x700;dialog_id:pages-dialog", :'data-icon' => "ui-icon-document" if can? :manage, Humpyard::Page
+        = image_tag "ajax-loader.gif", :size => "16x16", :class => "ajax-indicator"
+        = link_to I18n.t('humpyard_cms.toolbar.edit'), '#', :'data-command' => "toggleEditMode", :'data-icon' => "ui-icon-pencil" if @page and can? :update, @page
+        = link_to I18n.t('humpyard_cms.toolbar.pages'), humpyard_pages_path(:actual_id => @page ? @page.id : nil), :'data-dialog' => "size:800x700;dialog_id:pages-dialog", :'data-icon' => "ui-icon-document" if can? :manage, Humpyard::Page
+        = @content_for_toolbar
         =#link_to 'News', humpyard_news_feeds_path, :'data-dialog' => "size:800x600;dialog_id:news-dialog", :'data-icon' => "ui-icon-signal-diag"
       #hy-top-right
         =link_to I18n.t('humpyard_cms.toolbar.logout'), '?user='
