@@ -3,7 +3,7 @@ require "nokogiri"
 class HtmlToTextile
   class Document < ::Nokogiri::XML::SAX::Document
     def valid_tags
-      ['a','p','br','u','b','i','strong','em','ul','ol','li','sup','sub', 'ins', 'del', 'h1', 'h2', 'h3']
+      ['a','p','br','u','b','i','strong','em','ul','ol','li','sup','sub', 'ins', 'del', 'h1', 'h2', 'h3', 'table', 'tr', 'td', 'th']
     end
     
     def tree
@@ -51,23 +51,23 @@ class HtmlToTextile
     end
     
     def to_textile  
-      ActiveRecord::Base.logger.info  "### tree START"
-      ActiveRecord::Base.logger.info  @tree.inspect
-      ActiveRecord::Base.logger.info  "### tree END"
+      #ActiveRecord::Base.logger.info  "### tree START"
+      #ActiveRecord::Base.logger.info  @tree.inspect
+      #ActiveRecord::Base.logger.info  "### tree END"
       ActiveRecord::Base.logger.info  "### HTML START"
-      ActiveRecord::Base.logger.info  to_html
+      to_html
       ActiveRecord::Base.logger.info  "### HTML END"
       
-      @textile = ''
+      textile = ''
       tree.each do |content|
-        _to_textile_tag content
+        textile += _to_textile_tag content
       end
       
       ActiveRecord::Base.logger.info  "### TEXTILE START"
-      ActiveRecord::Base.logger.info  @textile
+      ActiveRecord::Base.logger.info  textile
       ActiveRecord::Base.logger.info  "### TEXTILE END"      
       
-      return @textile
+      return textile
     end
     
     def to_html
@@ -102,8 +102,9 @@ class HtmlToTextile
     end
     
     def _to_textile_tag content, indent = 0
+      textile = ''
       if content.class == String
-        @textile += "#{content}"
+        textile += "#{content}"
       elsif content.class == Hash
         if ['u','b','strong','i','em','del','ins', 'sub', 'sup'].include? content['name']
           literals = {
@@ -117,27 +118,24 @@ class HtmlToTextile
             'sub' => '~',
             'sup' => '^'
           }
-          @textile += "[#{literals[content['name']]}"
-          _to_textile_tag content['content'], indent
-          @textile += "#{literals[content['name']]}]"
+          inner_parsed_textile = _spaces _to_textile_tag(content['content'])
+          textile += "#{inner_parsed_textile[:leading]}[#{literals[content['name']]}#{inner_parsed_textile[:content]}#{literals[content['name']]}]#{inner_parsed_textile[:tailing]}"
         elsif ['br'].include? content['name']
-          @textile += "\n"
+          textile += "\n"
         elsif ['p','h1','h2','h3'].include? content['name']
-          alignment = case (content['attrs']['style'] ? content['attrs']['style'][/text-align:[\ ]?([^;]*)/,1].strip.downcase : '')
+          alignment = case (content['attrs']['style'] and a = content['attrs']['style'][/text-align:[\ ]?([^;]*)/,1] ? a.strip.downcase : '')
             when 'left': '<'
             when 'right': '>'
             when 'center': '='
             else ''
           end
           
-          @textile += "\n#{content['name']}#{alignment}. " unless indent > 0
-          _to_textile_tag content['content'], indent
-          @textile += "\n\n"
+          textile += "\n#{content['name']}#{alignment}. " unless indent > 0
+          textile += _to_textile_tag(content['content'], indent).strip
+          textile += "\n\n"
         elsif ['a'].include? content['name']
-          p content['attrs']['href'].inspect
-          @textile += "[\""
-          _to_textile_tag(content['content'])
-          @textile += "\":#{content['attrs']['href'].blank? ? '#' : content['attrs']['href']}]"
+          inner_parsed_textile = _spaces _to_textile_tag(content['content'])
+          textile += "#{inner_parsed_textile[:leading]}[\"#{inner_parsed_textile[:content]}\":#{content['attrs']['href'].blank? ? '#' : content['attrs']['href']}]#{inner_parsed_textile[:tailing]}"
         elsif ['ul','ol'].include? content['name']
           literals = {
             'ul' => '*',
@@ -146,20 +144,39 @@ class HtmlToTextile
 
           content['content'].each do |element|
             if element.class == Hash and element['name'] == 'li'
-              @textile += "\n #{literals[content['name']]} "
-              _to_textile_tag element, indent +2
+              textile += "\n #{literals[content['name']]} "
+              textile += _to_textile_tag element, indent +2
             end
           end
-          @textile += "\n"
+          textile += "\n"
+        elsif ['table'].include? content['name']
+          textile += "\n"
+          content['content'].each do |row|
+            if row.class == Hash and row['name'] == 'tr'
+              row['content'].each do |element|
+                if element.class == Hash and ['td', 'th'].include? element['name']
+                  textile += "|#{element['name'] == 'th' ? '_.' : ''} #{_to_textile_tag(element, indent +2).strip.gsub(/\n{2,}/, "\n")} "
+                end
+              end
+              textile += "|\n"      
+            end
+          end         
         else
-          _to_textile_tag content['content'], indent
+          textile += _to_textile_tag content['content'], indent
         end
       elsif content.class == Array
         content.each do |element|
-          _to_textile_tag element, indent
+          textile += _to_textile_tag element, indent
         end
       end  
       
+      return textile
+    end
+    
+    def _spaces string
+      parsed = {:content => string}
+      string.gsub(/^(\s*)?(\S*)(\s*)?$/) {|s| parsed = {:leading => $1, :content => $2, :tailing => $3} }
+      parsed
     end
   end
   
