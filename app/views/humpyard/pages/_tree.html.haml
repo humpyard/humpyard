@@ -1,7 +1,3 @@
 .humpyard-treeview{:'data-sortable-update-url'=> move_humpyard_pages_path}
-  - root_page = Humpyard::Page.root_page
-  - if root_page
-    %ul
-      %li.treeitem{:'data-page-id' => root_page.id, :id => "hy-page-treeview-item-#{root_page.id}"}
-        = link_to content_tag(:span, root_page.title, :id => "hy-page-treeview-text-#{root_page.id}"), edit_humpyard_page_path(root_page), :'data-dialog-link' => true, :class => (page and page == root_page ? 'active' : ''), :id => "hy-page-treeview-link-#{root_page.id}"
-        = render :partial => 'subtree.html', :locals => {:pages => root_page.child_pages, :root_page => root_page} 
+  - if root_page = Humpyard::Page.root_page
+    = render 'subtree', :pages => ([root_page] + root_page.siblings), :root_page => root_page

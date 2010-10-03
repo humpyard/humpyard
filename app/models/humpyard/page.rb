@@ -94,11 +94,11 @@ module Humpyard
     alias_method_chain :suggested_title_for_url, :index
     
     # Find the child pages
-    def child_pages
+    def child_pages options={}
       if content_data.is_humpyard_dynamic_page?
         content_data.child_pages
       else
-        if is_root_page?
+        if options[:single_root] and is_root_page? 
           Page.where(["parent_id = ? or parent_id IS NULL and NOT id = ?", id, id])
         else
           children
