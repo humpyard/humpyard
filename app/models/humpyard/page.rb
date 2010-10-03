@@ -107,20 +107,24 @@ module Humpyard
     end
     
     # Get the parent page (even on dynamic pages)
-    def parent_page
-      if parent
-        parent
-      elsif is_root_page?
-        nil
+    def parent_page options={}
+      if options[:single_root]
+        if parent
+          parent
+        elsif is_root_page?
+          nil
+        else
+          Humpyard::Page.root_page
+        end
       else
-        Humpyard::Page.root_page
+        parent
       end
     end
     
     # Get all ancestor pages
-    def ancestor_pages
+    def ancestor_pages options={}
       if parent_page
-        parent_page.ancestor_pages + [parent_page]
+        parent_page.ancestor_pages(options) + [parent_page(options)]
       else
         []
       end

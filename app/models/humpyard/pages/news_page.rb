@@ -41,17 +41,23 @@ module Humpyard
       end
       
       def site_map(locale)
-        {
-          :url => page.human_url(:locale => locale),
-          :lastmod => page.last_modified,
-          :children => news_items.map do |i|
-            { 
-              :url => i.human_url(:locale => locale),
-              :lastmod => i.updated_at,
-              :children => []
-            }
-          end
-        }  
+        if page.in_sitemap        
+          {
+            :url => page.human_url(:locale => locale),
+            :lastmod => page.last_modified,
+            :hidden => !page.in_sitemap,
+            :children => news_items.map do |i|
+              { 
+                :url => i.human_url(:locale => locale),
+                :lastmod => i.updated_at,
+                :hidden => !page.in_sitemap,
+                :children => []
+              }
+            end
+          }  
+        else
+          nil
+        end
       end
       
       # Return the logical modification time for the page, suitable for http caching, generational cache keys, etc.

@@ -19,6 +19,7 @@
         = hidden_field :page, :template_name
       = form.input :description, :rows => 10
       = form.input :in_menu
+      = form.input :in_sitemap
     = render "/humpyard/pages/#{@page.class.name.split('::').last.underscore.pluralize}/edit", :page => @page, :form => form
     .humpyard-tab
       .humpyard-tab-title

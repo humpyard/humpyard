@@ -11,6 +11,7 @@ de:
         pages:
           static_page: 'Statische Seite'
           news_page: 'Nachrichtenseite'
+          virtual_page: 'Virtuelle Seite'
     attributes:
       humpyard:
         elements:

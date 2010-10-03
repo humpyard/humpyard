@@ -3,4 +3,4 @@
     - pages.each do |page|
       %li.treeitem{:'data-page-id' => page.id, :id => "hy-page-treeview-item-#{page.id}"}
         = link_to content_tag(:span, page.title, :id => "hy-page-treeview-text-#{page.id}"), edit_humpyard_page_path(page), :'data-dialog-link' => true, :class => (@page and @page==page ? 'active' : ''), :id => "hy-page-treeview-link-#{page.id}"
-        = render 'subtree', :pages => page.child_pages, :root_page => @root_page
+        = render 'subtree.html', :pages => page.child_pages, :root_page => @root_page

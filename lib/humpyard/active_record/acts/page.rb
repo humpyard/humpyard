@@ -54,6 +54,10 @@ module Humpyard
           self.class.is_humpyard_dynamic_page?
         end
         
+        def is_humpyard_virtual_page?
+          self.class.is_humpyard_virtual_page?
+        end
+        
         # Return the logical modification time for the page, suitable for http caching, generational cache keys, etc.
         def last_modified
           rails_root_mtime = Time.zone.at(::File.new("#{Rails.root}").mtime)
@@ -68,7 +72,11 @@ module Humpyard
 
           def is_humpyard_dynamic_page?
             true
-          end          
+          end    
+          
+          def is_humpyard_virtual_page?
+            false
+          end      
         end
         
       protected

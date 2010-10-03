@@ -248,7 +248,7 @@ module Humpyard
       end
       
       # Raise 404 if no page was found
-      raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil?
+      raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil? or @page.content_data.is_humpyard_virtual_page?
       
       response.headers['X-Humpyard-Page'] = "#{@page.id}"
       response.headers['X-Humpyard-Modified'] = "#{@page.last_modified}"
@@ -278,9 +278,14 @@ module Humpyard
 
         base_url = "#{request.protocol}#{request.host}#{request.port==80 ? '' : ":#{request.port}"}"
 
-        if Page.root_page
+        if root_page = Page.root_page
           Humpyard.config.locales.each do |locale|
-            add_to_sitemap xml, base_url, locale, [Page.root_page.content_data.site_map(locale)]
+            add_to_sitemap xml, base_url, locale, [{
+                :index => true,
+                :url => root_page.human_url(:locale => locale),
+                :lastmod => root_page.last_modified,
+                :children => []
+              }] + root_page.child_pages(:single_root => true).map{|p| p.content_data.site_map(locale)}
           end
         end
       end
@@ -290,14 +295,17 @@ module Humpyard
     private
     def add_to_sitemap xml, base_url, locale, pages, priority=0.8, changefreq='daily' 
       pages.each do |page|
-        xml.tag! :url do
-          xml.tag! :loc, "#{base_url}#{page[:url]}"
-          xml.tag! :lastmod, page[:lastmod].nil? ? nil : page[:lastmod].to_time.strftime("%FT%T%z").gsub(/00$/,':00')
-          xml.tag! :changefreq, changefreq
-          xml.tag! :priority, page[:index] ? 1.0 : priority
+        if page
+          unless page[:hidden]
+            xml.tag! :url do
+              xml.tag! :loc, "#{base_url}#{page[:url]}"
+              xml.tag! :lastmod, page[:lastmod].nil? ? nil : page[:lastmod].to_time.strftime("%FT%T%z").gsub(/00$/,':00')
+              xml.tag! :changefreq, page[:changefreq] ? page[:changefreq] : changefreq
+              xml.tag! :priority, page[:index] ? 1.0 : priority
+            end
+          end
+          add_to_sitemap xml, base_url, locale, page[:children], priority/2
         end
-      
-        add_to_sitemap xml, base_url, locale, page[:children], priority/2
       end
     end
     
