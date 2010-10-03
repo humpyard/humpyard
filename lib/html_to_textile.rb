@@ -123,14 +123,20 @@ class HtmlToTextile
         elsif ['br'].include? content['name']
           textile += "\n"
         elsif ['p','h1','h2','h3'].include? content['name']
-          alignment = case (content['attrs']['style'] and a = content['attrs']['style'][/text-align:[\ ]?([^;]*)/,1] ? a.strip.downcase : '')
-            when 'left': '<'
-            when 'right': '>'
-            when 'center': '='
-            else ''
+          if content['attrs']['style'] and a = content['attrs']['style'][/text-align:[\ ]?([^;]*)/,1] and not a.nil?
+            ActiveRecord::Base.logger.info 'strip1'
+            alignment = case a.strip.downcase
+              when 'left': '<'
+              when 'right': '>'
+              when 'center': '='
+              else ''
+            end
+          else
+            alignment = ''
           end
           
           textile += "\n#{content['name']}#{alignment}. " unless indent > 0
+          ActiveRecord::Base.logger.info 'strip2'
           textile += _to_textile_tag(content['content'], indent).strip
           textile += "\n\n"
         elsif ['a'].include? content['name']
@@ -155,6 +161,7 @@ class HtmlToTextile
             if row.class == Hash and row['name'] == 'tr'
               row['content'].each do |element|
                 if element.class == Hash and ['td', 'th'].include? element['name']
+                  ActiveRecord::Base.logger.info 'strip1'
                   textile += "|#{element['name'] == 'th' ? '_.' : ''} #{_to_textile_tag(element, indent +2).strip.gsub(/\n{2,}/, "\n")} "
                 end
               end
