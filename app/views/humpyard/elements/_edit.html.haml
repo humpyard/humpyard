@@ -11,7 +11,9 @@
     - if @next
       = hidden_field_tag :next_id, @next.id
   .humpyard-tabview
-    = render :partial => "/humpyard/elements/#{@element.class.name.split('::').last.underscore.pluralize}/edit", :locals => {:element => @element, :form => form}
+    - custom_partial_path = "/humpyard/elements/#{@element.class.name.underscore.pluralize.gsub(/^humpyard\/elements/, '')}/edit"
+    - if template_exists? custom_partial_path , nil, true
+      = render :partial => custom_partial_path, :locals => {:element => @element, :form => form}
     .humpyard-tab
       .humpyard-tab-title
         Generic Options

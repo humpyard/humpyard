@@ -16,7 +16,7 @@
               = I18n.t("humpyard_cms.shared_state_info.owning_page.#{element.shared_state.to_i}")
         - unless element.content_data.nil?
           -# support hooking up additional buttons the editor adornments 
-          - custom_partial_path = "/humpyard/elements/#{element.content_data.class.name.split('::').last.underscore.pluralize}/buttons"
+          - custom_partial_path = "/humpyard/elements/#{element.content_data_type.underscore.pluralize.gsub(/^humpyard\/elements/, '')}/buttons"
           - if template_exists? custom_partial_path , nil, true
             = render :partial => custom_partial_path, :locals => {:element => element}
       - else
