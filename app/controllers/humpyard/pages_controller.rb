@@ -68,12 +68,20 @@ module Humpyard
           :status => :ok,
           #:dialog => :close,
           # :insert => [insert_options],
-          :replace => [replace_options]
+          :replace => [replace_options],
+          :flash => {
+            :level => 'info',
+            :content => I18n.t('humpyard_form.flashes.create_success', :model => Humpyard::Page.model_name.human)
+          }
         }
       else
         render :json => {
           :status => :failed, 
-          :errors => @page.errors
+          :errors => @page.errors,
+          :flash => {
+            :level => 'error',
+            :content => I18n.t('humpyard_form.flashes.create_fail', :model => Humpyard::Page.model_name.human)
+          }
         }
       end
     end
@@ -110,12 +118,20 @@ module Humpyard
                 :element => "hy-page-treeview-text-#{@page.id}",
                 :content => @page.title
               }
-            ]
+            ],
+            :flash => {
+              :level => 'info',
+              :content => I18n.t('humpyard_form.flashes.update_success', :model => Humpyard::Page.model_name.human)
+            }
           }
         else
           render :json => {
             :status => :failed, 
-            :errors => @page.errors
+            :errors => @page.errors,
+            :flash => {
+              :level => 'error',
+              :content => I18n.t('humpyard_form.flashes.update_fail', :model => Humpyard::Page.model_name.human)
+            }
           }
         end
       else
