@@ -29,6 +29,8 @@ de:
           title: "Überschrift"
           description: "Beschreibung"
           in_menu: "Im Menü anzeigen"
+          in_sitemap: "In der Sitemap anzeigen"
+          always_refresh: "Keinen Cache verwenden"
           display_from: "Anzeige von"
           display_until: "Anzeige bis"
         

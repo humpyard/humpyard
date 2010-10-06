@@ -1,4 +1,8 @@
-- cache "hy-page-#{@page.id}-#{I18n.locale}-#{humpyard_user ? humpyard_user : nil}-#{@page.last_modified.to_i}" do
+- cache_key = "hy-page-#{@page.id}-#{I18n.locale}-#{humpyard_user ? humpyard_user : nil}-#{@page.last_modified.to_i}"
+- if @page.always_refresh
+  - expire_fragment cache_key
+
+- cache cache_key do
   - title @page.title
 
   #hy-content-main.hy-content{:'data-content-yield' => 'main'}
