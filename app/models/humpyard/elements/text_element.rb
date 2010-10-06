@@ -42,7 +42,7 @@ module Humpyard
 
       def html_content= content
         if content.blank?
-          ''
+          self.content = ''
         else
           if Object.const_defined?('RedCloth')
             require 'html_to_textile'           
