@@ -5,6 +5,7 @@ module Humpyard
       def self.included(base)
         base.module_eval do
           helper_attr :humpyard_user
+          helper_attr :humpyard_logout_path
         end
       end
 
@@ -12,6 +13,9 @@ module Humpyard
         current_user
       end
        
+      def humpyard_logout_path
+        "?user="
+      end
     end
   end
 end
