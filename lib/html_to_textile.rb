@@ -119,7 +119,11 @@ class HtmlToTextile
             'sup' => '^'
           }
           inner_parsed_textile = _spaces _to_textile_tag(content['content'])
-          textile += "#{inner_parsed_textile[:leading]}[#{literals[content['name']]}#{inner_parsed_textile[:content]}#{literals[content['name']]}]#{inner_parsed_textile[:tailing]}"
+          if inner_parsed_textile[:content].blank?
+            textile + content['content']
+          else
+            textile += "#{inner_parsed_textile[:leading]}[#{literals[content['name']]}#{inner_parsed_textile[:content]}#{literals[content['name']]}]#{inner_parsed_textile[:tailing]}"
+          end
         elsif ['br'].include? content['name']
           textile += "\n"
         elsif ['p','h1','h2','h3'].include? content['name']
@@ -141,7 +145,11 @@ class HtmlToTextile
           textile += "\n\n"
         elsif ['a'].include? content['name']
           inner_parsed_textile = _spaces _to_textile_tag(content['content'])
-          textile += "#{inner_parsed_textile[:leading]}[\"#{inner_parsed_textile[:content]}\":#{content['attrs']['href'].blank? ? '#' : content['attrs']['href']}]#{inner_parsed_textile[:tailing]}"
+          if inner_parsed_textile[:content].blank?
+            textile + content['content']
+          else
+            textile += "#{inner_parsed_textile[:leading]}[\"#{inner_parsed_textile[:content]}\":#{content['attrs']['href'].blank? ? '#' : content['attrs']['href']}]#{inner_parsed_textile[:tailing]}"
+          end
         elsif ['ul','ol'].include? content['name']
           literals = {
             'ul' => '*',
