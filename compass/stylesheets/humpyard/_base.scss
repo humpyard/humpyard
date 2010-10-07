@@ -38,7 +38,7 @@ $hy_bottom_bg_gradient: #000;
     .ajax-indicator.active {
       display: block; }
     #hy-top {
-      background: $hy_panel_bg_color;
+      @include linear-gradient(color-stops($hy_panel_bg_color, $hy_panel_bg_gradient));
       border-bottom: $hy_panel_border_color solid 1px;
       padding: 0.2em;
       height: $hy_top_bar_height;
@@ -64,6 +64,7 @@ $hy_bottom_bg_gradient: #000;
     #hy-bottom {
       position: absolute;
       @include linear-gradient(color-stops($hy_bottom_bg_color, $hy_bottom_bg_gradient));
+      border-top: $hy_bottom_bg_gradient solid 1px;
       left: 0;
       right: 0;
       bottom: -$hy_bottom_bar_height - 1 - 2 * $hy_bottom_padding;
