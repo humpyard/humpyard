@@ -24,15 +24,7 @@ module Humpyard
         end
         
         unless html.blank?
-          if options[:parse_uris]
-            html = html.gsub(/humpyard:\/\/page\/([0-9]*)/) do |uri| 
-              begin
-                Page.find($1).human_url              
-              rescue
-                Page.root_page.human_url
-              end
-            end
-          end
+          html = Humpyard.uri_parser.substitute html if options[:parse_uris]
         
           html.html_safe
         else
