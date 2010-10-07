@@ -1,12 +1,15 @@
 @import "jquery_ui_overrides";
 @import "humpyard_form";
 
-$hy_panel_bg_color: #cccccc !default;
+$hy_panel_bg_color: #eee;
+$hy_panel_bg_gradient: #aaa;
 $hy_panel_border_color: #a5a5a5 !default;
 $hy_selection_color: #ffcc00 !default;
 $hy_top_bar_height: 20px !default;
 $hy_bottom_bar_height: 80px !default;
 $hy_bottom_padding: 5px !default;
+$hy_bottom_bg_color: #444;
+$hy_bottom_bg_gradient: #eee;
 
 @mixin humpyard-base {
   @include jquery-ui-overrides;
@@ -49,6 +52,7 @@ $hy_bottom_padding: 5px !default;
     #hy-side {
       position: absolute;
       background: $hy_panel_bg_color;
+      @include linear-gradient(color-stops($hy_panel_bg_color, $hy_panel_bg_gradient));
       border-right: $hy_panel_border_color solid 1px;
       left: -200px;
       top: 36px;
@@ -59,22 +63,37 @@ $hy_bottom_padding: 5px !default;
       left: 0; }
     #hy-bottom {
       position: absolute;
-      background: $hy_panel_bg_color;
-      border-top: $hy_selection_color solid 1px;
+      @include linear-gradient(color-stops($hy_bottom_bg_color, $hy_bottom_bg_gradient));
       left: 0;
       right: 0;
       bottom: -$hy_bottom_bar_height - 1 - 2 * $hy_bottom_padding;
       height: $hy_bottom_bar_height;
       padding: $hy_bottom_padding;
       display: block;
+      
       .element {
         display: block;
         float: left;
+        border: 1px solid #ccc;
+        @include border-radius;
+        @include linear-gradient(color-stops(#555, #888));
+        color: #fff;
         width: 64px;
         height: 64px;
-        border: 1px solid $hy_selection_color;
         padding: 5px; 
         margin-left: 5px;
+        
+        span {
+          display: block;
+          text-align: center;
+          width: 80px;
+          margin-left: -7px;
+          margin-top: 25px;
+          font-family: Sans-Serif;
+          font-weight: bold;
+          font-size: 8px;
+          @include rotate;
+        }
       } 
     }
     #hy-bottom.hy-edit-active {

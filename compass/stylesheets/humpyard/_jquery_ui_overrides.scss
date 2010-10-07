@@ -71,29 +71,28 @@ $left_dialog_column_background: rgb(211, 217, 226);
       }      
     }
     
+    .left-dialog-buttons, .left-dialog-search {
+      position: absolute;
+      @include linear-gradient(color-stops(#eee, #aaa));
+      padding: 3px;
+    }
 
     .left-dialog-buttons {
-      position: absolute;
       bottom: 0;
       left: 0;
       width: $left_dialog_column_width - 6px;
       height: 22px;
-      background: #ccc;
-      padding: 3px;
     }
     .left-dialog-column.with-toolbar {
       bottom: 25px;
     }
         
     .left-dialog-search {
-      position: absolute;
       top: 0;
       left: 0;
       width: $left_dialog_column_width - 6px;
       height: 24px;
-      max-height: 24px;
-      background: #ccc;
-      padding: 3px;
+      max-height: 24px; 
       form {
         padding: 0;
         margin: 0;
@@ -128,6 +127,21 @@ $left_dialog_column_background: rgb(211, 217, 226);
         background: #cfc;
         color: #060;
         border: 1px solid #060;
+      }
+    }
+    
+    
+    .flash {
+      @include border-radius;
+    }
+    .data_table {
+      width: 100%;
+      border-collapse: collapse;
+      border-spacing: 0;
+      margin-bottom: 10px;
+      td, th {
+        border: 1px solid #000;
+        text-align: left;
       }
     }
     
