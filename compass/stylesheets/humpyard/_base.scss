@@ -9,7 +9,7 @@ $hy_top_bar_height: 20px !default;
 $hy_bottom_bar_height: 80px !default;
 $hy_bottom_padding: 5px !default;
 $hy_bottom_bg_color: #444;
-$hy_bottom_bg_gradient: #eee;
+$hy_bottom_bg_gradient: #000;
 
 @mixin humpyard-base {
   @include jquery-ui-overrides;
