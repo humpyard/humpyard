@@ -25,8 +25,8 @@ module Humpyard
         
         unless html.blank?
           html = Humpyard.uri_parser.substitute html if options[:parse_uris]
-        
-          html.html_safe
+          
+          html.gsub(/(href="[a-z]*:\/\/)/,'target="blank" \1').html_safe
         else
           ''
         end
