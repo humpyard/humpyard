@@ -1,0 +1,12 @@
+.login_form
+  = form_tag login_path do
+    %p
+      %label
+        #{I18n.t 'humpyard_cms.login.username'}:
+      = text_field_tag :username
+    %p
+      %label
+        #{I18n.t 'humpyard_cms.login.password'}:
+      = password_field_tag :password
+    %p
+      = submit_tag I18n.t('humpyard_cms.login.submit')

@@ -142,7 +142,7 @@ module Humpyard
     end
     
     def users_framework
-      @users_framework ||= 'fake'
+      @users_framework ||= 'simple'
     end
     
     def js_framework

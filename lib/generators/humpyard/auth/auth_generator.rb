@@ -32,9 +32,10 @@ module Humpyard
       
       include Humpyard::Generators::ModelTemplate
       
-	    class_option :users_framework, :desc => 'The user management framework used in humpyard application (options: custom/fake/devise/authlogic)', :group => 'Users config', :type => :string, :default => Humpyard::config.users_framework
+	    class_option :users_framework, :desc => 'The user management framework used in humpyard application (options: simple/custom/fake/devise/authlogic)', :group => 'Users config', :type => :string, :default => Humpyard::config.users_framework
 	    class_option :skip_models, :desc => 'Don\'t generate User realated models', :type => :boolean
       class_option :skip_haml, :desc => 'Don\'t generate HAML related files (the layout template)', :type => :boolean
+      class_option :skip_injection, :desc => 'Don\'t inject anything to files like routes.rb or application_controller.rb', :type => :boolean
 	
       def create_user # :nodoc:   
         template_path = "#{::File.dirname(__FILE__)}/templates/"
@@ -51,9 +52,39 @@ module Humpyard
           "    redirect_to root_url\n" +
           "  end\n\n"
           
+        routes_injection = ""  
+          
         class_collisions class_name
         
+        template "#{options[:users_framework]}/models/ability.rb", "app/models/ability.rb"
+        
         case options[:users_framework]
+        when 'simple'
+          template "simple/controllers/user_sessions_controller.rb", "app/controllers/#{singular_name}_sessions_controller.rb"
+          template "simple/config/humpyard_users.yml", "config/humpyard_#{plural_name}.yml"
+          template "simple/views/user_sessions/new.html.haml", "app/views/#{singular_name}_sessions/new.html.haml"
+                    
+          application_controller_injection +=
+            "  private\n" +
+            "  def current_user\n" +
+            "    if not @current_user.nil?\n" +
+            "      @current_user\n" +
+            "    else\n" +
+            "      session[:humpyard] ||= {}\n" +
+            "      @current_user = session[:humpyard][:user] || false\n" +
+            "    end\n" +
+            "  end\n" +
+            "\n" +
+            "  private\n" +
+            "  def humpyard_logout_path\n" +
+            "    logout_path\n" +
+            "  end\n\n"
+            
+          routes_injection += "scope \"/#"+"{Humpyard::config.admin_prefix}\" do\n" +
+            "    get  'login' => '#{singular_name}_sessions#new', :as => :login\n" +
+            "    post 'login' => '#{singular_name}_sessions#create', :as => :login\n" +
+            "    get  'logout' => '#{singular_name}_sessions#destroy', :as => :logout\n" +
+            "  end"  
         when 'authlogic'
           
           raise "Authlogic is not working, yet!"
@@ -78,7 +109,8 @@ module Humpyard
           end
           
           template "authlogic/controllers/user_sessions_controller.rb", "app/controllers/#{singular_name}_sessions_controller.rb"
-          route "resources :#{singular_name}_sessions"
+          
+          routes_injection += "resources :#{singular_name}_sessions"
           
           unless options.skip_views?
             template 'authlogic/views/user_sessions/new.html.haml', "app/views/#{singular_name}_sessions/new.html.haml"
@@ -115,9 +147,7 @@ module Humpyard
           
           generate :devise, singular_name
           
-        when 'fake'
-          template "#{options[:users_framework]}/models/ability.rb", "app/models/ability.rb"
-          
+        when 'fake'      
           application_controller_injection +=
             "  private\n" +
             "  def current_user\n" +  
@@ -133,7 +163,10 @@ module Humpyard
             "  end\n"          
         end
 
-        inject_into_class "app/controllers/application_controller.rb", ApplicationController, application_controller_injection
+        unless options.skip_injection
+          route routes_injection unless routes_injection.blank?
+          inject_into_class "app/controllers/application_controller.rb", ApplicationController, application_controller_injection
+        end
         
         begin
           File.open("#{template_path}#{options[:users_framework]}/README", "r") do |infile|

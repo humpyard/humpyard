@@ -1,0 +1,16 @@
+You can now configure your users in
+
+  config/humpyard_users.yml
+
+The format is
+
+username: sha1_password
+
+You can create passwords on the console using
+
+  require 'digest/sha1'
+  Digest::SHA1.hexdigest(password)
+  
+where password is the desired password.
+
+The password for "admin" in the example yml file is "humpyard".

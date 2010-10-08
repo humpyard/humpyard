@@ -39,6 +39,10 @@ de:
   
   humpyard_cms:
     start: 'Humpyard %{version} laden'
+    login:
+      username: "Benutzer"
+      password: "Kennwort"
+      submit: "Anmelden"
     shared_state_info:
       owning_page:
         "0": Ungeteilt

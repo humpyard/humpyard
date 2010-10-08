@@ -37,6 +37,10 @@ en:
   
   humpyard_cms:
     start: 'Loading Humpyard %{version}'
+    login:
+      username: "Username"
+      password: "Password"
+      submit: "Login"
     shared_state_info:
       owning_page:
         "0": unshared
