@@ -38,9 +38,11 @@ en:
   humpyard_cms:
     start: 'Loading Humpyard %{version}'
     login:
+      title: "Login to Humpyard"
       username: "Username"
       password: "Password"
       submit: "Login"
+      login_error: "Could not login with given credentials!"
     shared_state_info:
       owning_page:
         "0": unshared

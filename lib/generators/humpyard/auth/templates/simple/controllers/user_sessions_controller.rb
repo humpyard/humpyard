@@ -2,7 +2,12 @@ class <%= class_name %>SessionsController < ApplicationController
   helper 'humpyard::pages'
   
   def new
-    @page = Humpyard::Page.new
+    @page = Humpyard::Page.new(
+      :title => I18n.t('humpyard_cms.login.title'), 
+      :always_refresh => true, 
+      :modified_at => Time.now, 
+      :searchable => false
+    )
   end
   
   def create

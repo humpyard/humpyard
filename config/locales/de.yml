@@ -40,9 +40,11 @@ de:
   humpyard_cms:
     start: 'Humpyard %{version} laden'
     login:
+      title: "Humpyard Anmeldung"
       username: "Benutzer"
       password: "Kennwort"
       submit: "Anmelden"
+      login_error: "Konnte Sie nicht mit den angegebenen Daten anmelden!"
     shared_state_info:
       owning_page:
         "0": Ungeteilt

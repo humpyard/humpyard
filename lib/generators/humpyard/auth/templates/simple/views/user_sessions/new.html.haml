@@ -1,4 +1,7 @@
 .login_form
+  - if @login_error
+    %p
+      %strong #{I18n.t 'humpyard_cms.login.login_error'} 
   = form_tag login_path do
     %p
       %label
