@@ -1,15 +1,15 @@
-.login_form
+.login-form
   - if @login_error
-    %p
+    %p.error
       %strong #{I18n.t 'humpyard_cms.login.login_error'} 
   = form_tag login_path do
     %p
       %label
         #{I18n.t 'humpyard_cms.login.username'}:
-      = text_field_tag :username
+      = text_field_tag :username, params[:username], :class => 'field'
     %p
       %label
         #{I18n.t 'humpyard_cms.login.password'}:
-      = password_field_tag :password
+      = password_field_tag :password, '', :class => 'field'
     %p
-      = submit_tag I18n.t('humpyard_cms.login.submit')
+      = submit_tag I18n.t('humpyard_cms.login.submit'), :class => 'button'

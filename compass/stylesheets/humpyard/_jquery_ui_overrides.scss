@@ -118,6 +118,7 @@ $left_dialog_column_background: rgb(211, 217, 226);
     .flash {
       padding: 5px;
       margin: 0 0 5px 0;
+      @include border-radius;
       &.error {
         background: #fcc;
         color: #600;
@@ -130,10 +131,6 @@ $left_dialog_column_background: rgb(211, 217, 226);
       }
     }
     
-    
-    .flash {
-      @include border-radius;
-    }
     .data_table {
       width: 100%;
       border-collapse: collapse;

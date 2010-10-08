@@ -44,7 +44,7 @@ de:
       username: "Benutzer"
       password: "Kennwort"
       submit: "Anmelden"
-      login_error: "Konnte Sie nicht mit den angegebenen Daten anmelden!"
+      login_error: "Konnte Sie mit den angegebenen Daten nicht anmelden!"
     shared_state_info:
       owning_page:
         "0": Ungeteilt
