@@ -58,7 +58,11 @@
       },
       flash: function(dialog, form, options) {
         var f = $('<div class="flash">xxx</div>').html(options['content']).addClass(options['level']).hide();
-        form.prepend(f);
+        if($('.flashes', form).size() > 0) {
+          $('.flashes', form).append(f)
+        } else {
+          $(form).prepend(f);
+        }
         f.show('blind',300).delay(1800).hide('blind',300);
       }
     },
@@ -313,6 +317,26 @@
 
       if(form.triggerAndReturn('humpyard:form:submit')) {
         form.ajaxSubmit(options);
+      }
+    },
+    
+    dialogLink: function(link, dialog) {
+      var url = '' + link.attr('href');
+      var options = {
+        url: url,
+        dataType: 'json',
+        success: function(result, statusText, xhr) {
+          // execute commands given by ajax call
+          $.each(result, function(attr, options) {
+            if($.humpyard.ajax_dialog_commands[attr]) {
+              $.humpyard.ajax_dialog_commands[attr](dialog, null, options);
+            }
+          });
+        }
+      };
+
+      if(link.triggerAndReturn('humpyard:link:click')) {
+        $.ajax(options);
       }
     },
 
@@ -640,7 +664,7 @@ jQuery(function($) {
   });
   
   // dialog left column links
-  $('a[data-dialog-link]').live('click', function(e){
+  $('div[data-dialog-link] a, a[data-dialog-link]').live('click', function(e){
     var columns = $(this).parents('.dialog-columns:first');
     var content = columns.children('.right-dialog-column');
     $('a', columns).removeClass('active');
@@ -688,6 +712,11 @@ jQuery(function($) {
   
   $('form[data-dialog-remote]').live('submit', function (e) {
       $.humpyard.submitForm($(this), $(this).parents('.ui-dialog-content:first'));
+      e.preventDefault();
+  });
+  
+  $('div[data-dialog-remote] a, a[data-dialog-remote]').live('click', function (e) {
+      $.humpyard.dialogLink($(this), $(this).parents('.ui-dialog-content:first'));
       e.preventDefault();
   });
   
