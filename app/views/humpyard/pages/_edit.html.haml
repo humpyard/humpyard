@@ -1,7 +1,8 @@
-.dialog-pane
-  = humpyard_form_for @page, :as => :page, :url => @page.page, :html=>{:'data-dialog-remote' => true, :'data-form-object-class' => "page", :class=>'page-form'} do |form|
-    .humpyard-dialog-title
-      = "#{form.form_type} #{@page.class} #{@page.id}"
+= humpyard_form_for @page, :as => :page, :url => @page.page, :html=>{:'data-dialog-remote' => true, :'data-form-object-class' => "page", :class=>'page-form'} do |form|
+  .dialog-search
+    = "#{I18n.t("txt.scaffold.titles.#{form.form_type.downcase}", :model => "#{Humpyard::Page.model_name.human}#{@page.title.blank? ? '' : " '#{@page.title}'"}")}"
+  .dialog-pane
+    .flashes
     - unless @page.persisted?
       = hidden_field_tag :type, @page_type
       = hidden_field :page, :parent_id
@@ -28,11 +29,11 @@
           Generic Options
         = form.input :display_from
         = form.input :display_until
-    .humpyard-form-buttons  
-      = form.submit
-      - if @page.persisted?
-        = link_to 'Delete', humpyard_page_path(@page.page), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :remote => true
-      .hy-locale-info
-        Sprache:
-        = I18n.locale
+  .dialog-buttons.humpyard-form-buttons  
+    = form.submit
+    - if @page.persisted?
+      = link_to 'Delete', humpyard_page_path(@page.page), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :remote => true
+    .hy-locale-info
+      Sprache:
+      = I18n.locale
     
