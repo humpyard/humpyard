@@ -1,4 +1,4 @@
--if humpyard_user == 'admin' #edit mode possible, fake functionality
+- if can? :manage, Humpyard::Element
   .hy-el{:id => "hy-id-#{element.id}", :'data-draggable'=>"hy-elements", :'data-element-id'=>element.id}
     = render :partial => "/humpyard/elements/show_view", :locals => {:element => element}
     .hy-marker-frame.top
