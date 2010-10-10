@@ -121,8 +121,8 @@ class HtmlToTextile
           }
           inner_parsed_textile = _spaces _to_textile_tag(content['content'])
           if inner_parsed_textile[:content].blank?
-            ActiveRecord::Base.logger.info content['content']
-            textile + content['content']
+            ActiveRecord::Base.logger.info "#{inner_parsed_textile[:leading]}#{inner_parsed_textile[:tailing]}"
+            textile += "#{inner_parsed_textile[:leading]}#{inner_parsed_textile[:tailing]}"
           else
             ActiveRecord::Base.logger.info "#{inner_parsed_textile[:leading]}[#{literals[content['name']]}#{inner_parsed_textile[:content]}#{literals[content['name']]}]#{inner_parsed_textile[:tailing]}"
             textile += "#{inner_parsed_textile[:leading]}[#{literals[content['name']]}#{inner_parsed_textile[:content]}#{literals[content['name']]}]#{inner_parsed_textile[:tailing]}"
@@ -149,10 +149,10 @@ class HtmlToTextile
         elsif ['a'].include? content['name']
           inner_parsed_textile = _spaces _to_textile_tag(content['content'])
           if inner_parsed_textile[:content].blank?
-            ActiveRecord::Base.logger.info
-            textile + content['content']
+            ActiveRecord::Base.logger.info "#{inner_parsed_textile[:leading]}#{inner_parsed_textile[:tailing]}"
+            textile += "#{inner_parsed_textile[:leading]}#{inner_parsed_textile[:tailing]}"
           else
-            ActiveRecord::Base.logger.info
+            ActiveRecord::Base.logger.info "#{inner_parsed_textile[:leading]}[\"#{inner_parsed_textile[:content]}\":#{content['attrs']['href'].blank? ? '#' : content['attrs']['href']}]#{inner_parsed_textile[:tailing]}"
             textile += "#{inner_parsed_textile[:leading]}[\"#{inner_parsed_textile[:content]}\":#{content['attrs']['href'].blank? ? '#' : content['attrs']['href']}]#{inner_parsed_textile[:tailing]}"
           end
         elsif ['ul','ol'].include? content['name']
