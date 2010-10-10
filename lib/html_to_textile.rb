@@ -104,6 +104,7 @@ class HtmlToTextile
     def _to_textile_tag content, indent = 0
       textile = ''
       if content.class == String
+        groupActiveRecord::Base.logger.info 
         textile += "#{content}"
       elsif content.class == Hash
         if ['u','b','strong','i','em','del','ins', 'sub', 'sup'].include? content['name']
@@ -120,11 +121,14 @@ class HtmlToTextile
           }
           inner_parsed_textile = _spaces _to_textile_tag(content['content'])
           if inner_parsed_textile[:content].blank?
+            groupActiveRecord::Base.logger.info content['content']
             textile + content['content']
           else
+            groupActiveRecord::Base.logger.info "#{inner_parsed_textile[:leading]}[#{literals[content['name']]}#{inner_parsed_textile[:content]}#{literals[content['name']]}]#{inner_parsed_textile[:tailing]}"
             textile += "#{inner_parsed_textile[:leading]}[#{literals[content['name']]}#{inner_parsed_textile[:content]}#{literals[content['name']]}]#{inner_parsed_textile[:tailing]}"
           end
         elsif ['br'].include? content['name']
+          groupActiveRecord::Base.logger.info "\n"
           textile += "\n"
         elsif ['p','h1','h2','h3'].include? content['name']
           if content['attrs']['style'] and a = content['attrs']['style'][/text-align:[\ ]?([^;]*)/,1] and not a.nil?
@@ -138,16 +142,17 @@ class HtmlToTextile
           else
             alignment = ''
           end
-          
-          textile += "\n#{content['name']}#{alignment}. " unless indent > 0
-          ActiveRecord::Base.logger.info 'strip2'
+          ActiveRecord::Base.logger.info "\n#{"#{content['name']}#{alignment}. " unless indent > 0}#{_to_textile_tag(content['content'], indent).strip}#\n\n"
+          textile += "\n#{content['name']}#{alignment}. " 
           textile += _to_textile_tag(content['content'], indent).strip
           textile += "\n\n"
         elsif ['a'].include? content['name']
           inner_parsed_textile = _spaces _to_textile_tag(content['content'])
           if inner_parsed_textile[:content].blank?
+            ActiveRecord::Base.logger.info
             textile + content['content']
           else
+            ActiveRecord::Base.logger.info
             textile += "#{inner_parsed_textile[:leading]}[\"#{inner_parsed_textile[:content]}\":#{content['attrs']['href'].blank? ? '#' : content['attrs']['href']}]#{inner_parsed_textile[:tailing]}"
           end
         elsif ['ul','ol'].include? content['name']
@@ -158,6 +163,7 @@ class HtmlToTextile
 
           content['content'].each do |element|
             if element.class == Hash and element['name'] == 'li'
+              ActiveRecord::Base.logger.info "\n #{literals[content['name']]} #{_to_textile_tag element, indent +2}"
               textile += "\n #{literals[content['name']]} "
               textile += _to_textile_tag element, indent +2
             end
@@ -169,7 +175,7 @@ class HtmlToTextile
             if row.class == Hash and row['name'] == 'tr'
               row['content'].each do |element|
                 if element.class == Hash and ['td', 'th'].include? element['name']
-                  ActiveRecord::Base.logger.info 'strip1'
+                  ActiveRecord::Base.logger.info "|#{element['name'] == 'th' ? '_.' : ''} #{_to_textile_tag(element, indent +2).strip.gsub(/\n{2,}/, "\n")} "
                   textile += "|#{element['name'] == 'th' ? '_.' : ''} #{_to_textile_tag(element, indent +2).strip.gsub(/\n{2,}/, "\n")} "
                 end
               end
@@ -177,10 +183,12 @@ class HtmlToTextile
             end
           end         
         else
+          ActiveRecord::Base.logger.info _to_textile_tag content['content'], indent
           textile += _to_textile_tag content['content'], indent
         end
       elsif content.class == Array
         content.each do |element|
+          ActiveRecord::Base.logger.info _to_textile_tag element, indent
           textile += _to_textile_tag element, indent
         end
       end  
