@@ -104,7 +104,7 @@ class HtmlToTextile
     def _to_textile_tag content, indent = 0
       textile = ''
       if content.class == String
-        groupActiveRecord::Base.logger.info 
+        ActiveRecord::Base.logger.info 
         textile += "#{content}"
       elsif content.class == Hash
         if ['u','b','strong','i','em','del','ins', 'sub', 'sup'].include? content['name']
@@ -121,14 +121,14 @@ class HtmlToTextile
           }
           inner_parsed_textile = _spaces _to_textile_tag(content['content'])
           if inner_parsed_textile[:content].blank?
-            groupActiveRecord::Base.logger.info content['content']
+            ActiveRecord::Base.logger.info content['content']
             textile + content['content']
           else
-            groupActiveRecord::Base.logger.info "#{inner_parsed_textile[:leading]}[#{literals[content['name']]}#{inner_parsed_textile[:content]}#{literals[content['name']]}]#{inner_parsed_textile[:tailing]}"
+            ActiveRecord::Base.logger.info "#{inner_parsed_textile[:leading]}[#{literals[content['name']]}#{inner_parsed_textile[:content]}#{literals[content['name']]}]#{inner_parsed_textile[:tailing]}"
             textile += "#{inner_parsed_textile[:leading]}[#{literals[content['name']]}#{inner_parsed_textile[:content]}#{literals[content['name']]}]#{inner_parsed_textile[:tailing]}"
           end
         elsif ['br'].include? content['name']
-          groupActiveRecord::Base.logger.info "\n"
+          ActiveRecord::Base.logger.info "\n"
           textile += "\n"
         elsif ['p','h1','h2','h3'].include? content['name']
           if content['attrs']['style'] and a = content['attrs']['style'][/text-align:[\ ]?([^;]*)/,1] and not a.nil?
