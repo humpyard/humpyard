@@ -207,10 +207,26 @@ $data_table_border_color: #c0c0c0;
         overflow: hidden;
       }
       th {
-        @include linear-gradient(color-stops(#fff, #ccc, #fff));
+        /*@include linear-gradient(color-stops(#fff, #ccc, #fff));*/
+        background: #ddd;
         border-bottom: 1px solid $data_table_border_color;
         color: #525252;
         font-weight: normal;
+        position: relative;
+        &.sortable {
+          padding: 0;
+          a {
+            padding: 0 13px 0 4px;
+            text-decoration: none;
+            display: block;
+          }
+        }
+        &.asc a {
+          background: image_url("table/asc.png") center right no-repeat;
+        }
+        &.desc a {
+          background: image_url("table/desc.png") center right no-repeat;
+        }
       }
       tr:nth-child(2n)  {
         background: $data_table_odd_background_color;
