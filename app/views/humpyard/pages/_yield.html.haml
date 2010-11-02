@@ -1,0 +1,2 @@
+.hy-content{:id => "hy-content-#{yield_name}", :'data-content-yield' => yield_name}
+  = render :partial => "/humpyard/elements/show_container", :locals => {:elements => @page.root_elements(yield_name)}
