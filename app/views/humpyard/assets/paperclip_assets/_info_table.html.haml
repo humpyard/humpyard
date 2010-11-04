@@ -1,0 +1,10 @@
+%tr
+  %td
+    = Humpyard::Assets::PaperclipAsset.human_attribute_name :media_file_size
+  %td
+    = number_to_human_size asset.media_file_size
+%tr
+  %td
+    = Humpyard::Assets::PaperclipAsset.human_attribute_name :media_updated_at
+  %td
+    =l asset.media_updated_at

@@ -50,6 +50,7 @@ require File.expand_path('../humpyard/engine', __FILE__)
 require File.expand_path('../humpyard/compass', __FILE__)
 require File.expand_path('../humpyard/uri_parser', __FILE__)
 require File.expand_path('../humpyard/uri_parser/pages_uri_parser', __FILE__)
+require File.expand_path('../humpyard/uri_parser/assets_uri_parser', __FILE__)
 
 require 'i18n'
 I18n.load_path += Dir.glob("#{File.dirname(__FILE__)}/../config/locales/*.yml")
@@ -63,6 +64,7 @@ require File.expand_path('../humpyard/active_model/naming', __FILE__)
 require File.expand_path('../humpyard/active_record/acts/element', __FILE__)
 require File.expand_path('../humpyard/active_record/acts/container_element', __FILE__)
 require File.expand_path('../humpyard/active_record/acts/page', __FILE__)
+require File.expand_path('../humpyard/active_record/acts/asset', __FILE__)
 require File.expand_path('../humpyard/active_record/has/title_for_url', __FILE__)
 
 

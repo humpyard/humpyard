@@ -1,0 +1,38 @@
+.dialog-search
+  = "#{I18n.t("txt.scaffold.titles.show", :model => "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}"
+.dialog-pane
+  %table.data_table
+    %tr
+      %td
+        = Humpyard::Asset.human_attribute_name :content_type
+      %td
+        = @asset.content_type
+    - unless @asset.width.blank?
+      %tr
+        %td
+          = Humpyard::Asset.human_attribute_name :width
+        %td
+          = @asset.width
+    - unless @asset.height.blank?
+      %tr
+        %td
+          = Humpyard::Asset.human_attribute_name :height
+        %td
+          = @asset.height
+    %tr
+      %td
+        = Humpyard::Asset.human_attribute_name :url
+      %td
+        = number_to_human_size @asset.url
+    - custom_partial_path = "/humpyard/assets/#{@asset.class.name.underscore.pluralize.gsub(/^humpyard\/assets/, '')}/info_asset"
+    - if template_exists? custom_partial_path , nil, true
+      = render :partial => custom_partial_path, :locals => {:asset => @asset}
+  = render :partial => "/humpyard/assets/show_asset", :locals => {:asset => @asset}
+
+  
+.dialog-buttons.humpyard-form-buttons
+  - if can? :destroy, @asset
+    = link_to 'Delete', humpyard_asset_path(@asset), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :'data-dialog-link' => true
+  - if can? :edit, @asset
+    = link_to 'Edit', edit_humpyard_asset_path(@asset), :'data-icon' => "ui-icon-pencil", :'data-dialog-link' => true
+

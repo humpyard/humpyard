@@ -1,0 +1,17 @@
+.humpyard-dialog-title
+  = I18n.t 'humpyard_form.titles.index', :model => Humpyard::Asset.model_name.human
+.dialog-columns
+  .left-dialog-column.with-toolbar
+    #hy-asset-listview.dialog-list
+      = render 'list', :assets => @assets, :asset => @asset
+    .dialog-buttons.humpyard-form-buttons
+      - if can? :new, Humpyard::Asset
+        - Humpyard::config.asset_types.each do |name, type|
+          = link_to I18n.t('humpyard_form.actions.new', :model => type.model_name.human), new_humpyard_asset_path(:type => name), :'data-dialog-link' => true, :'data-icon' => "ui-icon-circle-plus"
+  .right-dialog-column.with-toolbar.with-search
+    - if @asset
+      = render :partial => 'show', :locals => {:page => @page}
+    - else
+      .dialog-pane
+        Nothing selected
+.humpyard-dialog-buttons

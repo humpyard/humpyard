@@ -15,6 +15,9 @@ Rails.application.routes.draw do
         post :move
       end
     end
+    resources :humpyard_assets, :controller => 'humpyard/assets', :path => "assets", :only => [:index, :new, :create, :edit, :update, :show, :destroy] do
+
+    end
   end
   
   # Map "/" URL

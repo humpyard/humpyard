@@ -80,6 +80,13 @@ module Humpyard
       }
     end
     
+    def asset_types #:nodoc:
+      @asset_types ||= {
+        'paperclip' => Humpyard::Assets::PaperclipAsset,
+        'youtube' => Humpyard::Assets::YoutubeAsset
+      }
+    end
+    
     def templates #:nodoc:
       @templates ||= {
         'application' => {:yields => [:sidebar]}

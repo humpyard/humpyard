@@ -1,0 +1,5 @@
+.humpyard-tab
+  .humpyard-tab-title
+    Media Content
+  = form.input :asset_id, :as => :select, :collection => Humpyard::Asset.all
+  = form.input :float, :as => :select, :collection => [['none',''],['left', 'left'], ['right', 'right']]

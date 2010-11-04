@@ -1,0 +1,3 @@
+- if element.content_data and element.content_data.asset
+  .media-element{:style => (element.content_data.float.blank? ? '' : "float: #{element.content_data.float};")}
+    = render '/humpyard/assets/show_asset', :asset => element.content_data.asset.content_data

@@ -2,7 +2,7 @@ module Humpyard
   module UriParser
     class << self    
       def parsers
-        @parsers ||= [::Humpyard::UriParser::PagesUriParser]
+        @parsers ||= [::Humpyard::UriParser::PagesUriParser, ::Humpyard::UriParser::AssetsUriParser]
       end
     
       def substitute content, options = {}
