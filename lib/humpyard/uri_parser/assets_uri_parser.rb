@@ -1,6 +1,6 @@
 module Humpyard
   module UriParser
-    class AssetUriParser
+    class AssetsUriParser
       def self.substitute content, options = {}
         content.gsub(/humpyard:\/\/asset\/([0-9]*)/) do |uri| 
           begin
