@@ -1,0 +1,12 @@
+- if level <= element.content_data.levels and pages and pages.size > 0
+  %ul
+    - pages.each do |page|
+      - if page.in_sitemap
+        %li
+          - if page.content_data.is_humpyard_virtual_page?
+            = page.title
+          - else
+            = link_to page.title, page.human_url
+          - if element.content_data.show_description
+            .desc= page.description
+          = render '/humpyard/elements/sitemap_elements/show_part', :pages => page.child_pages(:multiple_roots => true), :element => element, :level => level + 1

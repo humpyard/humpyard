@@ -1,0 +1,5 @@
+.humpyard-tab
+  .humpyard-tab-title
+    Sitemap
+  = form.input :levels, :as => :select, :collection => (1..10).to_a.map{|x| [x,x]}
+  = form.input :show_description

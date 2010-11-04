@@ -68,7 +68,8 @@ module Humpyard
       @element_types ||= {
         'text_element' => Humpyard::Elements::TextElement,
         'box_element' => Humpyard::Elements::BoxElement,
-        'news_element' => Humpyard::Elements::NewsElement
+        'news_element' => Humpyard::Elements::NewsElement,
+        'sitemap_element' => Humpyard::Elements::SitemapElement
       }
     end
     
