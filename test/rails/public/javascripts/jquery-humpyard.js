@@ -754,9 +754,19 @@ jQuery(function($) {
     e.preventDefault();
 
     $.humpyard.submitForm(form, $(this).parents('.ui-dialog-content:first'), link.parents('form:first'));
-  })
+  });
 
-
+  $('a[data-dialog-menu]').live('click', function(e) {
+    var link = $(this);
+    
+    $(link.attr('data-dialog-menu')).toggle();  
+    
+	  e.preventDefault();
+  });
+  
+  $('.dialog-menu a').live('click', function(e) {
+    $('.dialog-menu').hide();
+  });
 });
 
 remove_element = function(el) {
