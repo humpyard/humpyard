@@ -234,6 +234,27 @@ $data_table_border_color: #c0c0c0;
     }
     
   } 
+  
+  .dialog-menu {
+    display: none;
+    position: absolute;
+    background: #fff;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    a {
+      display: block;
+      border-top: 1px solid #999;
+      text-decoration: none;
+      padding: 3px;
+    }
+    
+    a:hover {
+      @include linear-gradient(color-stops(#b0bfd8, #8196b9)); 
+    }
+  }
+  
       
   .jstree-default {
     li, ins {
