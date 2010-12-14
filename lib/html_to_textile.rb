@@ -134,9 +134,9 @@ class HtmlToTextile
           if content['attrs']['style'] and a = content['attrs']['style'][/text-align:[\ ]?([^;]*)/,1] and not a.nil?
             ActiveRecord::Base.logger.info 'strip1'
             alignment = case a.strip.downcase
-              when 'left': '<'
-              when 'right': '>'
-              when 'center': '='
+              when 'left' then '<'
+              when 'right' then '>'
+              when 'center' then '='
               else ''
             end
           else
