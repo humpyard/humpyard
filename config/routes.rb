@@ -21,12 +21,12 @@ Rails.application.routes.draw do
   end
   
   # Map "/" URL
-  root :to => 'humpyard/pages#show', :name => 'index'
+  root :to => 'humpyard/pages#show', :webpath => 'index'
   # Map sitemap.xml
   match "/sitemap.xml" => 'humpyard/pages#sitemap', :as => 'sitemap'
   # Map human readable page URLs
   if Humpyard::config.www_prefix.match /:locale/
-    match "/#{Humpyard::config.www_prefix}" => 'humpyard/pages#show', :name => 'index', :constraints => { :locale => Humpyard.config.locales_contraint }
+    match "/#{Humpyard::config.www_prefix}" => 'humpyard/pages#show', :webpath => 'index', :constraints => { :locale => Humpyard.config.locales_contraint }
     match "/#{Humpyard::config.www_prefix}*webpath.:format" => 'humpyard/pages#show', :constraints => { :locale => Humpyard.config.locales_contraint, :format => Humpyard.config.page_formats_contraint }
   else
     match "/#{Humpyard::config.www_prefix}*webpath.:format" => 'humpyard/pages#show', :constraints => { :format => Humpyard.config.page_formats_contraint }

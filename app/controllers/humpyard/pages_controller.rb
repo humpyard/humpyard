@@ -255,7 +255,7 @@ module Humpyard
       # Find root page
       else
         # Render index page if neither id or webpath was given
-        @page = Page.root_page
+        @page = Page.root_page :force_reload => true
         unless @page
           @page = Page.new
           render '/humpyard/pages/welcome'

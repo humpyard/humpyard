@@ -26,8 +26,12 @@ module Humpyard
     validates_with Humpyard::ActiveModel::PublishRangeValidator, {:attributes => [:display_from, :display_until]}
     validates_presence_of :title
     
-    def self.root_page
-      @root_page ||= Humpyard::Page.select(:id).with_translated_attribute(:title_for_url, :index).first
+    def self.root_page(options = {})
+      if options[:force_reload]
+        @root_page = Humpyard::Page.select(:id).with_translated_attribute(:title_for_url, :index).first
+      else
+        @root_page ||= Humpyard::Page.select(:id).with_translated_attribute(:title_for_url, :index).first
+      end
     end    
     
     def is_root_page?
