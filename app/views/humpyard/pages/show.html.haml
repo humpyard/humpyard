@@ -1,6 +1,3 @@
-- if @page.always_refresh
-  = render 'show'
-- else
-  -# cache "hy-page-#{@page.id}-#{I18n.locale}-#{humpyard_user ? humpyard_user : nil}-#{@page.last_modified.to_i}" do
-  = render 'show'
+= render 'show'
+
     

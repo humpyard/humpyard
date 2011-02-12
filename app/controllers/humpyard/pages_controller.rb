@@ -9,7 +9,7 @@ module Humpyard
       authorize! :manage, Humpyard::Page  
       
       @root_page = Humpyard::Page.root
-      @page = Humpyard::Page.where("id = ?", params[:actual_id]).first
+      @page = Humpyard::Page.where("id = ?", params[:actual_page_id]).first
      
       unless @page.nil?
         @page = @page.content_data

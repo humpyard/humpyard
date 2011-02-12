@@ -93,6 +93,32 @@ module Humpyard
       }
     end
     
+    def toolbar_actions #:nodoc:
+      @toolbar_actions ||= {
+        #'edit' => {
+        #  :title => 'humpyard_cms.toolbar.edit',
+        #  :command => 'toggleEditMode',
+        #  :icon => 'ui-icon-pencil'
+        #},
+        'hy_pages' => {
+          :title => 'humpyard_cms.toolbar.pages',
+          :controller => '/humpyard/pages',
+          :action => :index,
+          :dialog => "size:800x700;dialog_id:pages-dialog",
+          :icon => 'ui-icon-document',
+          :class => Humpyard::Page
+        },
+        'hy_assets' => {
+          :title => 'humpyard_cms.toolbar.assets',
+          :controller => '/humpyard/assets',
+          :action => :index,
+          :dialog => "size:800x700;dialog_id:assets-dialog",
+          :icon => 'ui-icon-video',
+          :class => Humpyard::Asset
+        }
+      }
+    end
+    
     def default_template #:nodoc:
       @default_template ||= templates.keys.first
     end
