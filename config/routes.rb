@@ -7,6 +7,7 @@ Rails.application.routes.draw do
         post :move
       end
     end
+    
     resources :humpyard_elements, :controller => 'humpyard/elements', :path => "elements", :only => [:new, :create, :edit, :update, :show, :destroy] do
       member do
         get :inline_edit
@@ -15,6 +16,7 @@ Rails.application.routes.draw do
         post :move
       end
     end
+    
     resources :humpyard_assets, :controller => 'humpyard/assets', :path => "assets", :only => [:index, :new, :create, :edit, :update, :show, :destroy] do
 
     end
@@ -28,8 +30,9 @@ Rails.application.routes.draw do
   if Humpyard::config.www_prefix.match /:locale/
     match "/#{Humpyard::config.www_prefix}" => 'humpyard/pages#show', :webpath => 'index', :constraints => { :locale => Humpyard.config.locales_contraint }
     match "/#{Humpyard::config.www_prefix}*webpath.:format" => 'humpyard/pages#show', :constraints => { :locale => Humpyard.config.locales_contraint, :format => Humpyard.config.page_formats_contraint }
+    match "/#{Humpyard::config.www_prefix}*path" => 'humpyard/errors#error404', :constraints => { :locale => Humpyard.config.locales_contraint }
   else
     match "/#{Humpyard::config.www_prefix}*webpath.:format" => 'humpyard/pages#show', :constraints => { :format => Humpyard.config.page_formats_contraint }
+    match "/#{Humpyard::config.www_prefix}*path" => 'humpyard/errors#error404'
   end
-
 end
