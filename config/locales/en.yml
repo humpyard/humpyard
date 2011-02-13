@@ -55,6 +55,7 @@ en:
     toolbar:
       edit: "Edit Page"
       pages: "Manage Pages"
+      assets: "Manage Medias"
       logout: "Logout"
     pages:
       edit:

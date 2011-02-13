@@ -57,6 +57,7 @@ de:
     toolbar:
       edit: "Seite bearbeiten"
       pages: "Seiten verwalten"
+      assets: "Medien verwalten"
       logout: "Abmelden"
     pages:
       edit:
