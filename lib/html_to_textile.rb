@@ -51,21 +51,21 @@ class HtmlToTextile
     end
     
     def to_textile  
-      #ActiveRecord::Base.logger.info  "### tree START"
-      #ActiveRecord::Base.logger.info  @tree.inspect
-      #ActiveRecord::Base.logger.info  "### tree END"
-      ActiveRecord::Base.logger.info  "### HTML START"
+      ##ActiveRecord::Base.logger.debug  "### tree START"
+      ##ActiveRecord::Base.logger.debug  @tree.inspect
+      ##ActiveRecord::Base.logger.debug  "### tree END"
+      #ActiveRecord::Base.logger.debug  "### HTML START"
       to_html
-      ActiveRecord::Base.logger.info  "### HTML END"
+      #ActiveRecord::Base.logger.debug  "### HTML END"
       
       textile = ''
       tree.each do |content|
         textile += _to_textile_tag content
       end
       
-      ActiveRecord::Base.logger.info  "### TEXTILE START"
-      ActiveRecord::Base.logger.info  textile
-      ActiveRecord::Base.logger.info  "### TEXTILE END"      
+      #ActiveRecord::Base.logger.debug  "### TEXTILE START"
+      #ActiveRecord::Base.logger.debug  textile
+      #ActiveRecord::Base.logger.debug  "### TEXTILE END"      
       
       return textile
     end
@@ -81,17 +81,17 @@ class HtmlToTextile
     private
     def _to_html_tag content, indent = 0
       if content.class == String
-        ActiveRecord::Base.logger.info "#{('  ' * indent)}#{content.to_s.gsub("\n", "#{'  ' * indent}")}"
+        #ActiveRecord::Base.logger.debug "#{('  ' * indent)}#{content.to_s.gsub("\n", "#{'  ' * indent}")}"
         @html += "#{content}"
       elsif content.class == Hash
         if ['br','img'].include? content['name']
-          ActiveRecord::Base.logger.info "#{('  ' * indent)}<#{content['name']} />"
+          #ActiveRecord::Base.logger.debug "#{('  ' * indent)}<#{content['name']} />"
           @html += "<#{content['name']} />"
         else
-          ActiveRecord::Base.logger.info "#{('  ' * indent)}<#{content['name']}>"
+          #ActiveRecord::Base.logger.debug "#{('  ' * indent)}<#{content['name']}>"
           @html += "<#{content['name']}>"
           _to_html_tag(content['content'], indent + 2)
-          ActiveRecord::Base.logger.info "#{('  ' * indent)}</#{content['name']}>"
+          #ActiveRecord::Base.logger.debug "#{('  ' * indent)}</#{content['name']}>"
           @html += "</#{content['name']}>"
         end
       elsif content.class == Array
@@ -104,7 +104,7 @@ class HtmlToTextile
     def _to_textile_tag content, indent = 0
       textile = ''
       if content.class == String
-        ActiveRecord::Base.logger.info 
+        ##ActiveRecord::Base.logger.debug "Content: #{content}"
         textile += "#{content}"
       elsif content.class == Hash
         if ['u','b','strong','i','em','del','ins', 'sub', 'sup'].include? content['name']
@@ -121,18 +121,18 @@ class HtmlToTextile
           }
           inner_parsed_textile = _spaces _to_textile_tag(content['content'])
           if inner_parsed_textile[:content].blank?
-            ActiveRecord::Base.logger.info "#{inner_parsed_textile[:leading]}#{inner_parsed_textile[:tailing]}"
+            #ActiveRecord::Base.logger.debug "#{inner_parsed_textile[:leading]}#{inner_parsed_textile[:tailing]}"
             textile += "#{inner_parsed_textile[:leading]}#{inner_parsed_textile[:tailing]}"
           else
-            ActiveRecord::Base.logger.info "#{inner_parsed_textile[:leading]}[#{literals[content['name']]}#{inner_parsed_textile[:content]}#{literals[content['name']]}]#{inner_parsed_textile[:tailing]}"
+            #ActiveRecord::Base.logger.debug "#{inner_parsed_textile[:leading]}[#{literals[content['name']]}#{inner_parsed_textile[:content]}#{literals[content['name']]}]#{inner_parsed_textile[:tailing]}"
             textile += "#{inner_parsed_textile[:leading]}[#{literals[content['name']]}#{inner_parsed_textile[:content]}#{literals[content['name']]}]#{inner_parsed_textile[:tailing]}"
           end
         elsif ['br'].include? content['name']
-          ActiveRecord::Base.logger.info "\n"
+          #ActiveRecord::Base.logger.debug "\n"
           textile += "\n"
         elsif ['p','h1','h2','h3'].include? content['name']
           if content['attrs']['style'] and a = content['attrs']['style'][/text-align:[\ ]?([^;]*)/,1] and not a.nil?
-            ActiveRecord::Base.logger.info 'strip1'
+            #ActiveRecord::Base.logger.debug 'strip1'
             alignment = case a.strip.downcase
               when 'left' then '<'
               when 'right' then '>'
@@ -142,17 +142,17 @@ class HtmlToTextile
           else
             alignment = ''
           end
-          ActiveRecord::Base.logger.info "\n#{"#{content['name']}#{alignment}. " unless indent > 0}#{_to_textile_tag(content['content'], indent).strip}#\n\n"
+          #ActiveRecord::Base.logger.debug "\n#{"#{content['name']}#{alignment}. " unless indent > 0}#{_to_textile_tag(content['content'], indent).strip}#\n\n"
           textile += "\n#{content['name']}#{alignment}. " 
           textile += _to_textile_tag(content['content'], indent).strip
           textile += "\n\n"
         elsif ['a'].include? content['name']
           inner_parsed_textile = _spaces _to_textile_tag(content['content'])
           if inner_parsed_textile[:content].blank?
-            ActiveRecord::Base.logger.info "#{inner_parsed_textile[:leading]}#{inner_parsed_textile[:tailing]}"
+            #ActiveRecord::Base.logger.debug "#{inner_parsed_textile[:leading]}#{inner_parsed_textile[:tailing]}"
             textile += "#{inner_parsed_textile[:leading]}#{inner_parsed_textile[:tailing]}"
           else
-            ActiveRecord::Base.logger.info "#{inner_parsed_textile[:leading]}[\"#{inner_parsed_textile[:content]}\":#{content['attrs']['href'].blank? ? '#' : content['attrs']['href']}]#{inner_parsed_textile[:tailing]}"
+            #ActiveRecord::Base.logger.debug "#{inner_parsed_textile[:leading]}[\"#{inner_parsed_textile[:content]}\":#{content['attrs']['href'].blank? ? '#' : content['attrs']['href']}]#{inner_parsed_textile[:tailing]}"
             textile += "#{inner_parsed_textile[:leading]}[\"#{inner_parsed_textile[:content]}\":#{content['attrs']['href'].blank? ? '#' : content['attrs']['href']}]#{inner_parsed_textile[:tailing]}"
           end
         elsif ['ul','ol'].include? content['name']
@@ -163,7 +163,7 @@ class HtmlToTextile
 
           content['content'].each do |element|
             if element.class == Hash and element['name'] == 'li'
-              ActiveRecord::Base.logger.info "\n #{literals[content['name']]} #{_to_textile_tag element, indent +2}"
+              #ActiveRecord::Base.logger.debug "\n #{literals[content['name']]} #{_to_textile_tag element, indent +2}"
               textile += "\n #{literals[content['name']]} "
               textile += _to_textile_tag element, indent +2
             end
@@ -175,7 +175,7 @@ class HtmlToTextile
             if row.class == Hash and row['name'] == 'tr'
               row['content'].each do |element|
                 if element.class == Hash and ['td', 'th'].include? element['name']
-                  ActiveRecord::Base.logger.info "|#{element['name'] == 'th' ? '_.' : ''} #{_to_textile_tag(element, indent +2).strip.gsub(/\n{2,}/, "\n")} "
+                  #ActiveRecord::Base.logger.debug "|#{element['name'] == 'th' ? '_.' : ''} #{_to_textile_tag(element, indent +2).strip.gsub(/\n{2,}/, "\n")} "
                   textile += "|#{element['name'] == 'th' ? '_.' : ''} #{_to_textile_tag(element, indent +2).strip.gsub(/\n{2,}/, "\n")} "
                 end
               end
@@ -183,12 +183,12 @@ class HtmlToTextile
             end
           end         
         else
-          ActiveRecord::Base.logger.info _to_textile_tag content['content'], indent
+          #ActiveRecord::Base.logger.debug _to_textile_tag content['content'], indent
           textile += _to_textile_tag content['content'], indent
         end
       elsif content.class == Array
         content.each do |element|
-          ActiveRecord::Base.logger.info _to_textile_tag element, indent
+          #ActiveRecord::Base.logger.debug _to_textile_tag element, indent
           textile += _to_textile_tag element, indent
         end
       end  
