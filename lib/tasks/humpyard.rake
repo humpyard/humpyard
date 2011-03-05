@@ -87,6 +87,17 @@ namespace :humpyard do
       end
     end
   end
+  
+  namespace :pages do
+    desc "Create root page if it does not exists"
+    task :create_root  => [:environment] do
+      if Humpyard::Page.root_page
+        puts "There is already a root page"
+      else
+        Humpyard::Pages::StaticPage.create :title => 'index'
+      end
+    end
+  end
 end
 
 task :'db:migrate' => [:'humpyard:db:migrate', :'humpyard:db:remove_namespace']
