@@ -9,7 +9,7 @@ module Humpyard
       authorize! :manage, Humpyard::Page  
       
       @root_page = Humpyard::Page.root
-      @page = Humpyard::Page.where("id = ?", params[:actual_page_id]).first
+      @page = Humpyard::Page.find_by_id(params[:actual_page_id])
      
       unless @page.nil?
         @page = @page.content_data
@@ -29,8 +29,8 @@ module Humpyard
       end
       
       @page_type = params[:type]
-      @prev = Humpyard::Page.where('id = ?', params[:prev_id]).first
-      @next = Humpyard::Page.where('id = ?', params[:next_id]).first
+      @prev = Humpyard::Page.find_by_id(params[:prev_id])
+      @next = Humpyard::Page.find_by_id(params[:next_id])
       
       render :partial => 'edit'
     end
@@ -43,8 +43,8 @@ module Humpyard
       authorize! :create, @page.page
       
       if @page.save
-        @prev = Humpyard::Page.where('id = ?', params[:prev_id]).first
-        @next = Humpyard::Page.where('id = ?', params[:next_id]).first
+        @prev = Humpyard::Page.find_by_id(params[:prev_id])
+        @next = Humpyard::Page.find_by_id(params[:next_id])
         
         #do_move(@page, @prev, @next)
       
@@ -154,14 +154,14 @@ module Humpyard
           return
         end
         
-        parent = Humpyard::Page.where('id = ?', params[:parent_id]).first
+        parent = Humpyard::Page.find_by_id(params[:parent_id])
         # by default, make it possible to move page to root, uncomment to do otherwise:
         #unless parent
         #  parent = Humpyard::Page.root_page
         #end
         @page.update_attribute :parent, parent
-        @prev = Humpyard::Page.where('id = ?', params[:prev_id]).first
-        @next = Humpyard::Page.where('id = ?', params[:next_id]).first
+        @prev = Humpyard::Page.find_by_id(params[:prev_id])
+        @next = Humpyard::Page.find_by_id(params[:next_id])
         
         do_move(@page, @prev, @next)
         

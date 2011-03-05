@@ -1,22 +1,22 @@
 class NewsPage < ActiveRecord::Migration
   def self.up
     #Remove old news stuff if exists
-    begin
-      drop_table :news_feed_translations
-    rescue
-    end
-    begin
-      drop_table :news_feeds
-    rescue
-    end
-    begin
-      drop_table :news_item_translations
-    rescue
-    end
-    begin
-      drop_table :news_items
-    rescue
-    end    
+    # begin
+    #   drop_table :news_feed_translations
+    # rescue
+    # end
+    # begin
+    #   drop_table :news_feeds
+    # rescue
+    # end
+    # begin
+    #   drop_table :news_item_translations
+    # rescue
+    # end
+    # begin
+    #   drop_table :news_items
+    # rescue
+    # end    
     
     create_table :pages_news_pages do |t|
       t.timestamps

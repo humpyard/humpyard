@@ -15,8 +15,10 @@ module Humpyard
   #    Humpyard::Page.human_url
   #    <tt>":locale"</tt>:: The current ::I18n.locale
   #
-  #    A tailing "/" indicates, that the value should be a path.
-  #    Without the tailing "/" the last part would become a prefix
+  #    Leading slashes ("/") as it would result in invalid URLs and will be ignored.
+  #
+  #    A tailing slash ("/") indicates, that the value should be a path.
+  #    Without the tailing slash the last part would become a prefix
   #    to the pages URL.
   #    A page with the path "about/config.html" with the ::I18n.locale="en" 
   #    and the given prefix will result in:
@@ -62,6 +64,10 @@ module Humpyard
           
     def www_prefix #:nodoc:
       @www_prefix ||= ':locale/'
+    end
+    
+    def www_prefix=(prefix)
+      @www_prefix = prefix.gsub /^\//, ''
     end
     
     def element_types #:nodoc:
@@ -149,6 +155,10 @@ module Humpyard
     
     def admin_prefix #:nodoc:
       @admin_prefix.blank? ? 'admin' : @admin_prefix
+    end
+    
+    def admin_prefix=(prefix)
+      @admin_prefix = prefix.gsub /^\//, ''
     end
     
     def locales=(locales) #:nodoc:

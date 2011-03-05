@@ -1,23 +1,24 @@
 class PageI18nName < ActiveRecord::Migration
   def self.up
-    begin
-      add_column :page_translations, :title_for_url, :string
-      Humpyard::Page.reset_column_information
-    
-      rename_column :page_translations, :"#{Humpyard::config.table_name_prefix}page_id", :page_id
-      Humpyard::Page.all.each do |p|
-        Humpyard::config.locales.each do |locale|
-          I18n.locale = locale
-          p.title_for_url = p.suggested_title_for_url
-          p.save
-        end
-      end
-      I18n.locale = Humpyard::config.locales.first
-      rename_column :page_translations, :page_id, :"#{Humpyard::config.table_name_prefix}page_id"
-      remove_column :pages, :name, :string
-      Humpyard::Page.reset_column_information
-    rescue
-    end
+    # begin
+    #   add_column :page_translations, :title_for_url, :string
+    #   Humpyard::Page.reset_column_information
+    # 
+    #   rename_column :page_translations, :"#{Humpyard::config.table_name_prefix}page_id", :page_id
+    #  Humpyard::Page.all.each do       | p      |
+    #  Humpyard::config.locales.each do | locale |
+    #       I18n.locale = locale
+    #       p.title_for_url = p.suggested_title_for_url
+    #       p.save
+    #     end
+    #   end
+    #   I18n.locale = Humpyard::config.locales.first
+    #   rename_column :page_translations, :page_id, :"#{Humpyard::config.table_name_prefix}page_id"
+    #   remove_column :pages, :name, :string
+    #   Humpyard::Page.reset_column_information
+    # rescue
+    # end
+
   end
   
   def self.down

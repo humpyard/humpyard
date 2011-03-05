@@ -14,8 +14,8 @@ module Humpyard
       authorize! :create, @element.element 
       
       @element_type = params[:type]
-      @prev = Humpyard::Element.where('id = ?', params[:prev_id]).first
-      @next = Humpyard::Element.where('id = ?', params[:next_id]).first
+      @prev = Humpyard::Element.find_by_id(params[:prev_id])
+      @next = Humpyard::Element.find_by_id(params[:next_id])
       
       render :partial => 'edit'
     end
@@ -32,8 +32,8 @@ module Humpyard
       end      
             
       if @element.save
-        @prev = Humpyard::Element.where('id = ?', params[:prev_id]).first
-        @next = Humpyard::Element.where('id = ?', params[:next_id]).first
+        @prev = Humpyard::Element.find_by_id(params[:prev_id])
+        @next = Humpyard::Element.find_by_id(params[:next_id])
         
         do_move(@element, @prev, @next)
       
@@ -125,11 +125,11 @@ module Humpyard
         end
         
         @element.update_attributes(
-          :container => Humpyard::Element.where('id = ?', params[:container_id]).first, 
+          :container => Humpyard::Element.find_by_id(params[:container_id]), 
           :page_yield_name => params[:yield_name]
         )
-        @prev = Humpyard::Element.where('id = ?', params[:prev_id]).first
-        @next = Humpyard::Element.where('id = ?', params[:next_id]).first
+        @prev = Humpyard::Element.find_by_id(params[:prev_id])
+        @next = Humpyard::Element.find_by_id(params[:next_id])
         
         do_move(@element, @prev, @next)
         
