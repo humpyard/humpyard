@@ -7,15 +7,19 @@ module Humpyard
     
       # ToDo render styles - not working for non-images like mp3
     
-      has_attached_file(
-        :media, 
-        :default_style => :original,
-        #:styles => {:preview => ['500x500>', :jpg], :thumb => ['200x100>', :jpg]},
-        :path => ":rails_root/public/system/media/:id/:basename.:extension",
-        :url => "/system/media/:id/:basename.:extension"
-      )
-      validates_attachment_presence :media
-      after_post_process :update_media_dimensions
+      begin
+        has_attached_file(
+          :media, 
+          :default_style => :original,
+          #:styles => {:preview => ['500x500>', :jpg], :thumb => ['200x100>', :jpg]},
+          :path => ":rails_root/public/system/media/:id/:basename.:extension",
+          :url => "/system/media/:id/:basename.:extension"
+        )
+        validates_attachment_presence :media
+        after_post_process :update_media_dimensions
+      rescue
+        puts "Paperclip not usable."
+      end
     
       def title
         media_file_name
