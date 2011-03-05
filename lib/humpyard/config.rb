@@ -44,7 +44,7 @@ module Humpyard
   #
   #    The default value is <tt>['en']</tt>
   class Config 
-    attr_writer :table_name_prefix, :www_prefix, :admin_prefix, :element_types, :page_types # :nodoc:
+    attr_writer :table_name_prefix, :element_types, :page_types # :nodoc:
     attr_writer :templates, :default_template, :browser_title_prefix, :browser_title_postfix # :nodoc:
     attr_writer :users_framework, :js_framework, :compass_format, :compass_stylesheet_link_tag_path # :nodoc:
     
@@ -67,7 +67,11 @@ module Humpyard
     end
     
     def www_prefix=(prefix)
-      @www_prefix = prefix.gsub /^\//, ''
+      if prefix
+        @www_prefix = prefix.gsub /^\//, ''
+      else
+        @www_prefix = nil
+      end
     end
     
     def element_types #:nodoc:
@@ -158,7 +162,11 @@ module Humpyard
     end
     
     def admin_prefix=(prefix)
-      @admin_prefix = prefix.gsub /^\//, ''
+      if prefix
+        @admin_prefix = prefix.gsub /^\//, ''
+      else
+        @admin_prefix = nil
+      end
     end
     
     def locales=(locales) #:nodoc:
