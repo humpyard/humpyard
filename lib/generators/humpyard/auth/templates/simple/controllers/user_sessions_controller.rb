@@ -20,7 +20,7 @@ class <%= class_name %>SessionsController < ApplicationController
         @current_user = params[:username]
         session[:humpyard] ||= {}
         session[:humpyard][:user] = @current_user
-        redirect_to "/#{Humpyard::config.www_prefix}"
+        redirect_to Humpyard::Page.root_page.human_url
         return
       end
     end
@@ -34,6 +34,6 @@ class <%= class_name %>SessionsController < ApplicationController
     @current_user = nil
     session[:humpyard] ||= {}
     session[:humpyard][:user] = @current_user
-    redirect_to "/#{Humpyard::config.www_prefix}"
+    redirect_to Humpyard::Page.root_page.human_url
   end
 end
