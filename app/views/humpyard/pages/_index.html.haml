@@ -4,7 +4,7 @@
   .left-dialog-column.with-toolbar.with-search
     .dialog-pane
       #hy-page-treeview
-      = render :partial => 'tree', :locals => {:pages => @pages, :page => @page}
+        = render :partial => 'tree', :locals => {:pages => @pages, :page => @page}
       #humpyard-page-types-menu.dialog-menu
         - Humpyard::config.page_types.each do |name, type|
           = link_to I18n.t('humpyard_cms.pages.edit.add', :page_type => type.model_name.human), new_humpyard_page_path(:type => name), :'data-dialog-link' => true
