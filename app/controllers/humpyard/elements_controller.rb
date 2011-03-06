@@ -144,12 +144,15 @@ module Humpyard
     end
     
     # Destroy an element
-    def destroy
-      @element = Humpyard::Element.find(params[:id])
+    def destroy      
+      @element = Humpyard::Element.find_by_id(params[:id])
       
-      authorize! :destroy, @element  
-      
-      @element.destroy
+      if can? :destroy, @element  
+        @element.destroy
+      else
+        @error = "You have no permission to delete this element (id: #{@element.class}:#{params[:id]})"
+        render :error
+      end
     end
         
     # Render a given element
