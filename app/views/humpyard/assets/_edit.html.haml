@@ -2,7 +2,7 @@
   - unless @asset.persisted? 
     = hidden_field_tag :type, @asset_type
   .dialog-search
-    = "#{I18n.t("txt.scaffold.titles.#{form.form_type.downcase}", :model => "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}"
+    = "#{I18n.t("humpyard_form.titles.#{form.form_type.downcase}", :model => "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}"
   .dialog-pane
     .flashes
     .humpyard-tabview

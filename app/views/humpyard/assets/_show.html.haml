@@ -1,5 +1,5 @@
 .dialog-search
-  = "#{I18n.t("txt.scaffold.titles.show", :model => "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}"
+  = "#{I18n.t("humpyard_form.titles.show", :model => "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}"
 .dialog-pane
   %table.data_table
     %tr
