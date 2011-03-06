@@ -165,8 +165,14 @@ module Humpyard
         
         do_move(@page, @prev, @next)
         
+        replace_options = {
+          :element => "hy-page-treeview",
+          :content => render_to_string(:partial => "tree.html", :locals => {:page => @page})
+        }
+        
         render :json => {
-          :status => :ok
+          :status => :ok,
+          :replace => [replace_options]
         }
       else
         render :json => {
@@ -329,7 +335,7 @@ module Humpyard
       if page.parent
         neighbours = page.parent.child_pages
       else
-        neighbours = Humpyard::Page.root_page.child_pages
+        neighbours = Humpyard::Page.where('parent_id IS NULL')
       end
 
       #p "before #{next_id} and after #{prev_id}"
