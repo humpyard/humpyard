@@ -9,7 +9,7 @@
       - custom_partial_path = "/humpyard/assets/#{@asset.class.name.underscore.pluralize.gsub(/^humpyard\/assets/, '')}/edit"
       - if template_exists? custom_partial_path , nil, true
         = render :partial => custom_partial_path, :locals => {:asset => @asset, :form => form}
-  .dialog-buttons.humpyard-form-buttons  
+  .dialog-buttons.humpyard-form-buttons
     = form.submit
-    - if @asset.persisted? and can? :destroy, @asset
-      = link_to 'Delete', humpyard_asset_path(@asset), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :'data-dialog-link' => true
+    - if @asset.persisted? and can? :destroy, @asset.asset
+      = link_to "#{I18n.t("humpyard_form.actions.destroy", :model => "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}", humpyard_asset_path(@asset), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :remote => true

@@ -31,8 +31,8 @@
         = form.input :display_until
   .dialog-buttons.humpyard-form-buttons  
     = form.submit
-    - if @page.persisted?
-      = link_to 'Delete', humpyard_page_path(@page.page), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :remote => true
+    - if @page.persisted? and can? :destroy, @page.page
+      = link_to "#{I18n.t("humpyard_form.actions.destroy", :model => "#{Humpyard::Page.model_name.human}#{@page.title.blank? ? '' : " '#{@page.title}'"}")}", humpyard_page_path(@page.page), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :remote => true
     .hy-locale-info
       Sprache:
       = I18n.locale

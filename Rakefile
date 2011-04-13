@@ -7,7 +7,7 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 require 'rake/gempackagetask'
 
-#Rails::Application.railties.all.each do |test|
+#Rails.application.railties.all.each do |test|
 #  test.load_tasks if test.class == Rails::TestUnitRailtie
 #end
 
@@ -77,7 +77,7 @@ namespace :db do
   namespace :test do
     desc "Migrate the test database through scripts in db/migrate. Target specific version with VERSION=x. Turn off output with VERBOSE=false."
     task :prepare do
-      ActiveRecord::Base.configurations = Rails::Application.config.database_configuration      
+      ActiveRecord::Base.configurations = Rails.application.config.database_configuration      
       class ActiveRecord::Base
          self.table_name_prefix = "#{::ActiveRecord::Base.table_name_prefix}#{Humpyard::config.table_name_prefix}"
       end
@@ -89,7 +89,7 @@ namespace :db do
     desc "Remove the test database"
     task :drop do
       require 'pathname'
-      config = Rails::Application.config.database_configuration['test']
+      config = Rails.application.config.database_configuration['test']
       path = Pathname.new(config['database'])
       file = path.absolute? ? path.to_s : File.join(Rails.root, path)
 
@@ -105,7 +105,7 @@ task :routes do
   ENV["RAILS_ENV"] = "test"
   require File.expand_path(File.dirname(__FILE__) + "/config/environment")
   
-  Rails::Application.reload_routes!
+  Rails.application.reload_routes!
   all_routes = ENV['CONTROLLER'] ? ActionController::Routing::Routes.routes.select { |route| route.defaults[:controller] == ENV['CONTROLLER'] } : ActionController::Routing::Routes.routes
   routes = all_routes.collect do |route|
     name = ActionController::Routing::Routes.named_routes.routes.index(route).to_s
@@ -131,12 +131,12 @@ spec = Gem::Specification.new do |s|
   s.files = Dir["{lib}/**/*", "{app}/*/humpyard/**/*", "{config}/routes.rb", "{config}/locales/*", "{db}/migrate/*", "{compass}/**/*", "VERSION", "README*", "LICENCE", "Gemfile"]
   s.version = ::File.read(::File.join(::File.dirname(__FILE__), "VERSION")).strip
   s.add_dependency 'builder'
-  s.add_dependency 'rails', '>= 3.0.0'
-  s.add_dependency 'haml', '>= 3.0.0'
-  s.add_dependency 'compass', '>=0.10.0'
+  s.add_dependency 'rails', '>= 3.0.5'
+  s.add_dependency 'haml', '>= 3.0.25'
+  s.add_dependency 'compass', '>=0.10.6'
   s.add_dependency 'acts_as_tree', '>= 0.1.1'
-  s.add_dependency 'cancan', '>= 1.3.4'
-  s.add_dependency 'globalize3', '>= 0.0.7'
+  s.add_dependency 'cancan', '>= 1.6.4'
+  s.add_dependency 'globalize3', '>= 0.0.11'
   s.add_dependency 'humpyard_form', '>= 0.0.4'
 end
 

@@ -5,7 +5,7 @@ gem 'builder'
 gem 'haml',               '>=3.0.0'
 gem 'compass',            '>=0.10.0'
 gem 'acts_as_tree',       '>=0.1.1'
-gem 'cancan',             '>=1.3.4'
+gem 'cancan',             '>=1.6.4'
 gem 'globalize3',         '>=0.0.7'
 gem 'humpyard_form',      :git => 'http://github.com/humpyard/humpyard_form.git'
 

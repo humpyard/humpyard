@@ -1,0 +1,4 @@
+remove_element('#hy-asset-listview-text-<%=@asset.id%>');
+replace_content_for_element('#assets-dialog .right-dialog-column .dialog-pane', '<p><%= escape_javascript "#{I18n.t("humpyard_form.flashes.destroy_success", :model => "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}" %></p>');
+remove_element('#assets-dialog .right-dialog-column .dialog-buttons a');
+remove_element('#assets-dialog .right-dialog-column .dialog-buttons button');

@@ -31,8 +31,8 @@
 
   
 .dialog-buttons.humpyard-form-buttons
-  - if can? :destroy, @asset
-    = link_to 'Delete', humpyard_asset_path(@asset), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :'data-dialog-link' => true
-  - if can? :edit, @asset
-    = link_to 'Edit', edit_humpyard_asset_path(@asset), :'data-icon' => "ui-icon-pencil", :'data-dialog-link' => true
+  - if can? :destroy, @asset.asset
+    = link_to "#{I18n.t("humpyard_form.actions.destroy", :model => "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}", humpyard_asset_path(@asset), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :remote => true
+  - if can? :update, @asset.asset
+    = link_to "#{I18n.t("humpyard_form.actions.edit", :model => "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}", edit_humpyard_asset_path(@asset), :'data-icon' => "ui-icon-pencil", :'data-dialog-link' => true
 

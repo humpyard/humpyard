@@ -118,16 +118,6 @@ module Humpyard
       authorize! :destroy, @asset  
       
       @asset.destroy
-      
-      render :json => {
-        :status => :ok,
-        :replace => [
-          { 
-            :element => "hy-asset-listview-text-#{@asset.id}",
-            :content => ''
-          }
-        ]
-      }
     end
   end
 end

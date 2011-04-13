@@ -1,2 +1,4 @@
-remove_element('hy-page-treeview-item-<%=@page.id%>');
-remove_element('.right-dialog-column form');
+remove_element('#hy-page-treeview-item-<%=@page.id%>');
+replace_content_for_element('#pages-dialog .right-dialog-column .dialog-pane', '<p><%= escape_javascript "#{I18n.t("humpyard_form.flashes.destroy_success", :model => "#{Humpyard::Page.model_name.human}#{@page.title.blank? ? '' : " '#{@page.title}'"}")}" %></p>');
+remove_element('#pages-dialog .right-dialog-column .dialog-buttons a');
+remove_element('#pages-dialog .right-dialog-column .dialog-buttons button');

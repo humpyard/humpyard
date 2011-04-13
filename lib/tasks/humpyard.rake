@@ -10,7 +10,7 @@ namespace :humpyard do
     task :prepare_namespace do
       require 'active_record'
       puts 'prepage humpyard table_name_prefix'
-      ActiveRecord::Base.configurations = Rails::Application.config.database_configuration
+      ActiveRecord::Base.configurations = Rails.application.config.database_configuration
       
       class ActiveRecord::Base
         self.table_name_prefix = "#{::ActiveRecord::Base.table_name_prefix}#{Humpyard::config.table_name_prefix}"
