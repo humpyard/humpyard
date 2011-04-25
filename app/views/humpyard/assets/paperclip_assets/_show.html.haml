@@ -1,5 +1,9 @@
 - if asset.content_type.match /image\//
-  = image_tag "#{asset.url}", :width => asset.width, :height => asset.height
+  - if element and element.content_data and not element.content_data.uri.blank?
+    = link_to element.content_data.uri do
+      = image_tag "#{asset.url}", :width => asset.width, :height => asset.height
+  - else   
+    = image_tag "#{asset.url}", :width => asset.width, :height => asset.height 
 - elsif asset.media_content_type.match /audio\//
   %div{:align => "center"}
     %object{:type => "audio/mpeg", :data => "#{asset.url}", :width => 200, :height => 20}

@@ -25,6 +25,10 @@ en:
             html_content: "Content (formated)"      
           news_element: 
             news_page: "News page"    
+          media_element:
+            asset: "Media Asset"
+            float: "Float Alignment"
+            uri: "URI"
         pages:
           title: "Title"
           description: "Description"
@@ -34,6 +38,15 @@ en:
   
   yes: yes
   no: no
+  
+  humpyard:
+    elements:
+      media_elements:
+        edit:
+          uri_description: "URI only works for some mime types like images"
+          none: "None"
+          left: "Left"
+          right: "Right"
   
   humpyard_cms:
     start: 'Loading Humpyard %{version}'

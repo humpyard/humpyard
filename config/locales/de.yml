@@ -25,6 +25,10 @@ de:
             html_content: "Inhalt (formatiert)"
           news_element: 
             news_page: "Nachrichtenseite"
+          media_element:
+            asset: "Medium"
+            float: "Schwebende Ausrichtung"
+            uri: "Link Adresse"
         pages:
           title: "Überschrift"
           description: "Beschreibung"
@@ -36,6 +40,16 @@ de:
         
   yes: Ja
   no: Nein
+  
+  humpyard:
+    elements:
+      media_elements:
+        edit:
+          uri_description: "Die Link-Adresse funktioniert nur mit gewissen Medientypen wie Bildern."
+          none: "Keine"
+          left: "Links"
+          right: "Rechts"
+          
   
   humpyard_cms:
     start: 'Humpyard %{version} laden'

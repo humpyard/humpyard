@@ -27,7 +27,7 @@
     - custom_partial_path = "/humpyard/assets/#{@asset.class.name.underscore.pluralize.gsub(/^humpyard\/assets/, '')}/info_asset"
     - if template_exists? custom_partial_path , nil, true
       = render :partial => custom_partial_path, :locals => {:asset => @asset}
-  = render :partial => "/humpyard/assets/show_asset", :locals => {:asset => @asset}
+  = render :partial => "/humpyard/assets/show_asset", :locals => {:asset => @asset, :element => nil}
 
   
 .dialog-buttons.humpyard-form-buttons
