@@ -3,10 +3,10 @@
     #hy-top.hy-eb
     
       #hy-top-left
-        = image_tag "ajax-loader.gif", :size => "16x16", :class => "ajax-indicator"
+        .ajax-indicator
         = link_to I18n.t('humpyard_cms.toolbar.edit'), '#', :'data-command' => "toggleEditMode", :'data-icon' => "ui-icon-pencil" if @page and can? :update, @page
         - Humpyard::config.toolbar_actions.each do |key,action|
-          - if action[:class].nil? or can? :manage, action[:class]
+          - if action[:class].nil? or can? :manage, action[:class].new
             - options = {}
             - url = '#'
             - title = ''

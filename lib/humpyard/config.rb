@@ -107,11 +107,6 @@ module Humpyard
     
     def toolbar_actions #:nodoc:
       @toolbar_actions ||= {
-        #'edit' => {
-        #  :title => 'humpyard_cms.toolbar.edit',
-        #  :command => 'toggleEditMode',
-        #  :icon => 'ui-icon-pencil'
-        #},
         'hy_pages' => {
           :title => 'humpyard_cms.toolbar.pages',
           :controller => '/humpyard/pages',

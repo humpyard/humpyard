@@ -24,7 +24,7 @@ module Humpyard
             end
           end
           
-          Humpyard::Element.attr_accessible.each do |attr|
+          Humpyard::Element.accessible_attributes.each do |attr|
             base.attr_accessible attr
           end
              

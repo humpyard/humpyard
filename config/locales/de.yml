@@ -4,9 +4,11 @@ de:
       humpyard:
         element: "Element"
         elements:
-          box_element: 'Rahmenelement'
-          text_element: 'Textelement'
-          news_element: 'Nachrichtenelement'
+          box_element: 'Rahmen'
+          text_element: 'Text'
+          news_element: 'Nachrichten'
+          media_element: 'Medium'
+          sitemap_element: 'Sitemap'
         page: "Seite"
         pages:
           static_page: 'Statische Seite'

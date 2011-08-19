@@ -23,7 +23,7 @@ module Humpyard
             end
           end
           
-          Humpyard::Page.attr_accessible.each do |attr|
+          Humpyard::Page.accessible_attributes.each do |attr|
             base.attr_accessible attr
           end
           

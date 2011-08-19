@@ -17,7 +17,7 @@
         - unless element.content_data.nil?
           -# support hooking up additional buttons the editor adornments 
           - custom_partial_path = "/humpyard/elements/#{element.content_data_type.underscore.pluralize.gsub(/^humpyard\/elements/, '')}/buttons"
-          - if template_exists? custom_partial_path , nil, true
+          - if lookup_context.exists? custom_partial_path , nil, true
             = render :partial => custom_partial_path, :locals => {:element => element}
       - else
         - unless element.unshared?

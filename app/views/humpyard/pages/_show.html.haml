@@ -6,11 +6,11 @@
 / 
   ="X-HumpYard-Page:#{@page.id}"
   ="X-HumpYard-Time:#{Time.now}"
-
-- Humpyard::config.templates[@page.template_name.to_sym][:yields].each do |yield_name|
-  - content_for yield_name.to_sym do
-    - if @page.always_refresh
-      = render '/humpyard/pages/content', :yield_name => yield_name
-    - else
-      - cache "hy-yield-#{@page.id}-#{yield_name}-#{I18n.locale}-#{humpyard_user ? humpyard_user : nil}-#{@page.last_modified.to_i}" do
+- if Humpyard::config.templates[@page.template_name.to_sym]
+  - Humpyard::config.templates[@page.template_name.to_sym][:yields].each do |yield_name|
+    - content_for yield_name.to_sym do
+      - if @page.always_refresh
         = render '/humpyard/pages/content', :yield_name => yield_name
+      - else
+        - cache "hy-yield-#{@page.id}-#{yield_name}-#{I18n.locale}-#{humpyard_user ? humpyard_user : nil}-#{@page.last_modified.to_i}" do
+          = render '/humpyard/pages/content', :yield_name => yield_name

@@ -7,7 +7,7 @@
     .flashes
     .humpyard-tabview
       - custom_partial_path = "/humpyard/assets/#{@asset.class.name.underscore.pluralize.gsub(/^humpyard\/assets/, '')}/edit"
-      - if template_exists? custom_partial_path , nil, true
+      - if lookup_context.exists? custom_partial_path , nil, true
         = render :partial => custom_partial_path, :locals => {:asset => @asset, :form => form}
   .dialog-buttons.humpyard-form-buttons
     = form.submit

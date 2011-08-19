@@ -1,0 +1,21 @@
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -o-border-radius: $radius;
+  -ms-border-radius: $radius;
+  -khtml-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin gradient($from, $to) {
+  background-image: -webkit-gradient(linear, left top, left bottom, from($from), to($to));
+  background-image: -moz-linear-gradient($from, $to);
+  background-image: linear-gradient($from, $to);
+}
+
+@mixin rotate($degree: -90deg) {
+  -moz-transform:rotate($degree);
+  -webkit-transform:rotate($degree);
+  -o-transform:rotate($degree);
+  transform:rotate($degree);
+}

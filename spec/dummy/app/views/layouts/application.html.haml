@@ -1,0 +1,26 @@
+!!! Strict
+%html{html_attrs(I18n.locale)}
+  %head
+    = render partial:        'humpyard/common/head'
+    = stylesheet_link_tag    :application, debug: true
+    = javascript_include_tag :application, debug: true
+    = csrf_meta_tag
+  = page_body do
+    .container
+      - flash.each do |name, msg|
+        = content_tag :div, msg, id: "flash_#{name}", class: 'flash'    
+      #header.span-24{class: "last"}
+        %h1
+          = @content_for_title
+      #menu.span-24{class: "last"}
+        - if Humpyard::Page.root_page
+          - Humpyard::Page.root_page.child_pages.each do |page|
+            = link_to page.title, page.human_url
+      #content.span-16	
+        = yield
+      #sidebar.span-8{class: "last"}
+        .box
+          = yield :sidebar
+      #footer.span-24{class: "last"}
+        %p
+          This is just a template

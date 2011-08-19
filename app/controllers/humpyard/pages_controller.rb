@@ -214,58 +214,67 @@ module Humpyard
       
       # Find page by name
       if not params[:webpath].blank?
-        dyn_page_path = false
-        parent_page = nil
-        params[:webpath].split('/').each do |path_part|
-          # Ignore multiple slashes in URLs
-          unless(path_part.blank?)
-            if(dyn_page_path) 
-              dyn_page_path << path_part
-            else     
-              # Find page by name and parent; parent=nil means page on root level
-              @page = Page.with_translated_attribute(:title_for_url, CGI::escape(path_part), I18n.locale).first
-              # Raise 404 if no page was found for the URL or subpart
-              raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (X4201) [#{path_part}]" if @page.nil?
-              raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (X4202)" if not (@page.parent == parent_page or @page.parent == Humpyard::Page.root_page)
+        if params[:webpath] == 'index'
+          @page = Page.root_page :force_reload => true
+          unless @page
+            @page = Page.new
+            render '/humpyard/pages/welcome'
+            return false
+          end
+        else     
+          dyn_page_path = false
+          parent_page = nil
+          params[:webpath].split('/').each do |path_part|
+            # Ignore multiple slashes in URLs
+            unless(path_part.blank?)
+              if(dyn_page_path) 
+                dyn_page_path << path_part
+              else     
+                # Find page by name and parent; parent=nil means page on root level
+                @page = Page.with_translated_attribute(:title_for_url, CGI::escape(path_part), I18n.locale).first
+                # Raise 404 if no page was found for the URL or subpart
+                raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (X4201) [#{path_part}]" if @page.nil?
+                raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (X4202)" if not (@page.parent == parent_page or @page.parent == Humpyard::Page.root_page)
               
-              parent_page = @page unless @page.is_root_page?
-              dyn_page_path = [] if @page.content_data.is_humpyard_dynamic_page? 
+                parent_page = @page unless @page.is_root_page?
+                dyn_page_path = [] if @page.content_data.is_humpyard_dynamic_page? 
+              end
             end
           end
-        end
 
-        if @page.content_data.is_humpyard_dynamic_page? and dyn_page_path.size > 0
-          @sub_page = @page.parse_path(dyn_page_path)
+          if @page.content_data.is_humpyard_dynamic_page? and dyn_page_path.size > 0
+            @sub_page = @page.parse_path(dyn_page_path)
           
-          # Raise 404 if no page was found for the sub_page part
-          raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (D4201)" if @sub_page.blank?
+            # Raise 404 if no page was found for the sub_page part
+            raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (D4201)" if @sub_page.blank?
 
-          @page_partial = "/humpyard/pages/#{@page.content_data_type.split('::').last.underscore.pluralize}/#{@sub_page[:partial]}" if @sub_page[:partial]
-          @local_vars = {:page => @page}.merge(@sub_page[:locals]) if @sub_page[:locals] and @sub_page[:locals].class == Hash
+            @page_partial = "/humpyard/pages/#{@page.content_data_type.split('::').last.underscore.pluralize}/#{@sub_page[:partial]}" if @sub_page[:partial]
+            @local_vars = {:page => @page}.merge(@sub_page[:locals]) if @sub_page[:locals] and @sub_page[:locals].class == Hash
           
-          # render partial only if request was an AJAX-call
-          if request.xhr?
-            respond_to do |format|
-              format.html {
-                render :partial => @page_partial, :locals => @local_vars
-              }
+            # render partial only if request was an AJAX-call
+            if request.xhr?
+              respond_to do |format|
+                format.html {
+                  render :partial => @page_partial, :locals => @local_vars
+                }
+              end
+              return
             end
-            return
-          end
-        end
         
-      # Find page by id
-      elsif not params[:id].blank?
-        # Render page by id if not webpath was given but an id
-        @page = Page.find(params[:id])
-      # Find root page
-      else
-        # Render index page if neither id or webpath was given
-        @page = Page.root_page :force_reload => true
-        unless @page
-          @page = Page.new
-          render '/humpyard/pages/welcome'
-          return false
+          # Find page by id
+          elsif not params[:id].blank?
+            # Render page by id if not webpath was given but an id
+            @page = Page.find(params[:id])
+          # Find root page
+          else
+            # Render index page if neither id or webpath was given
+            @page = Page.root_page :force_reload => true
+            unless @page
+              @page = Page.new
+              render '/humpyard/pages/welcome'
+              return false
+            end
+          end
         end
       end
       

@@ -12,7 +12,7 @@
       = hidden_field_tag :next_id, @next.id
   .humpyard-tabview
     - custom_partial_path = "/humpyard/elements/#{@element.class.name.underscore.pluralize.gsub(/^humpyard\/elements/, '')}/edit"
-    - if template_exists? custom_partial_path , nil, true
+    - if lookup_context.exists? custom_partial_path , nil, true
       = render :partial => custom_partial_path, :locals => {:element => @element, :form => form}
     .humpyard-tab
       .humpyard-tab-title

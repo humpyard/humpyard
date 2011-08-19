@@ -1,28 +1,41 @@
 source 'http://rubygems.org'
 
-gem "rails",              '>=3.0.0'
-gem 'builder'
+gem "rails",              '~>3.1.0.rc'
+gem 'sqlite3'
+
+# Gems used only for assets and not required
+# in production environments by default.
+group :assets do
+  gem 'sass-rails',       '~> 3.1.0.rc'
+  gem 'coffee-rails',     '~> 3.1.0.rc'
+  gem 'uglifier'
+end
+
 gem 'haml',               '>=3.0.0'
-gem 'compass',            '>=0.10.0'
+gem 'jquery-rails'
+gem 'globalize3',         '>=0.0.7'
 gem 'acts_as_tree',       '>=0.1.1'
 gem 'cancan',             '>=1.6.4'
-gem 'globalize3',         '>=0.0.7'
+#gem 'humpyard_form',      path: '../humpyard_form'
 gem 'humpyard_form',      :git => 'http://github.com/humpyard/humpyard_form.git'
 
 group :test do
-  gem 'test-unit'
-  gem 'rspec-rails',        '>=2.0.0.beta.22' 
-  gem 'capybara',           '>=0.3.7' 
-  gem 'database_cleaner',   '>=0.5.2'     
-  gem 'cucumber',           '>=0.8.5' 
-  gem 'cucumber-rails',     '>=0.3.2'
-  gem 'pickle',             '>=0.4.2'
-  gem 'factory_girl',       '>=1.3.2'
-  gem 'markup_validity',    '>=1.1.0'
-  gem 'sqlite3-ruby',       :require => 'sqlite3'
-  gem 'thin'
-end
-
-if RUBY_VERSION < '1.9'
-  gem 'ruby-debug',         '>=0.10.3'
+  gem 'ruby-debug19'
+  gem 'capybara'
+  gem 'cucumber'
+  gem 'cucumber-rails'
+  gem 'fabrication'
+  gem 'launchy'
+  gem 'chronic'
+  gem 'webrat'
+  gem 'jasmine'
+  gem 'rcov'
+  gem 'email_spec'
+  gem 'spork', git: 'git://github.com/timcharper/spork.git'
+  gem 'syntax'
+  gem 'faker'
+  gem 'database_cleaner'
+  gem 'rspec'
+  gem 'rspec-rails'
+  gem 'yard'
 end

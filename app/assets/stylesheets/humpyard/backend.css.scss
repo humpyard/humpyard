@@ -1,0 +1,232 @@
+@import "humpyard/helpers/css3";
+
+$left_dialog_column_width: 250px;
+$left_dialog_column_background: #dee4ea;
+$left_dialog_column_border_color: #b4b4b4;
+$left_dialog_column_border_width: 1px;
+$data_table_odd_background_color: #eaf3fe;
+$data_table_border_color: #c0c0c0;
+
+.droparea {
+  min-height: 20px; }
+.ui-dialog-content {
+  label.required {
+    font-weight: bold; 
+  }
+    
+  .left-dialog-column, .right-dialog-column {
+    .dialog-buttons, .dialog-search {
+      position: absolute;
+      @include gradient(#eee, #aaa);
+      padding: 3px;
+    }
+    .dialog-buttons {
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 22px;
+      border-top: $left_dialog_column_border_width solid $left_dialog_column_border_color;
+      button[type=submit] {
+        float: right;
+      }
+    }
+    .dialog-search {
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 24px;
+      border-bottom: $left_dialog_column_border_width solid $left_dialog_column_border_color;
+      line-height: 24px;
+      font-weight: bold;
+      
+      form {
+        position: relative;
+        padding: 0;
+        margin: 0;
+      }
+    }
+    
+    .dialog-pane {
+      padding: 3px;
+    }
+    
+    &.with-toolbar,
+    &.with-search {
+      overflow: hidden;
+      padding: 0;
+      .dialog-pane, .dialog-list {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        overflow: auto;        
+      }
+    }
+    
+    &.with-toolbar {
+      .dialog-pane, .dialog-list {
+        bottom: 29px;
+      }
+    }
+    
+    &.with-search {
+      .dialog-pane, .dialog-list {
+        top: 31px;
+      }
+    }
+  }  
+    
+  .left-dialog-column {
+    overflow: auto;
+    position: absolute;
+    left: 0;
+    width: $left_dialog_column_width;
+    top: 0;
+    bottom: 0;
+    background: $left_dialog_column_background;
+    border-right: $left_dialog_column_border_width solid $left_dialog_column_border_color;
+    .ui-state-highlight {
+      border: none;
+      line-height: 2px;
+      background: #660000;
+      margin: -2px 0 0 10px; }
+    
+    .dialog-list {
+      ul {
+        margin: 0;
+        padding: 0;
+        
+        li {
+          margin: 0;
+          padding: 5px;
+          border-bottom: 1px solid #8196b9;
+          a {
+            display:block;
+            padding: 5px;
+            margin: -5px;
+            width: $left_dialog_column_width - 10px;
+            overflow: hidden;
+            width: 100%;
+            text-decoration: none;
+            font-weight: normal;
+            color: #000;
+          }
+          a.active {
+            color: white;
+            background: rgb(114, 133, 172); 
+            @include gradient(#b0bfd8, #8196b9);
+            color: #fff;
+            font-weight: bold;
+          }            
+        }
+      }
+    }  
+
+    .dialog-search {
+      input {
+        width: 100%;
+      }
+    }
+  }
+  
+  .right-dialog-column {
+    overflow: auto;
+    position: absolute;
+    left: $left_dialog_column_width + $left_dialog_column_border_width;
+    right: 0;
+    top: 0;
+    bottom: 0; 
+
+    .dialog-search {
+      input {
+        width: $left_dialog_column_width - 6px;
+        float: right;
+      }
+    }
+  }
+
+  
+  .flash {
+    padding: 5px;
+    margin: 0 0 5px 0;
+    @include border-radius(5px);
+    &.error {
+      background: #fcc;
+      color: #600;
+      border: 1px solid #600;
+    }
+    &.info {
+      background: #cfc;
+      color: #060;
+      border: 1px solid #060;
+    }
+  }
+  
+  .data_table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: 10px;
+    border-top: 1px solid $data_table_border_color;
+    border-bottom: 1px solid $data_table_border_color;
+    td, th {
+      border-left: 1px solid $data_table_border_color;
+      border-right: 1px solid $data_table_border_color;
+      text-align: left;
+      padding: 0 4px;
+      white-space: nowrap; 
+      overflow: hidden;
+    }
+    th {
+      /*@include gradient(#fff, #ccc, #fff);*/
+      background: #ddd;
+      border-bottom: 1px solid $data_table_border_color;
+      color: #525252;
+      font-weight: normal;
+      position: relative;
+      &.sortable {
+        padding: 0;
+        a {
+          padding: 0 13px 0 4px;
+          text-decoration: none;
+          display: block;
+        }
+      }
+      &.asc a {
+        background: image_url("table/asc.png") center right no-repeat;
+      }
+      &.desc a {
+        background: image_url("table/desc.png") center right no-repeat;
+      }
+    }
+    tr:nth-child(2n)  {
+      background: $data_table_odd_background_color;
+    }
+  }
+  
+} 
+
+.dialog-menu {
+  display: none;
+  position: absolute;
+  background: #fff;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  a {
+    display: block;
+    border-top: 1px solid #999;
+    text-decoration: none;
+    padding: 3px;
+  }
+  
+  a:hover {
+    @include gradient(#b0bfd8, #8196b9); 
+  }
+}
+
+    
+
+    

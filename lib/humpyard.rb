@@ -3,10 +3,10 @@
 require 'cancan'
 require 'humpyard_form'
 
-module Humpyard
-  # This is the actual version of the Humpyard gem
-  VERSION = ::File.read(::File.join(::File.dirname(__FILE__), "..", "VERSION")).strip  
-    
+module Humpyard    
+  autoload :Config, 'humpyard/config'
+  autoload :UriParser, 'humpyard/uri_parser'
+  
   def self.load options = {} #:nodoc:
     require ::File.expand_path('../humpyard/rake_tasks', __FILE__)
   end
@@ -45,17 +45,11 @@ module Humpyard
   end
 end
 
-require File.expand_path('../humpyard/config', __FILE__)
 require File.expand_path('../humpyard/engine', __FILE__)
-require File.expand_path('../humpyard/compass', __FILE__)
-require File.expand_path('../humpyard/uri_parser', __FILE__)
-require File.expand_path('../humpyard/uri_parser/pages_uri_parser', __FILE__)
-require File.expand_path('../humpyard/uri_parser/assets_uri_parser', __FILE__)
 
 require 'i18n'
 I18n.load_path += Dir.glob("#{File.dirname(__FILE__)}/../config/locales/*.yml")
 I18n.backend.reload!
-puts "=> #{I18n.t :'humpyard_cms.start', :version => Humpyard::VERSION, :raise => true}"
 
 require File.expand_path('../humpyard/action_controller/base', __FILE__)
 require File.expand_path('../humpyard/active_model/validators/publish_range', __FILE__)

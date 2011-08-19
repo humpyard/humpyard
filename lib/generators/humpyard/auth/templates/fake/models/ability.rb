@@ -5,6 +5,7 @@ class Ability
     if user == 'admin'
       can :manage, Humpyard::Page
       can :manage, Humpyard::Element
+      can :manage, Humpyard::Asset
     else
       can :read, Humpyard::Page
     end
