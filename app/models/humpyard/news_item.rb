@@ -2,7 +2,7 @@ module Humpyard
   class NewsItem < ::ActiveRecord::Base
     set_table_name "#{Humpyard::config.table_name_prefix}news_items"
 
-    belongs_to :news_page, :class_name => "Humpyard::Pages::NewsPage", :foreign_key => "news_page_id"
+    belongs_to :news_page, class_name: "Humpyard::Pages::NewsPage", foreign_key: "news_page_id"
 
     require 'globalize'
 

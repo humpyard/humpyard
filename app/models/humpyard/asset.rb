@@ -3,7 +3,7 @@ module Humpyard
     attr_accessible :width, :height
     attr_accessible :content_data, :content_data_id, :content_data_type
     
-    belongs_to :content_data, :polymorphic => true, :dependent => :destroy  
+    belongs_to :content_data, polymorphic: true, dependent: :destroy  
     
     set_table_name "#{Humpyard::config.table_name_prefix}assets"
     

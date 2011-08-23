@@ -19,7 +19,7 @@ module Humpyard
         defaults << options.delete(:default) if options[:default]
         defaults << @human
 
-        options.reverse_merge! :scope => [@klass.i18n_scope, :models], :count => 1, :default => defaults
+        options.reverse_merge! scope: [@klass.i18n_scope, :models], count: 1, default: defaults
         I18n.translate(defaults.shift, options)
       end
     end

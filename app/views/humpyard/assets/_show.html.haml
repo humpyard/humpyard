@@ -1,5 +1,5 @@
 .dialog-search
-  = "#{I18n.t("humpyard_form.titles.show", :model => "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}"
+  = "#{I18n.t("humpyard_form.titles.show", model: "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}"
 .dialog-pane
   %table.data_table
     %tr
@@ -26,13 +26,13 @@
         = number_to_human_size @asset.url
     - custom_partial_path = "/humpyard/assets/#{@asset.class.name.underscore.pluralize.gsub(/^humpyard\/assets/, '')}/info_asset"
     - if lookup_context.exists? custom_partial_path , nil, true
-      = render :partial => custom_partial_path, :locals => {:asset => @asset}
-  = render :partial => "/humpyard/assets/show_asset", :locals => {:asset => @asset, :element => nil}
+      = render partial: custom_partial_path, locals: {asset: @asset}
+  = render partial: "/humpyard/assets/show_asset", locals: {asset: @asset, element: nil}
 
   
 .dialog-buttons.humpyard-form-buttons
   - if can? :destroy, @asset.asset
-    = link_to "#{I18n.t("humpyard_form.actions.destroy", :model => "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}", humpyard_asset_path(@asset), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :remote => true
+    = link_to "#{I18n.t("humpyard_form.actions.destroy", model: "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}", humpyard_asset_path(@asset), :'data-icon' => "ui-icon-trash", confirm: "Are you sure?", method: :delete, remote: true
   - if can? :update, @asset.asset
-    = link_to "#{I18n.t("humpyard_form.actions.edit", :model => "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}", edit_humpyard_asset_path(@asset), :'data-icon' => "ui-icon-pencil", :'data-dialog-link' => true
+    = link_to "#{I18n.t("humpyard_form.actions.edit", model: "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}", edit_humpyard_asset_path(@asset), :'data-icon' => "ui-icon-pencil", :'data-dialog-link' => true
 

@@ -6,14 +6,14 @@ module Humpyard
 
     set_table_name "#{Humpyard::config.table_name_prefix}elements"
 
-    belongs_to :page, :class_name => 'Humpyard::Page'
-    belongs_to :container, :class_name => 'Humpyard::Element'
-    belongs_to :content_data, :polymorphic => true, :dependent => :destroy
-    has_many :elements, :class_name => 'Humpyard::Element', :foreign_key => :container_id, :order => :position
+    belongs_to :page, class_name: 'Humpyard::Page'
+    belongs_to :container, class_name: 'Humpyard::Element'
+    belongs_to :content_data, polymorphic: true, dependent: :destroy
+    has_many :elements, class_name: 'Humpyard::Element', foreign_key: :container_id, order: :position
     
-    delegate :'is_humpyard_container_element?', :'is_humpyard_element?', :to => :content_data
+    delegate :'is_humpyard_container_element?', :'is_humpyard_element?', to: :content_data
 
-    validates_with Humpyard::ActiveModel::PublishRangeValidator, {:attributes => [:display_from, :display_until]}
+    validates_with Humpyard::ActiveModel::PublishRangeValidator, {attributes: [:display_from, :display_until]}
     
     after_create :stamp_page_modified_now
     after_update :stamp_page_modified_now
@@ -30,9 +30,9 @@ module Humpyard
     # plus #to_unshared, #to_shared_on_siblings, #to_shared_on_children "setters"
     # 
     SHARED_STATES = { 
-      :unshared => 0,
-      :shared_on_siblings => 1,
-      :shared_on_children => 2
+      unshared: 0,
+      shared_on_siblings: 1,
+      shared_on_children: 2
     }.each_pair do |key, value|
       define_method "#{key}?" do
         shared_state.to_i == value

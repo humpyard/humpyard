@@ -1,3 +1,3 @@
 .humpyard-elements-sitemap-element
-  - cache "sitemap-#{I18n.locale}-#{Humpyard::Page.root_page.last_modified(:include_pages => true).to_i}" do
-    = render '/humpyard/elements/sitemap_elements/show_part', :pages => ([Humpyard::Page.root_page] + Humpyard::Page.root_page.siblings), :element => element, :level => 1
+  - cache "sitemap-#{I18n.locale}-#{Humpyard::Page.root_page.last_modified(include_pages: true).to_i}" do
+    = render '/humpyard/elements/sitemap_elements/show_part', pages: ([Humpyard::Page.root_page] + Humpyard::Page.root_page.siblings), element: element, level: 1

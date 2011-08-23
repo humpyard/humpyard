@@ -18,12 +18,12 @@ module Humpyard
     translates :title, :title_for_url, :description
     has_title_for_url
     
-    acts_as_tree :order => :position
+    acts_as_tree order: :position
     
-    belongs_to :content_data, :polymorphic => true, :dependent => :destroy  
-    has_many :elements, :class_name => 'Humpyard::Element', :dependent => :destroy  
+    belongs_to :content_data, polymorphic: true, dependent: :destroy  
+    has_many :elements, class_name: 'Humpyard::Element', dependent: :destroy  
     
-    validates_with Humpyard::ActiveModel::PublishRangeValidator, {:attributes => [:display_from, :display_until]}
+    validates_with Humpyard::ActiveModel::PublishRangeValidator, {attributes: [:display_from, :display_until]}
     validates_presence_of :title
     
     def self.root_page(options = {})

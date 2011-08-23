@@ -1,8 +1,8 @@
 - if element.content_data and element.content_data.asset
-  .media-element{:style => (element.content_data.float.blank? ? '' : "float: #{element.content_data.float};")} 
-    = render '/humpyard/assets/show_asset', :asset => element.content_data.asset.content_data, :element => element
+  .media-element{style: (element.content_data.float.blank? ? '' : "float: #{element.content_data.float};")} 
+    = render '/humpyard/assets/show_asset', asset: element.content_data.asset.content_data, element: element
 - else
   - if can? :manage, Humpyard::Element
-    .media-element{:style => (element.content_data.float.blank? ? '' : "float: #{element.content_data.float};")}
+    .media-element{style: (element.content_data.float.blank? ? '' : "float: #{element.content_data.float};")}
       %strong.error404
         Can't find this Media (Error 404)!

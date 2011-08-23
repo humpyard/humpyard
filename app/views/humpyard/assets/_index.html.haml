@@ -1,23 +1,23 @@
 .humpyard-dialog-title
-  = I18n.t 'humpyard_form.titles.index', :model => Humpyard::Asset.model_name.human
+  = I18n.t 'humpyard_form.titles.index', model: Humpyard::Asset.model_name.human
 .dialog-columns
   .left-dialog-column.with-toolbar
     .dialog-list
       #hy-asset-listview
-        = render 'list', :assets => @assets, :asset => @asset
+        = render 'list', assets: @assets, asset: @asset
       #humpyard-asset-types-menu.dialog-menu
         - if can? :new, Humpyard::Asset
           - Humpyard::config.asset_types.each do |name, type|
-            = link_to I18n.t('humpyard_form.actions.new', :model => type.model_name.human), new_humpyard_asset_path(:type => name), :'data-dialog-link' => true
+            = link_to I18n.t('humpyard_form.actions.new', model: type.model_name.human), new_humpyard_asset_path(type: name), :'data-dialog-link' => true
     .dialog-buttons.humpyard-form-buttons     
       %a{:'data-icon' => "ui-icon-circle-plus", :'data-dialog-menu' => '#humpyard-asset-types-menu'} 
-        = I18n.t('humpyard_cms.pages.edit.add', :page_type => Humpyard::Page.model_name.human)
+        = I18n.t('humpyard_cms.pages.edit.add', page_type: Humpyard::Page.model_name.human)
   .right-dialog-column.with-toolbar.with-search
       
     .dialog-buttons.humpyard-form-buttons
       
     - if @asset
-      = render :partial => 'show', :locals => {:page => @page}
+      = render partial: 'show', locals: {page: @page}
     - else
       .dialog-pane
         Nothing selected

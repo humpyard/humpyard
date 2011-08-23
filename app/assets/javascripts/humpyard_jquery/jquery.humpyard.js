@@ -121,7 +121,6 @@
       $.humpyard.initSortables(elem, 'hy-pages', {
         update: function(sortable, item, parent, prev, next) {
           var params = {
-            id: item.attr('data-page-id'),
             parent_id: parent.attr('data-page-id'),
             prev_id: prev.attr('data-page-id'),
             next_id: next.attr('data-page-id')
@@ -137,7 +136,7 @@
             });
             item.empty();
           } else {
-            $.humpyard.tokenized_post(sortable.attr('data-sortable-update-url'), params);
+            $.humpyard.tokenized_post(sortable.attr('data-sortable-update-url').replace('__item_id__', item.attr('data-page-id')), params);
           }
         }
       });
@@ -251,13 +250,14 @@
           }
 
           var params = {
-            id: item.attr('data-page-id'),
             parent_id: parent ? parent.attr('data-page-id') : undefined,
             prev_id: previous ? previous.attr('data-page-id') : undefined,
             next_id: next ? next.attr('data-page-id') : undefined
           };
 
-          $.humpyard.tokenized_post(treeview.attr('data-sortable-update-url'), params);
+          $.humpyard.tokenized_post(
+            treeview.attr('data-sortable-update-url').replace('__item_id__', item.attr('data-page-id')), params
+          );
         })
         
         .jstree({

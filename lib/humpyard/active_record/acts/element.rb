@@ -3,7 +3,7 @@ module Humpyard
     module Acts
       module Element
         def self.included(base)
-          base.has_one :element, :as => :content_data, :class_name => 'Humpyard::Element', :autosave => true
+          base.has_one :element, as: :content_data, class_name: 'Humpyard::Element', autosave: true
           base.validate :element_must_be_valid
           base.alias_method_chain :element, :autobuild 
           base.alias_method_chain :column_for_attribute, :element_column_for_attribute
@@ -17,10 +17,10 @@ module Humpyard
           ignored_attributes = ['id', 'created_at', 'updated_at', 'content_data_id', 'content_data_type']
           attributes_to_delegate = all_attributes - ignored_attributes
           attributes_to_delegate.each do |attrib|
-            base.delegate "#{attrib}", "#{attrib}=", "#{attrib}?", :to => :element
+            base.delegate "#{attrib}", "#{attrib}=", "#{attrib}?", to: :element
             if attrib.match /_id$/
               attrib = attrib.gsub /(_id)$/, ''
-              base.delegate "#{attrib}", "#{attrib}=", "#{attrib}?", :to => :element
+              base.delegate "#{attrib}", "#{attrib}=", "#{attrib}?", to: :element
             end
           end
           

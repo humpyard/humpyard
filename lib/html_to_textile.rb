@@ -197,8 +197,8 @@ class HtmlToTextile
     end
     
     def _spaces string
-      parsed = {:content => string}
-      string.gsub(/^(\s*)?(\S*)(\s*)?$/) {|s| parsed = {:leading => $1, :content => $2, :tailing => $3} }
+      parsed = {content: string}
+      string.gsub(/^(\s*)?(\S*)(\s*)?$/) {|s| parsed = {leading: $1, content: $2, tailing: $3} }
       parsed
     end
   end

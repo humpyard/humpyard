@@ -4,7 +4,7 @@ module Humpyard
       module Asset
         
         def self.included(base)
-          base.has_one :asset, :as => :content_data, :class_name => 'Humpyard::Asset', :autosave => true
+          base.has_one :asset, as: :content_data, class_name: 'Humpyard::Asset', autosave: true
           base.validate :asset_must_be_valid
           
           begin
@@ -16,10 +16,10 @@ module Humpyard
           ignored_attributes = ['id', 'created_at', 'updated_at', 'content_data_id', 'content_data_type']
           attributes_to_delegate = all_attributes - ignored_attributes
           attributes_to_delegate.each do |attrib|
-            base.delegate "#{attrib}", "#{attrib}=", "#{attrib}?", :to => :asset
+            base.delegate "#{attrib}", "#{attrib}=", "#{attrib}?", to: :asset
             if attrib.match /_id$/
               attrib = attrib.gsub /(_id)$/, ''
-              base.delegate "#{attrib}", "#{attrib}=", "#{attrib}?", :to => :asset
+              base.delegate "#{attrib}", "#{attrib}=", "#{attrib}?", to: :asset
             end
           end
           

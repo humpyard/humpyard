@@ -16,8 +16,8 @@ gem 'jquery-rails'
 gem 'globalize3',         '>=0.0.7'
 gem 'acts_as_tree',       '>=0.1.1'
 gem 'cancan',             '>=1.6.4'
-#gem 'humpyard_form',      path: '../humpyard_form'
-gem 'humpyard_form',      :git => 'http://github.com/humpyard/humpyard_form.git'
+gem 'humpyard_form',      path: '../humpyard_form'
+#gem 'humpyard_form',      :git => 'http://github.com/humpyard/humpyard_form.git'
 
 group :test do
   gem 'ruby-debug19'

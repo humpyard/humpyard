@@ -16,10 +16,10 @@ module Humpyard
       def site_map(locale)
         if page.in_sitemap
           {
-            :url => page.human_url(:locale => locale),
-            :lastmod => page.last_modified,
-            :hidden => true,
-            :children => page.child_pages.map{ |p| p.content_data.site_map(locale) }
+            url: page.human_url(locale: locale),
+            lastmod: page.last_modified,
+            hidden: true,
+            children: page.child_pages.map{ |p| p.content_data.site_map(locale) }
           }
         else
           nil

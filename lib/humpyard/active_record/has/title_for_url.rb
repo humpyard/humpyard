@@ -53,7 +53,7 @@ module Humpyard
             title_for_url = CGI::escape(self.title.gsub(/[a-z0-9\-_\x00-\x7F]+/, '_'))
           end 
           
-          while obj = self.class.find_by_title_for_url(title_for_url, :skip_fallbacks => true, :locale => locale) and obj.id != self.id do
+          while obj = self.class.find_by_title_for_url(title_for_url, skip_fallbacks: true, locale: locale) and obj.id != self.id do
             title_for_url += '_'
           end
           return title_for_url

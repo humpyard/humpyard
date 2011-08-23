@@ -6,10 +6,10 @@ module Humpyard
     # Dialog content for a new element
     def new
       @element = Humpyard::config.element_types[params[:type]].new(
-        :page_id => params[:page_id], 
-        :container_id => params[:container_id].to_i > 0 ? params[:container_id].to_i : nil,
-        :page_yield_name => params[:yield_name].blank? ? 'main' : params[:yield_name],
-        :shared_state => 0)
+        page_id: params[:page_id], 
+        container_id: params[:container_id].to_i > 0 ? params[:container_id].to_i : nil,
+        page_yield_name: params[:yield_name].blank? ? 'main' : params[:yield_name],
+        shared_state: 0)
       
       authorize! :create, @element.element 
       
@@ -17,7 +17,7 @@ module Humpyard
       @prev = Humpyard::Element.find_by_id(params[:prev_id])
       @next = Humpyard::Element.find_by_id(params[:next_id])
       
-      render :partial => 'edit'
+      render partial: 'edit'
     end
     
     # Create a new element
@@ -25,9 +25,9 @@ module Humpyard
       @element = Humpyard::config.element_types[params[:type]].new params[:element]
             
       unless can? :create, @element.element
-        render :json => {
-          :status => :failed
-        }, :status => 403
+        render json: {
+          status: :failed
+        }, status: 403
         return
       end      
             
@@ -38,23 +38,23 @@ module Humpyard
         do_move(@element, @prev, @next)
       
         insert_options = {
-          :element => "hy-id-#{@element.element.id}",
-          :url => humpyard_element_path(@element.element),
-          :parent => @element.container ? "hy-id-#{@element.container.id}" : "hy-content-#{@element.page_yield_name}"
+          element: "hy-id-#{@element.element.id}",
+          url: humpyard_element_path(@element.element),
+          parent: @element.container ? "hy-id-#{@element.container.id}" : "hy-content-#{@element.page_yield_name}"
         }
         
         insert_options[:before] = "hy-id-#{@next.id}" if @next
         insert_options[:after] = "hy-id-#{@prev.id}" if not @next and @prev
       
-        render :json => {
-          :status => :ok,
-          :dialog => :close,
-          :insert => [insert_options]
+        render json: {
+          status: :ok,
+          dialog: :close,
+          insert: [insert_options]
         }
       else
-        render :json => {
-          :status => :failed, 
-          :errors => @element.errors
+        render json: {
+          status: :failed, 
+          errors: @element.errors
         }
       end
     end
@@ -65,7 +65,7 @@ module Humpyard
       
       authorize! :update, @element.element
       
-      render :partial => 'inline_edit'
+      render partial: 'inline_edit'
     end
 
     # Dialog content for an existing element
@@ -74,7 +74,7 @@ module Humpyard
       
       authorize! :update, @element.element
       
-      render :partial => 'edit'
+      render partial: 'edit'
     end
     
     # Update an existing element
@@ -82,33 +82,33 @@ module Humpyard
       @element = Humpyard::Element.find(params[:id])
       if @element
         unless can? :update, @element
-          render :json => {
-            :status => :failed
-          }, :status => 403
+          render json: {
+            status: :failed
+          }, status: 403
           return
         end
         
         if @element.content_data.update_attributes params[:element]
-          render :json => {
-            :status => :ok,
-            :dialog => :close,
-            :replace => [
+          render json: {
+            status: :ok,
+            dialog: :close,
+            replace: [
               { 
-                :element => "hy-id-#{@element.id}",
-                :url => humpyard_element_path(@element)
+                element: "hy-id-#{@element.id}",
+                url: humpyard_element_path(@element)
               }
             ]
           }
         else
-          render :json => {
-            :status => :failed, 
-            :errors => @element.content_data.errors
+          render json: {
+            status: :failed, 
+            errors: @element.content_data.errors
           }
         end
       else
-        render :json => {
-          :status => :failed
-        }, :status => 404
+        render json: {
+          status: :failed
+        }, status: 404
       end
     end
     
@@ -118,28 +118,28 @@ module Humpyard
       
       if @element
         unless can? :update, @element
-          render :json => {
-            :status => :failed
-          }, :status => 403
+          render json: {
+            status: :failed
+          }, status: 403
           return
         end
         
         @element.update_attributes(
-          :container => Humpyard::Element.find_by_id(params[:container_id]), 
-          :page_yield_name => params[:yield_name]
+          container: Humpyard::Element.find_by_id(params[:container_id]), 
+          page_yield_name: params[:yield_name]
         )
         @prev = Humpyard::Element.find_by_id(params[:prev_id])
         @next = Humpyard::Element.find_by_id(params[:next_id])
         
         do_move(@element, @prev, @next)
         
-        render :json => {
-          :status => :ok
+        render json: {
+          status: :ok
         }
       else
-        render :json => {
-          :status => :failed
-        }, :status => 404        
+        render json: {
+          status: :failed
+        }, status: 404        
       end
     end
     
@@ -161,7 +161,7 @@ module Humpyard
       
       authorize! :read, @element  
       
-      render :partial => 'show', :locals => {:element => @element}
+      render partial: 'show', locals: {element: @element}
     end
     
     private

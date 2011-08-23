@@ -4,6 +4,20 @@ module Humpyard
   class PagesController < ::ApplicationController 
     helper 'humpyard::pages'
     
+    rescue_from ::CanCan::AccessDenied do |exception|
+      render json: {
+        status: :failed
+      }, status: 403
+      return
+    end
+    
+    rescue_from ::ActiveRecord::RecordNotFound, ::ActionController::RoutingError do |exception|
+      render json: {
+        status: :failed
+      }, status: 404
+      return
+    end
+    
     # Probably unneccassary - may be removed later
     def index
       authorize! :manage, Humpyard::Page  
@@ -14,29 +28,28 @@ module Humpyard
       unless @page.nil?
         @page = @page.content_data
       end
-      render :partial => 'index'
+      render partial: 'index'
     end
 
     # Dialog content for a new page
     def new
+      raise ::ActionController::RoutingError, 'Page type not found' if Humpyard::config.page_types[params[:type]].blank?
+      
       @page = Humpyard::config.page_types[params[:type]].new
       
-      unless can? :create, @page.page
-        render :json => {
-          :status => :failed
-        }, :status => 403
-        return
-      end
+      authorize! :create, @page.page
       
       @page_type = params[:type]
       @prev = Humpyard::Page.find_by_id(params[:prev_id])
       @next = Humpyard::Page.find_by_id(params[:next_id])
       
-      render :partial => 'edit'
+      render partial: 'edit'
     end
     
     # Create a new page
-    def create
+    def create    
+      raise ::ActionController::RoutingError, 'Page type not found' if Humpyard::config.page_types[params[:type]].blank?
+      
       @page = Humpyard::config.page_types[params[:type]].new params[:page]
       @page.title_for_url = @page.page.suggested_title_for_url
       
@@ -45,42 +58,27 @@ module Humpyard
       if @page.save
         @prev = Humpyard::Page.find_by_id(params[:prev_id])
         @next = Humpyard::Page.find_by_id(params[:next_id])
-        
-        #do_move(@page, @prev, @next)
-      
-        # insert_options = {
-        #   :element => "hy-id-#{@page.id}",
-        #   :url => @page.page.human_url,
-        #   :parent => @page.parent ? "hy-page-dialog-item-#{@page.id}" : "hy-page-dialog-pages"
-        # }
-        
-        # insert_options[:before] = "hy-page-dialog-item-#{@next.id}" if @next
-        # insert_options[:after] = "hy-page-dialog-item-#{@prev.id}" if not @next and @prev
-
-        # just reload the tree
       
         replace_options = {
-          :element => "hy-page-treeview",
-          :content => render_to_string(:partial => "tree.html", :locals => {:page => @page})
+          element: "hy-page-treeview",
+          content: render_to_string(partial: "tree.html", locals: {page: @page})
         }
       
-        render :json => {
-          :status => :ok,
-          #:dialog => :close,
-          # :insert => [insert_options],
-          :replace => [replace_options],
-          :flash => {
-            :level => 'info',
-            :content => I18n.t('humpyard_form.flashes.create_success', :model => Humpyard::Page.model_name.human)
+        render json: {
+          status: :ok,
+          replace: [replace_options],
+          flash: {
+            level: 'info',
+            content: I18n.t('humpyard_form.flashes.create_success', model: Humpyard::Page.model_name.human)
           }
         }
       else
-        render :json => {
-          :status => :failed, 
-          :errors => @page.errors,
-          :flash => {
-            :level => 'error',
-            :content => I18n.t('humpyard_form.flashes.create_fail', :model => Humpyard::Page.model_name.human)
+        render json: {
+          status: :failed, 
+          errors: @page.errors,
+          flash: {
+            level: 'error',
+            content: I18n.t('humpyard_form.flashes.create_fail', model: Humpyard::Page.model_name.human)
           }
         }
       end
@@ -88,97 +86,75 @@ module Humpyard
     
     # Dialog content for an existing page
     def edit
-      @page = Humpyard::Page.find(params[:id]).content_data
-      
-      authorize! :update, @page.page
-      
-      render :partial => 'edit'
+      raw_page = Humpyard::Page.find(params[:id])
+
+      authorize! :update, raw_page
+      @page = raw_page.content_data    
+      render partial: 'edit'
     end
     
     # Update an existing page
     def update
-      @page = Humpyard::Page.find(params[:id]).content_data
+      raw_page = Humpyard::Page.find(params[:id])
       
-      if @page 
-        unless can? :update, @page.page
-          render :json => {
-            :status => :failed
-          }, :status => 403
-          return
-        end
-        
-        if @page.update_attributes params[:page]
-          @page.title_for_url = @page.page.suggested_title_for_url
-          @page.save
-          render :json => {
-            :status => :ok,
-#            :dialog => :close,
-            :replace => [
-              { 
-                :element => "hy-page-treeview-text-#{@page.id}",
-                :content => @page.title
-              }
-            ],
-            :flash => {
-              :level => 'info',
-              :content => I18n.t('humpyard_form.flashes.update_success', :model => Humpyard::Page.model_name.human)
+      authorize! :update, raw_page
+      
+      @page = raw_page.content_data
+      
+      if @page.update_attributes params[:page]
+        @page.title_for_url = raw_page.suggested_title_for_url
+        @page.save
+        render json: {
+          status: :ok,
+          replace: [
+            { 
+              element: "hy-page-treeview-text-#{@page.id}",
+              content: @page.title
             }
+          ],
+          flash: {
+            level: 'info',
+            content: I18n.t('humpyard_form.flashes.update_success', model: Humpyard::Page.model_name.human)
           }
-        else
-          render :json => {
-            :status => :failed, 
-            :errors => @page.errors,
-            :flash => {
-              :level => 'error',
-              :content => I18n.t('humpyard_form.flashes.update_fail', :model => Humpyard::Page.model_name.human)
-            }
-          }
-        end
+        }
       else
-        render :json => {
-          :status => :failed
-        }, :status => 404
+        render json: {
+          status: :failed, 
+          errors: @page.errors,
+          flash: {
+            level: 'error',
+            content: I18n.t('humpyard_form.flashes.update_fail', model: Humpyard::Page.model_name.human)
+          }
+        }
       end
-      
     end
     
     # Move a page
     def move
       @page = Humpyard::Page.find(params[:id])
       
-      if @page 
-        unless can? :update, @page
-          render :json => {
-            :status => :failed
-          }, :status => 403
-          return
-        end
-        
-        parent = Humpyard::Page.find_by_id(params[:parent_id])
-        # by default, make it possible to move page to root, uncomment to do otherwise:
-        #unless parent
-        #  parent = Humpyard::Page.root_page
-        #end
-        @page.update_attribute :parent, parent
-        @prev = Humpyard::Page.find_by_id(params[:prev_id])
-        @next = Humpyard::Page.find_by_id(params[:next_id])
-        
-        do_move(@page, @prev, @next)
-        
-        replace_options = {
-          :element => "hy-page-treeview",
-          :content => render_to_string(:partial => "tree.html", :locals => {:page => @page})
-        }
-        
-        render :json => {
-          :status => :ok,
-          :replace => [replace_options]
-        }
-      else
-        render :json => {
-          :status => :failed
-        }, :status => 404        
-      end
+      authorize! :update, @page
+      
+      parent = Humpyard::Page.find_by_id(params[:parent_id])
+      # by default, make it possible to move page to root, uncomment to do otherwise:
+      #unless parent
+      #  parent = Humpyard::Page.root_page
+      #end
+      @page.update_attribute :parent, parent
+      @prev = Humpyard::Page.find_by_id(params[:prev_id])
+      @next = Humpyard::Page.find_by_id(params[:next_id])
+      
+      do_move(@page, @prev, @next)
+      
+      replace_options = {
+        element: "hy-page-treeview",
+        content: render_to_string(partial: "tree.html", locals: {page: @page})
+      }
+      
+      render json: {
+        status: :ok,
+        replace: [replace_options]
+      }
     end
     
     # Destroy a page
@@ -188,6 +164,10 @@ module Humpyard
       authorize! :destroy, @page  
       
       @page.destroy
+      
+      render json: {
+        status: :ok
+      }
     end
 
     
@@ -213,67 +193,51 @@ module Humpyard
       end
       
       # Find page by name
-      if not params[:webpath].blank?
-        if params[:webpath] == 'index'
-          @page = Page.root_page :force_reload => true
-          unless @page
-            @page = Page.new
-            render '/humpyard/pages/welcome'
-            return false
-          end
-        else     
-          dyn_page_path = false
-          parent_page = nil
-          params[:webpath].split('/').each do |path_part|
-            # Ignore multiple slashes in URLs
-            unless(path_part.blank?)
-              if(dyn_page_path) 
-                dyn_page_path << path_part
-              else     
-                # Find page by name and parent; parent=nil means page on root level
-                @page = Page.with_translated_attribute(:title_for_url, CGI::escape(path_part), I18n.locale).first
-                # Raise 404 if no page was found for the URL or subpart
-                raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (X4201) [#{path_part}]" if @page.nil?
-                raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (X4202)" if not (@page.parent == parent_page or @page.parent == Humpyard::Page.root_page)
-              
-                parent_page = @page unless @page.is_root_page?
-                dyn_page_path = [] if @page.content_data.is_humpyard_dynamic_page? 
-              end
+      if params[:webpath] == 'index' or params[:webpath].blank?
+        @page = Page.root_page force_reload: true
+        unless @page
+          @page = Page.new
+          render '/humpyard/pages/welcome'
+          return false
+        end
+      else     
+        dyn_page_path = false
+        parent_page = nil
+        params[:webpath].split('/').each do |path_part|
+          # Ignore multiple slashes in URLs
+          unless(path_part.blank?)
+            if(dyn_page_path) 
+              dyn_page_path << path_part
+            else     
+              # Find page by name and parent; parent=nil means page on root level
+              @page = Page.with_translated_attribute(:title_for_url, CGI::escape(path_part), I18n.locale).first
+              # Raise 404 if no page was found for the URL or subpart
+              raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (X4201) [#{path_part}]" if @page.nil?
+              raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (X4202)" if not (@page.parent == parent_page or @page.parent == Humpyard::Page.root_page)
+            
+              parent_page = @page unless @page.is_root_page?
+              dyn_page_path = [] if @page.content_data.is_humpyard_dynamic_page? 
             end
           end
+        end
 
-          if @page.content_data.is_humpyard_dynamic_page? and dyn_page_path.size > 0
-            @sub_page = @page.parse_path(dyn_page_path)
-          
-            # Raise 404 if no page was found for the sub_page part
-            raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (D4201)" if @sub_page.blank?
-
-            @page_partial = "/humpyard/pages/#{@page.content_data_type.split('::').last.underscore.pluralize}/#{@sub_page[:partial]}" if @sub_page[:partial]
-            @local_vars = {:page => @page}.merge(@sub_page[:locals]) if @sub_page[:locals] and @sub_page[:locals].class == Hash
-          
-            # render partial only if request was an AJAX-call
-            if request.xhr?
-              respond_to do |format|
-                format.html {
-                  render :partial => @page_partial, :locals => @local_vars
-                }
-              end
-              return
-            end
+        if @page.content_data.is_humpyard_dynamic_page? and dyn_page_path.size > 0
+          @sub_page = @page.parse_path(dyn_page_path)
         
-          # Find page by id
-          elsif not params[:id].blank?
-            # Render page by id if not webpath was given but an id
-            @page = Page.find(params[:id])
-          # Find root page
-          else
-            # Render index page if neither id or webpath was given
-            @page = Page.root_page :force_reload => true
-            unless @page
-              @page = Page.new
-              render '/humpyard/pages/welcome'
-              return false
+          # Raise 404 if no page was found for the sub_page part
+          raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (D4201)" if @sub_page.blank?
+
+          @page_partial = "/humpyard/pages/#{@page.content_data_type.split('::').last.underscore.pluralize}/#{@sub_page[:partial]}" if @sub_page[:partial]
+          @local_vars = {page: @page}.merge(@sub_page[:locals]) if @sub_page[:locals] and @sub_page[:locals].class == Hash
+        
+          # render partial only if request was an AJAX-call
+          if request.xhr?
+            respond_to do |format|
+              format.html {
+                render partial: @page_partial, locals: @local_vars
+              }
             end
+            return
           end
         end
       end
@@ -286,12 +250,12 @@ module Humpyard
       response.headers['X-Humpyard-ServerTime'] = "#{Time.now.utc}"
  
       @page_partial ||= "/humpyard/pages/#{@page.content_data_type.split('::').last.underscore.pluralize}/show"
-      @local_vars ||= {:page => @page}
+      @local_vars ||= {page: @page}
 
       self.class.layout(@page.template_name)
 
       if Rails.application.config.action_controller.perform_caching and not @page.always_refresh
-        fresh_when :etag => "#{humpyard_user.nil? ? '' : humpyard_user}p#{@page.id}m#{@page.last_modified}", :last_modified => @page.last_modified(:include_pages => true), :public => @humpyard_user.nil?
+        fresh_when etag: "#{humpyard_user.nil? ? '' : humpyard_user}p#{@page.id}m#{@page.last_modified}", last_modified: @page.last_modified(include_pages: true), public: @humpyard_user.nil?
       end
     end
     
@@ -299,7 +263,7 @@ module Humpyard
     def sitemap
       require 'builder'
       
-      xml = ::Builder::XmlMarkup.new :indent => 2
+      xml = ::Builder::XmlMarkup.new indent: 2
       xml.instruct!
       xml.tag! :urlset, {
         'xmlns'=>"http://www.sitemaps.org/schemas/sitemap/0.9",
@@ -312,15 +276,15 @@ module Humpyard
         if root_page = Page.root_page
           Humpyard.config.locales.each do |locale|
             add_to_sitemap xml, base_url, locale, [{
-                :index => true,
-                :url => root_page.human_url(:locale => locale),
-                :lastmod => root_page.last_modified,
-                :children => []
-              }] + root_page.child_pages(:single_root => true).map{|p| p.content_data.site_map(locale)}
+                index: true,
+                url: root_page.human_url(locale: locale),
+                lastmod: root_page.last_modified,
+                children: []
+              }] + root_page.child_pages(single_root: true).map{|p| p.content_data.site_map(locale)}
           end
         end
       end
-      render :xml => xml.target!
+      render xml: xml.target!
     end
 
     private

@@ -3,7 +3,7 @@ module Humpyard
     module Acts
       module ContainerElement
         def self.included(base)
-          base.delegate "elements", "elements=", "elements?", :to => :element
+          base.delegate "elements", "elements=", "elements?", to: :element
           
           base.extend ClassMethods
         end

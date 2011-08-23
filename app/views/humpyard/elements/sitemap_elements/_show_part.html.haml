@@ -9,4 +9,4 @@
             = link_to page.title, page.human_url
           - if element.content_data.show_description
             .desc= page.description
-          = render '/humpyard/elements/sitemap_elements/show_part', :pages => page.child_pages(:multiple_roots => true), :element => element, :level => level + 1
+          = render '/humpyard/elements/sitemap_elements/show_part', pages: page.child_pages(multiple_roots: true), element: element, level: level + 1

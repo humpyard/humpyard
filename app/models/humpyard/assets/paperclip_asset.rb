@@ -3,17 +3,17 @@ module Humpyard
     class PaperclipAsset < ::ActiveRecord::Base
       attr_accessible :media
     
-      acts_as_humpyard_asset :system_asset => true
+      acts_as_humpyard_asset system_asset: true
     
       # ToDo render styles - not working for non-images like mp3
     
       begin
         has_attached_file(
           :media, 
-          :default_style => :original,
-          #:styles => {:preview => ['500x500>', :jpg], :thumb => ['200x100>', :jpg]},
-          :path => ":rails_root/public/system/media/:id/:basename.:extension",
-          :url => "/system/media/:id/:basename.:extension"
+          default_style: :original,
+          #styles: {preview: ['500x500>', :jpg], thumb: ['200x100>', :jpg]},
+          path: ":rails_root/public/system/media/:id/:basename.:extension",
+          url: "/system/media/:id/:basename.:extension"
         )
         validates_attachment_presence :media
         after_post_process :update_media_dimensions

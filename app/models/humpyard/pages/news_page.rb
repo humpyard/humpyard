@@ -3,10 +3,10 @@ module Humpyard
     ####
     # Humpyard::Pages::NewsPage is a page containing news articles
     class NewsPage < ::ActiveRecord::Base
-      acts_as_humpyard_page :system_page => true
+      acts_as_humpyard_page system_page: true
 
-      has_many :news_items, :class_name => 'Humpyard::NewsItem', :foreign_key => :news_page_id, :order => "#{Humpyard::NewsItem.table_name}.created_at DESC"    
-      has_many :news_elements, :class_name => 'Humpyard::Elements::NewsElement', :foreign_key => :news_page_id
+      has_many :news_items, class_name: 'Humpyard::NewsItem', foreign_key: :news_page_id, order: "#{Humpyard::NewsItem.table_name}.created_at DESC"    
+      has_many :news_elements, class_name: 'Humpyard::Elements::NewsElement', foreign_key: :news_page_id
       
       def is_humpyard_dynamic_page?
         true
@@ -27,8 +27,8 @@ module Humpyard
         return nil if item.created_at.to_date != item_created_on
         
         return {
-          :partial => 'detail',
-          :locals => {:item => item}
+          partial: 'detail',
+          locals: {item: item}
           }
       end
       
@@ -43,15 +43,15 @@ module Humpyard
       def site_map(locale)
         if page.in_sitemap        
           {
-            :url => page.human_url(:locale => locale),
-            :lastmod => page.last_modified,
-            :hidden => !page.in_sitemap,
-            :children => news_items.map do |i|
+            url: page.human_url(locale: locale),
+            lastmod: page.last_modified,
+            hidden: !page.in_sitemap,
+            children: news_items.map do |i|
               { 
-                :url => i.human_url(:locale => locale),
-                :lastmod => i.updated_at,
-                :hidden => !page.in_sitemap,
-                :children => []
+                url: i.human_url(locale: locale),
+                lastmod: i.updated_at,
+                hidden: !page.in_sitemap,
+                children: []
               }
             end
           }  

@@ -3,7 +3,7 @@ module Humpyard
     ####
     # Humpyard::Elements::TextElement is a model of a text element.    
     class TextElement < ::ActiveRecord::Base
-      acts_as_humpyard_element :system_element => true
+      acts_as_humpyard_element system_element: true
       
       attr_accessible :content, :html_content
       

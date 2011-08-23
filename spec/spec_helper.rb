@@ -1,30 +1,23 @@
-# This file is copied to ~/spec when you run 'ruby script/generate rspec'
-# from the project root directory.
-ENV["RAILS_ENV"] ||= 'test'
-require File.dirname(__FILE__) + "/../test/rails/config/environment" unless defined?(Rails)
-require 'rspec/rails'
+require 'spork'
 
-# Requires supporting files with custom matchers and macros, etc,
-# in ./support/ and its subdirectories.
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
+Spork.prefork do
+  ENV["RAILS_ENV"] = "test"
 
-Rspec.configure do |config|
-  # == Mock Framework
-  #
-  # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
-  #
-  # config.mock_with :mocha
-  # config.mock_with :flexmock
-  # config.mock_with :rr
-  config.mock_with :rspec
+  require File.expand_path("../dummy/config/environment.rb",  __FILE__)
+  require 'rspec/rails'
 
-  # If you'd prefer not to run each of your examples within a transaction,
-  # uncomment the following line.
-  # config.use_transactional_examples = false
-  
-  config.use_transactional_examples = false
-  config.color_enabled = true
-  config.formatter = 'doc'
+  Rails.backtrace_cleaner.remove_silencers!
+
+  Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
+
+  RSpec.configure do |config|
+    config.mock_with :rspec
+    config.use_transactional_fixtures = true
+  end
 end
 
+Spork.each_run do
+  Rails.application.reload_routes!
+  Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }  
+end
 

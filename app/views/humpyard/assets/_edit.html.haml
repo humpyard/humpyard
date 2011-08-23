@@ -1,15 +1,15 @@
-= humpyard_form_for @asset, :as => :asset, :url => url_for(:controller=>:'humpyard/assets', :action=>@asset.persisted? ? :update : :create), :html=>{:'data-dialog-remote' => true, :'data-dialog-form'=>'true', :'data-form-object-class' => "asset", :class=>'asset-form'} do |form|
+= humpyard_form_for @asset, as: :asset, url: url_for(controller: :'humpyard/assets', action: @asset.persisted? ? :update : :create), :html=>{:'data-dialog-remote' => true, :'data-dialog-form'=>'true', :'data-form-object-class' => "asset", class: 'asset-form'} do |form|
   - unless @asset.persisted? 
     = hidden_field_tag :type, @asset_type
   .dialog-search
-    = "#{I18n.t("humpyard_form.titles.#{form.form_type.downcase}", :model => "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}"
+    = "#{I18n.t("humpyard_form.titles.#{form.form_type.downcase}", model: "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}"
   .dialog-pane
     .flashes
     .humpyard-tabview
       - custom_partial_path = "/humpyard/assets/#{@asset.class.name.underscore.pluralize.gsub(/^humpyard\/assets/, '')}/edit"
       - if lookup_context.exists? custom_partial_path , nil, true
-        = render :partial => custom_partial_path, :locals => {:asset => @asset, :form => form}
+        = render partial: custom_partial_path, locals: {asset: @asset, form: form}
   .dialog-buttons.humpyard-form-buttons
     = form.submit
     - if @asset.persisted? and can? :destroy, @asset.asset
-      = link_to "#{I18n.t("humpyard_form.actions.destroy", :model => "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}", humpyard_asset_path(@asset), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :remote => true
+      = link_to "#{I18n.t("humpyard_form.actions.destroy", model: "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}", humpyard_asset_path(@asset), :'data-icon' => "ui-icon-trash", confirm: "Are you sure?", method: :delete, remote: true

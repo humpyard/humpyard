@@ -1,7 +1,7 @@
 .humpyard-tab
   .humpyard-tab-title
     Media Content
-  = form.input :asset_id, :as => :select, :collection => Humpyard::Asset.all, :required => true
-  = form.input :float, :as => :select, :collection => [[t('.none'),''],[t('.left'), 'left'], [t('.right'), 'right']], :required => true
+  = form.input :asset_id, as: :select, collection: Humpyard::Asset.all, required: true
+  = form.input :float, as: :select, collection: [[t('.none'),''],[t('.left'), 'left'], [t('.right'), 'right']], required: true
   = form.input :uri
   %small=t '.uri_description'

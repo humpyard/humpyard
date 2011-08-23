@@ -1,7 +1,7 @@
 module Humpyard
   module PagesHelper
     def page_body(options={}, &block)
-      render :partial => '/humpyard/common/page_construct', :locals => {:options => options, :block => block}
+      render partial: '/humpyard/common/page_construct', locals: {options: options, block: block}
     end
     
     def title(page_title)

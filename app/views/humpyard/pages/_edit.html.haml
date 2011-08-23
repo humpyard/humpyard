@@ -1,6 +1,6 @@
-= humpyard_form_for @page, :as => :page, :url => @page.page, :html=>{:'data-dialog-remote' => true, :'data-form-object-class' => "page", :class=>'page-form'} do |form|
+= humpyard_form_for @page, as: :page, url: @page.page, :html=>{:'data-dialog-remote' => true, :'data-form-object-class' => "page", :class=>'page-form'} do |form|
   .dialog-search
-    = "#{I18n.t("humpyard_form.titles.#{form.form_type.downcase}", :model => "#{Humpyard::Page.model_name.human}#{@page.title.blank? ? '' : " '#{@page.title}'"}")}"
+    = "#{I18n.t("humpyard_form.titles.#{form.form_type.downcase}", model: "#{Humpyard::Page.model_name.human}#{@page.title.blank? ? '' : " '#{@page.title}'"}")}"
   .dialog-pane
     .flashes
     - unless @page.persisted?
@@ -16,14 +16,14 @@
           Page Options
         = form.input :title
         - if Humpyard::config.templates.size > 1
-          = form.input :template_name, :as => :select, :collection => Humpyard::config.templates.map{|name, data| [name.to_s.camelize, name.to_s]}
+          = form.input :template_name, as: :select, collection: Humpyard::config.templates.map{|name, data| [name.to_s.camelize, name.to_s]}
         - else
           = hidden_field :page, :template_name
-        = form.input :description, :rows => 10
+        = form.input :description, rows: 10
         = form.input :in_menu
         = form.input :in_sitemap
         = form.input :always_refresh
-      = render "/humpyard/pages/#{@page.class.name.split('::').last.underscore.pluralize}/edit", :page => @page, :form => form
+      = render "/humpyard/pages/#{@page.class.name.split('::').last.underscore.pluralize}/edit", page: @page, form: form
       .humpyard-tab
         .humpyard-tab-title
           Generic Options
@@ -32,7 +32,7 @@
   .dialog-buttons.humpyard-form-buttons  
     = form.submit
     - if @page.persisted? and can? :destroy, @page.page
-      = link_to "#{I18n.t("humpyard_form.actions.destroy", :model => "#{Humpyard::Page.model_name.human}#{@page.title.blank? ? '' : " '#{@page.title}'"}")}", humpyard_page_path(@page.page), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :remote => true
+      = link_to "#{I18n.t("humpyard_form.actions.destroy", model: "#{Humpyard::Page.model_name.human}#{@page.title.blank? ? '' : " '#{@page.title}'"}")}", humpyard_page_path(@page.page), :'data-icon' => "ui-icon-trash", confirm: "Are you sure?", method: :delete, remote: true
     .hy-locale-info
       Sprache:
       = I18n.locale

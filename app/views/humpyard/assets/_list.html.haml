@@ -1,4 +1,4 @@
 %ul
   - @assets.each do |asset|
-    %li.asset{:id => "hy-asset-listview-text-#{asset.id}"}
-      = render 'list_item.html', :asset => asset, :active => (@asset and @asset==asset)
+    %li.asset{id: "hy-asset-listview-text-#{asset.id}"}
+      = render 'list_item.html', asset: asset, active: (@asset and @asset==asset)

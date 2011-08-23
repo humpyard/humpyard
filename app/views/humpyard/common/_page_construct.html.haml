@@ -14,7 +14,7 @@
             - unless action[:icon].blank?
               - options[:'data-icon'] = action[:icon]       
             - unless action[:action].blank?
-              - url = url_for(:controller => action[:controller], :action => action[:action], :actual_page_id => @page ? @page.id : nil)
+              - url = url_for(controller: action[:controller], action: action[:action], actual_page_id: @page ? @page.id : nil)
             - unless action[:command].blank?
               - options[:'data-command'] = action[:command]
             - unless action[:dialog].blank?
@@ -32,7 +32,7 @@
     #hy-bottom.hy-eb
       - Humpyard::config.element_types.each do |name, type|
         - if not type.nil?
-          .element{'data-addable'=>'hy-elements', 'data-draggable'=>'hy-elements', 'data-element-type'=>name, 'data-create-url'=>new_humpyard_element_path, :class => "hy-content-element-icon-#{type.to_s.underscore.dasherize}"}
+          .element{'data-addable'=>'hy-elements', 'data-draggable'=>'hy-elements', 'data-element-type'=>name, 'data-create-url'=>new_humpyard_element_path, class: "hy-content-element-icon-#{type.to_s.underscore.dasherize}"}
             %span
               = type.model_name.human
               

@@ -1,6 +1,6 @@
 - if can? :manage, Humpyard::Element
-  .hy-el{:id => "hy-id-#{element.id}", :'data-draggable'=>"hy-elements", :'data-element-id'=>element.id}
-    = render :partial => "/humpyard/elements/show_view", :locals => {:element => element}
+  .hy-el{id: "hy-id-#{element.id}", :'data-draggable'=>"hy-elements", :'data-element-id'=>element.id}
+    = render partial: "/humpyard/elements/show_view", locals: {element: element}
     .hy-marker-frame.top
     .hy-marker-frame.bottom
     .hy-marker-frame.left
@@ -8,7 +8,7 @@
     .hy-el-menu
       =link_to 'Edit', edit_humpyard_element_path(element), :'data-dialog' => 'size:600;modal:true;', :'data-icon' => "ui-icon-pencil"
       - if element.page == @page
-        =link_to 'Delete', humpyard_element_path(element), :'data-icon' => "ui-icon-trash", :confirm => "Are you sure?", :method => :delete, :remote => true
+        =link_to 'Delete', humpyard_element_path(element), :'data-icon' => "ui-icon-trash", confirm: "Are you sure?", method: :delete, remote: true
         =link_to 'Move', '#', :'data-icon' => "ui-icon-arrow-4", :"data-draghandle"=>true
         - unless element.unshared?
           .hy-el-share-info
@@ -18,12 +18,12 @@
           -# support hooking up additional buttons the editor adornments 
           - custom_partial_path = "/humpyard/elements/#{element.content_data_type.underscore.pluralize.gsub(/^humpyard\/elements/, '')}/buttons"
           - if lookup_context.exists? custom_partial_path , nil, true
-            = render :partial => custom_partial_path, :locals => {:element => element}
+            = render partial: custom_partial_path, locals: {element: element}
       - else
         - unless element.unshared?
           .hy-el-share-info
-            = link_to(I18n.t("humpyard_cms.shared_state_info.with_title.#{element.shared_state.to_i}", :title => element.page.title), element.page.human_url, :'data-icon' => "ui-icon-circle-arrow-e")
+            = link_to(I18n.t("humpyard_cms.shared_state_info.with_title.#{element.shared_state.to_i}", title: element.page.title), element.page.human_url, :'data-icon' => "ui-icon-circle-arrow-e")
             .description
-              = I18n.t("humpyard_cms.shared_state_info.with_title.#{element.shared_state.to_i}", :title => element.page.title)
+              = I18n.t("humpyard_cms.shared_state_info.with_title.#{element.shared_state.to_i}", title: element.page.title)
 - else # view mode
-  = render :partial => "/humpyard/elements/show_view", :locals => {:element => element}
+  = render partial: "/humpyard/elements/show_view", locals: {element: element}

@@ -7,7 +7,7 @@ module Humpyard
       
       acts_as_humpyard_element
       
-      belongs_to :asset, :class_name => 'Humpyard::Asset'
+      belongs_to :asset, class_name: 'Humpyard::Asset'
    end
  end
 end

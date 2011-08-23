@@ -3,7 +3,7 @@ module Humpyard
     class YoutubeAsset < ::ActiveRecord::Base
       attr_accessible :youtube_video_id
     
-      acts_as_humpyard_asset :system_asset => true
+      acts_as_humpyard_asset system_asset: true
     
       validates_presence_of :youtube_video_id
       before_save :update_youtube_data
