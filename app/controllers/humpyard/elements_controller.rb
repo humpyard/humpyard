@@ -3,8 +3,24 @@ module Humpyard
   # Humpyard::ElementController is the controller for editing your elements
   class ElementsController < ::ApplicationController
     
+    rescue_from ::CanCan::AccessDenied do |exception|
+      render json: {
+        status: :failed
+      }, status: 403
+      return
+    end
+    
+    rescue_from ::ActiveRecord::RecordNotFound, ::ActionController::RoutingError do |exception|
+      render json: {
+        status: :failed
+      }, status: 404
+      return
+    end
+    
     # Dialog content for a new element
     def new
+      raise ::ActionController::RoutingError, 'Element type not found' if Humpyard::config.element_types[params[:type]].blank?
+      
       @element = Humpyard::config.element_types[params[:type]].new(
         page_id: params[:page_id], 
         container_id: params[:container_id].to_i > 0 ? params[:container_id].to_i : nil,
@@ -22,14 +38,11 @@ module Humpyard
     
     # Create a new element
     def create
+      raise ::ActionController::RoutingError, 'Element type not found' if Humpyard::config.element_types[params[:type]].blank?
+      
       @element = Humpyard::config.element_types[params[:type]].new params[:element]
             
-      unless can? :create, @element.element
-        render json: {
-          status: :failed
-        }, status: 403
-        return
-      end      
+      authorize! :create, @element.element
             
       if @element.save
         @prev = Humpyard::Element.find_by_id(params[:prev_id])
@@ -61,98 +74,83 @@ module Humpyard
     
     # Inline edit content for an existing element
     def inline_edit
-      @element = Humpyard::Element.find(params[:id]).content_data
+      raw_element = Humpyard::Element.find(params[:id])
       
-      authorize! :update, @element.element
+      authorize! :update, raw_element
+      
+      @element = raw_element.content_data
       
       render partial: 'inline_edit'
     end
 
     # Dialog content for an existing element
     def edit
-      @element = Humpyard::Element.find(params[:id]).content_data
+      raw_element = Humpyard::Element.find(params[:id])
       
-      authorize! :update, @element.element
+      authorize! :update, raw_element
+      
+      @element = raw_element.content_data
       
       render partial: 'edit'
     end
     
     # Update an existing element
     def update
-      @element = Humpyard::Element.find(params[:id])
-      if @element
-        unless can? :update, @element
-          render json: {
-            status: :failed
-          }, status: 403
-          return
-        end
-        
-        if @element.content_data.update_attributes params[:element]
-          render json: {
-            status: :ok,
-            dialog: :close,
-            replace: [
-              { 
-                element: "hy-id-#{@element.id}",
-                url: humpyard_element_path(@element)
-              }
-            ]
-          }
-        else
-          render json: {
-            status: :failed, 
-            errors: @element.content_data.errors
-          }
-        end
+      @element = Humpyard::Element.find(params[:id])  
+    
+      authorize! :update, @element
+      
+      if @element.content_data.update_attributes params[:element]
+        render json: {
+          status: :ok,
+          dialog: :close,
+          replace: [
+            { 
+              element: "hy-id-#{@element.id}",
+              url: humpyard_element_path(@element)
+            }
+          ]
+        }
       else
         render json: {
-          status: :failed
-        }, status: 404
+          status: :failed, 
+          errors: @element.content_data.errors
+        }
       end
     end
+
     
     # Move an element
     def move
       @element = Humpyard::Element.find(params[:id])
+            
+      authorize! :update, @element
       
-      if @element
-        unless can? :update, @element
-          render json: {
-            status: :failed
-          }, status: 403
-          return
-        end
-        
-        @element.update_attributes(
-          container: Humpyard::Element.find_by_id(params[:container_id]), 
-          page_yield_name: params[:yield_name]
-        )
-        @prev = Humpyard::Element.find_by_id(params[:prev_id])
-        @next = Humpyard::Element.find_by_id(params[:next_id])
-        
-        do_move(@element, @prev, @next)
-        
-        render json: {
-          status: :ok
-        }
-      else
-        render json: {
-          status: :failed
-        }, status: 404        
-      end
+      @element.update_attributes(
+        container: Humpyard::Element.find_by_id(params[:container_id]), 
+        page_yield_name: params[:yield_name]
+      )
+      @prev = Humpyard::Element.find_by_id(params[:prev_id])
+      @next = Humpyard::Element.find_by_id(params[:next_id])
+      
+      do_move(@element, @prev, @next)
+      
+      render json: {
+        status: :ok
+      }
     end
     
     # Destroy an element
     def destroy      
-      @element = Humpyard::Element.find_by_id(params[:id])
+      @element = Humpyard::Element.find(params[:id])
       
-      if can? :destroy, @element  
-        @element.destroy
-      else
-        @error = "You have no permission to delete this element (id: #{@element.class}:#{params[:id]})"
-        render :error
-      end
+      authorize! :destroy, @element  
+      
+      @element.destroy
+      
+      render json: {
+        status: :ok
+      }
     end
         
     # Render a given element

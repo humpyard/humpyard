@@ -11,8 +11,6 @@ Rails.application.routes.draw do
     resources :humpyard_elements, controller: 'humpyard/elements', path: "elements", only: [:new, :create, :edit, :update, :show, :destroy] do
       member do
         get :inline_edit
-      end
-      collection do
         post :move
       end
     end

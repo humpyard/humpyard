@@ -147,7 +147,6 @@
         handle: 'a[data-draghandle]',
         update: function(sortable, item, parent, prev, next) {
           var params = {
-            id: item.attr('data-element-id'),
             page_id: $('#hy-body').attr('data-page-id'),
             yield_name: item.parents('.hy-content:first').attr('data-content-yield'),
             container_id: parent.attr('data-element-id'),
@@ -165,7 +164,7 @@
             });
             item.empty();
           } else {
-            $.humpyard.tokenized_post(sortable.attr('data-sortable-update-url'), params);
+            $.humpyard.tokenized_post(sortable.attr('data-sortable-update-url').replace('__item_id__', item.attr('data-element-id')), params);
           }
         }
       });
