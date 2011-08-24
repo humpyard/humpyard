@@ -6,7 +6,7 @@ class Ability
       can :manage, Humpyard::Page
       can :manage, Humpyard::Element
     else
-      can :read, Humpyard::Page
+      can :show, Humpyard::Page
     end
   end
 end

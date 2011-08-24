@@ -7,7 +7,9 @@ class Ability
       can :manage, Humpyard::Element
       can :manage, Humpyard::Asset
     else
-      can :read, Humpyard::Page
+      can :show, Humpyard::Page
+      can :show, Humpyard::Element
+      can :show, Humpyard::Asset
     end
   end
 end

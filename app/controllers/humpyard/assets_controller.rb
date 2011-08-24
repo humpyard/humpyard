@@ -1,12 +1,30 @@
 module Humpyard
   class AssetsController < ::ApplicationController
+    rescue_from ::CanCan::AccessDenied do |exception|
+      render json: {
+        status: :failed
+      }, status: 403
+      return
+    end
+    
+    rescue_from ::ActiveRecord::RecordNotFound, ::ActionController::RoutingError do |exception|
+      render json: {
+        status: :failed
+      }, status: 404
+      return
+    end
+    
     def index
       @assets = Humpyard::Asset.all
+      
+      authorize! :manage, Humpyard::Asset
       
       render partial: 'index'
     end
     
     def new     
+      raise ::ActionController::RoutingError, 'Page type not found' if Humpyard::config.asset_types[params[:type]].blank?
+      
       @asset = Humpyard::config.asset_types[params[:type]].new()
       
       authorize! :create, @asset.asset 
@@ -17,14 +35,11 @@ module Humpyard
     end
     
     def create  
+      raise ::ActionController::RoutingError, 'Page type not found' if Humpyard::config.asset_types[params[:type]].blank?
+      
       @asset = Humpyard::config.asset_types[params[:type]].new params[:asset]
             
-      unless can? :create, @asset.asset
-        render json: {
-          status: :failed
-        }, status: 403
-        return
-      end
+      authorize! :create, @asset.asset 
           
       if @asset.save
         @assets = Humpyard::Asset.all
@@ -52,62 +67,52 @@ module Humpyard
     end
     
     def edit
-      @asset = Humpyard::Asset.find(params[:id]).content_data
+      raw_asset = Humpyard::Asset.find(params[:id])
       
-      authorize! :update, @asset.asset
+      authorize! :update, raw_asset
+      
+      @asset = raw_asset.content_data
       
       render partial: 'edit'
     end
     
     def update
       @asset = Humpyard::Asset.find(params[:id])
-      if @asset 
-        unless can? :update, @asset
-          render json: {
-            status: :failed
-          }, status: 403
-          return
-        end
 
-        if @asset.content_data.update_attributes params[:asset]
-          render json: {
-            status: :ok,
-            replace: [
-              { 
-                element: "hy-asset-listview-text-#{@asset.id}",
-                content: render_to_string(partial:'list_item.html', locals: {asset: @asset, active: true})
-              }
-            ],
-            flash: {
-              level: 'info',
-              content: I18n.t('humpyard_form.flashes.update_success', model: Humpyard::Asset.model_name.human)
+      authorize! :update, @asset
+
+      if @asset.content_data.update_attributes params[:asset]
+        render json: {
+          status: :ok,
+          replace: [
+            { 
+              element: "hy-asset-listview-text-#{@asset.id}",
+              content: render_to_string(partial:'list_item.html', locals: {asset: @asset, active: true})
             }
+          ],
+          flash: {
+            level: 'info',
+            content: I18n.t('humpyard_form.flashes.update_success', model: Humpyard::Asset.model_name.human)
           }
-        else
-          render json: {
-            status: :failed, 
-            errors: @asset.content_data.errors,
-            flash: {
-              level: 'error',
-              content: I18n.t('humpyard_form.flashes.update_fail', model: Humpyard::Asset.model_name.human)
-            }
-          }
-        end
+        }
       else
         render json: {
-          status: :failed,
+          status: :failed, 
+          errors: @asset.content_data.errors,
           flash: {
             level: 'error',
-            content: I18n.t('humpyard_form.flashes.not_found', model: Humpyard::Asset.model_name.human)
+            content: I18n.t('humpyard_form.flashes.update_fail', model: Humpyard::Asset.model_name.human)
           }
-        }, status: 404
+        }
       end
     end
     
     def show
-      @asset = Humpyard::Asset.find(params[:id]).content_data
+      raw_asset = Humpyard::Asset.find(params[:id])
       
-      authorize! :show, @asset.asset
+      authorize! :show, raw_asset
+      
+      @asset = raw_asset.content_data
       
       render partial: 'show'
     end
@@ -118,6 +123,10 @@ module Humpyard
       authorize! :destroy, @asset  
       
       @asset.destroy
+      
+      render json: {
+        status: :ok
+      }
     end
   end
 end

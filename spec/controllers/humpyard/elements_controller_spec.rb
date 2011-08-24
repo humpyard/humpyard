@@ -323,41 +323,33 @@ describe Humpyard::ElementsController do
       response.status.should == 200
     end
   end
-  
-  context :show do
-    let(:first_level_content_data) { mock('SomeElementData', 
-      is_humpyard_dynamic_element?: false, 
-      is_humpyard_virtual_element?: false
-    ) }
-    let(:content_data) { mock('SomeElementData', 
-      is_humpyard_dynamic_element?: false, 
-      is_humpyard_virtual_element?: false
-    ) }
     
-    let(:first_level_element) { mock_model(Humpyard::Element, 
-      parent: nil, 
-      is_root_element?: false, 
-      content_data: first_level_content_data, 
-      last_modified: '2010-02-23 11:23 pm'.to_time, 
-      content_data_type: 'SomeElementData',
-      template_name: 'application'
-    ) }
-    let(:element) { mock_model(Humpyard::Element, 
-      parent: first_level_element, 
-      is_root_element?: false, 
-      content_data: content_data, 
-      last_modified: '2010-04-02 00:42'.to_time, 
-      content_data_type: 'SomeElementData',
-      template_name: 'application'
-    ) }
+  context :show do  
+    let(:element) { mock_model(Humpyard::Element) }
+    
+    before do
+      Humpyard::Element.stub(:find).with('some_nonexisiting_element') { raise ActiveRecord::RecordNotFound }
+      Humpyard::Element.stub(:find).with('some_element') { element }
+    end
     
     it 'should show introduction on default element if no elements was found' do
-      get :show, id: 123
+      get :show, id: 'some_nonexisiting_element'
       response.status.should == 404
       response.body.should == '{"status":"failed"}'
     end
-  end
-  
-  context :sitemap do
+    
+    it 'should check for authorization' do
+      get :show, id: 'some_element'
+      response.status.should == 403
+      response.body.should == '{"status":"failed"}'
+    end
+    
+    it 'should show the asset' do
+      controller.stub(:authorize!).with(:show, element) {}
+      get :show, id: 'some_element'
+      response.status.should == 200
+      assigns[:element].should == element
+      response.should render_template(:show)
+    end
   end
 end

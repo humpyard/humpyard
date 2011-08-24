@@ -157,7 +157,7 @@ module Humpyard
     def show
       @element = Humpyard::Element.find(params[:id])
       
-      authorize! :read, @element  
+      authorize! :show, @element  
       
       render partial: 'show', locals: {element: @element}
     end

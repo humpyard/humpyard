@@ -5,10 +5,13 @@ class Ability
     # Add abilities to manage pages and elements here, e.g.:
     
     #if user.is_admin?
-    #  can :manage, Humpyard::Page
-    #  can :manage, Humpyard::Element
-    #else
-    #  can :read, Humpyard::Page
+    #   can :manage, Humpyard::Page
+    #   can :manage, Humpyard::Element
+    #   can :manage, Humpyard::Asset
+    # else
+    #   can :show, Humpyard::Page
+    #   can :show, Humpyard::Element
+    #   can :show, Humpyard::Asset
     #end
   end
 end
