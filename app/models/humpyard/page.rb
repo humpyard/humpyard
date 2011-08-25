@@ -84,10 +84,17 @@ module Humpyard
       end
       
       if self.title_for_url == 'index' or self.is_root_page?
-        "/#{Humpyard::config.parsed_www_prefix(options).gsub(/[^\/]*$/, '')}"
+        Page.human_root_url(options)
       else
         "/#{Humpyard::config.parsed_www_prefix(options)}#{((self.ancestors.reverse + [self]).collect{|p| p.query_title_for_url(options[:locale])} - ['index']) * '/'}#{format}".gsub(/^index\//,'')
       end
+    end
+    
+    def self.human_root_url(options={})
+      options[:locale] ||= ::I18n.locale
+      options[:format] ||= :html
+      
+      "/#{Humpyard::config.parsed_www_prefix(options).gsub(/[^\/]*$/, '')}"
     end
     
     

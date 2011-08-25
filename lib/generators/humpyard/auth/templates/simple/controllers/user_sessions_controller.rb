@@ -14,13 +14,13 @@ class <%= class_name %>SessionsController < ApplicationController
     unless params[:username].blank? or params[:password].blank?
       require 'digest/sha1'
       
-      users = YAML::load(File.open("#{RAILS_ROOT}/config/humpyard_users.yml"))
+      users = YAML::load(File.open("#{Rails.root}/config/humpyard_users.yml"))
       
       if users and "#{users[params[:username]]}" == Digest::SHA1.hexdigest(params[:password])
         @current_user = params[:username]
         session[:humpyard] ||= {}
         session[:humpyard][:user] = @current_user
-        redirect_to Humpyard::Page.root_page.human_url
+        redirect_to Humpyard::Page.human_root_url
         return
       end
     end
@@ -34,6 +34,6 @@ class <%= class_name %>SessionsController < ApplicationController
     @current_user = nil
     session[:humpyard] ||= {}
     session[:humpyard][:user] = @current_user
-    redirect_to Humpyard::Page.root_page.human_url
+    redirect_to Humpyard::Page.human_root_url
   end
 end
