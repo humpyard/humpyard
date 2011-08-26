@@ -194,10 +194,10 @@ $data_table_border_color: #c0c0c0;
         }
       }
       &.asc a {
-        background: image_url("table/asc.png") center right no-repeat;
+        background: image-url("table/asc.png") center right no-repeat;
       }
       &.desc a {
-        background: image_url("table/desc.png") center right no-repeat;
+        background: image-url("table/desc.png") center right no-repeat;
       }
     }
     tr:nth-child(2n)  {
