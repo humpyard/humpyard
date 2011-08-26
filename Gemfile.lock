@@ -4,16 +4,16 @@ GIT
   specs:
     spork (0.9.0.rc9)
 
-PATH
-  remote: ../humpyard_form
+GIT
+  remote: http://github.com/humpyard/humpyard_form.git
+  revision: b99965bb30dff9ae39c61e331ddab4eb55cd1632
   specs:
-    humpyard_form (0.1.0)
-      acts_as_tree (>= 0.1.1)
-      coffee-script (>= 2.2.0)
-      globalize3 (>= 0.0.11)
-      haml-rails (>= 0.3.4)
-      rails (>= 3.1.0.rc)
-      sass-rails (>= 3.1.0.rc)
+    humpyard_form (0.0.4)
+      builder
+      compass (>= 0.10.0)
+      globalize3 (>= 0.0.7)
+      haml (>= 3.0.0)
+      rails (>= 3.0.0)
 
 GEM
   remote: http://rubygems.org/
@@ -64,6 +64,7 @@ GEM
     childprocess (0.2.1)
       ffi (~> 1.0.6)
     chronic (0.6.2)
+    chunky_png (1.2.1)
     coffee-rails (3.1.0.rc.6)
       coffee-script (>= 2.2.0)
       railties (~> 3.1.0.rc1)
@@ -72,6 +73,10 @@ GEM
       execjs
     coffee-script-source (1.1.2)
     columnize (0.3.4)
+    compass (0.11.5)
+      chunky_png (~> 1.2)
+      fssm (>= 0.2.7)
+      sass (~> 3.1)
     cucumber (1.0.2)
       builder (>= 2.1.2)
       diff-lcs (>= 1.1.2)
@@ -94,17 +99,13 @@ GEM
     faker (0.9.5)
       i18n (~> 0.4)
     ffi (1.0.9)
+    fssm (0.2.7)
     gherkin (2.4.11)
       json (>= 1.4.6)
     globalize3 (0.1.0)
       activemodel (>= 3.0.0)
       activerecord (>= 3.0.0)
     haml (3.1.2)
-    haml-rails (0.3.4)
-      actionpack (~> 3.0)
-      activesupport (~> 3.0)
-      haml (~> 3.0)
-      railties (~> 3.0)
     hike (1.2.1)
     i18n (0.6.0)
     jasmine (1.0.2.1)
