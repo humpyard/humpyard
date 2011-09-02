@@ -106,7 +106,7 @@ module Humpyard
     
     # Find the child pages
     def child_pages options={}
-      if content_data.is_humpyard_dynamic_page?
+      if content_data.try(:is_humpyard_dynamic_page?)
         content_data.child_pages
       else
         if options[:single_root] and is_root_page? 

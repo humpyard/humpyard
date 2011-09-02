@@ -216,13 +216,13 @@ module Humpyard
               raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (X4202)" if not (@page.parent == parent_page or @page.parent == Humpyard::Page.root_page)
             
               parent_page = @page unless @page.is_root_page?
-              dyn_page_path = [] if @page.content_data.is_humpyard_dynamic_page? 
+              dyn_page_path = [] if @page.content_data.try(:is_humpyard_dynamic_page?)
             end
           end
         end
 
-        if @page.content_data.is_humpyard_dynamic_page? and dyn_page_path.size > 0
-          @sub_page = @page.parse_path(dyn_page_path)
+        if @page.content_data.try(:is_humpyard_dynamic_page?) and dyn_page_path.size > 0
+          @sub_page = @page.content_data.parse_path(dyn_page_path)
         
           # Raise 404 if no page was found for the sub_page part
           raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (D4201)" if @sub_page.blank?
@@ -243,7 +243,7 @@ module Humpyard
       end
       
       # Raise 404 if no page was found
-      raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil? or @page.content_data.is_humpyard_virtual_page?
+      raise ::ActionController::RoutingError, "No route matches \"#{request.path}\"" if @page.nil? or @page.content_data.try(:is_humpyard_virtual_page?)
       
       response.headers['X-Humpyard-Page'] = "#{@page.id}"
       response.headers['X-Humpyard-Modified'] = "#{@page.last_modified}"
