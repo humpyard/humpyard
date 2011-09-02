@@ -7,22 +7,22 @@
         = link_to I18n.t('humpyard_cms.toolbar.edit'), '#', :'data-command' => "toggleEditMode", :'data-icon' => "ui-icon-pencil" if @page and can? :update, @page
         - Humpyard::config.toolbar_actions.each do |key,action|
           - if action[:class].nil? or can? :manage, action[:class].new
-            - options = {}
+            - tool_options = {}
             - url = '#'
             - title = ''
         
             - unless action[:icon].blank?
-              - options[:'data-icon'] = action[:icon]       
+              - tool_options[:'data-icon'] = action[:icon]       
             - unless action[:action].blank?
               - url = url_for(controller: action[:controller], action: action[:action], actual_page_id: @page ? @page.id : nil)
             - unless action[:command].blank?
-              - options[:'data-command'] = action[:command]
+              - tool_options[:'data-command'] = action[:command]
             - unless action[:dialog].blank?
-              - options[:'data-dialog'] = action[:dialog]
+              - tool_options[:'data-dialog'] = action[:dialog]
             - unless action[:title].blank?
               - title = action[:title]
             
-            = link_to I18n.t(title), url, options
+            = link_to I18n.t(title), url, tool_options
           
         = @content_for_toolbar
         
@@ -32,14 +32,14 @@
     #hy-bottom.hy-eb
       - Humpyard::config.element_types.each do |name, type|
         - if not type.nil?
-          .element{'data-addable'=>'hy-elements', 'data-draggable'=>'hy-elements', 'data-element-type'=>name, 'data-create-url'=>new_humpyard_element_path, class: "hy-content-element-icon-#{type.to_s.underscore.dasherize}"}
+          .element{ 'data-addable'=>'hy-elements', 'data-draggable'=>'hy-elements', 'data-element-type'=>name, 'data-create-url'=>new_humpyard_element_path, class: "hy-content-element-icon-#{type.to_s.underscore.dasherize}" }
             %span
               = type.model_name.human
               
-    #hy-body.hy-eb{'data-page-id' => @page ? @page.id : false}
+    #hy-body.hy-eb{ 'data-page-id' => @page ? @page.id : false, class: options[:class] }
       = capture_haml(&block)
       
 - else
   %body
-    #hy-body
+    #hy-body{ class: options[:class] }
       = capture_haml(&block)
