@@ -1,4 +1,7 @@
 %title
   = "#{Humpyard::config.browser_title_prefix}#{@content_for_title || 'Untitled'}#{Humpyard::config.browser_title_postfix}"
 %meta{"http-equiv"=>"Content-Type", content: "text/html; charset=utf-8"}/
+:javascript
+  hyAdminPath = '#{Humpyard::config.admin_prefix}'
 = @content_for_head
+
