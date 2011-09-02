@@ -1,5 +1,5 @@
 class Create<%= plural_class_name.gsub('::', '') %> < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :<%= plural_name.gsub('/','_') %> do |t|
     <%- for attribute in attributes -%>
       t.<%= attribute.type %> :<%= attribute.name %>
@@ -8,9 +8,5 @@ class Create<%= plural_class_name.gsub('::', '') %> < ActiveRecord::Migration
       t.timestamps
     <%- end -%>
     end
-  end
-  
-  def self.down
-    drop_table :<%= plural_name.gsub('/','_') %>
   end
 end

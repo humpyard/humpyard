@@ -34,7 +34,7 @@ module Humpyard
     # <tt>[--skip-tests]</tt>:: Don't generate test files.
     #
     # === Examples
-    #   rails generate humpyard:page SimpleText text:string 
+    #   rails generate humpyard:page SimplePage title:string 
     #   rails generate humpyard:page another_thing content:text --skip-tests
     # 
     # 
