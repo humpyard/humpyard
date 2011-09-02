@@ -1,13 +1,13 @@
 source 'http://rubygems.org'
 
-gem "rails",              '~>3.1.0.rc'
+gem "rails",              '~>3.1.0'
 gem 'sqlite3'
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',       '~> 3.1.0.rc'
-  gem 'coffee-rails',     '~> 3.1.0.rc'
+  gem 'sass-rails',       '~> 3.1.0'
+  gem 'coffee-rails',     '~> 3.1.0'
   gem 'uglifier'
 end
 
@@ -24,14 +24,14 @@ group :test do
   gem 'capybara'
   gem 'cucumber'
   gem 'cucumber-rails'
-  gem 'fabrication'
+  gem 'factory_girl'
   gem 'launchy'
   gem 'chronic'
   gem 'webrat'
   gem 'jasmine'
   gem 'rcov'
   gem 'email_spec'
-  gem 'spork', git: 'git://github.com/timcharper/spork.git'
+  gem 'spork'
   gem 'syntax'
   gem 'faker'
   gem 'database_cleaner'
