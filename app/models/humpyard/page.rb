@@ -28,10 +28,9 @@ module Humpyard
     
     def self.root_page(options = {})
       if options[:force_reload]
-        @root_page = Humpyard::Page.select(:id).with_translated_attribute(:title_for_url, :index).first
-      else
-        @root_page ||= Humpyard::Page.select(:id).with_translated_attribute(:title_for_url, :index).first
+        @root_page = nil
       end
+      @root_page ||= Humpyard::Page.select(:id).with_translated_attribute(:title_for_url, :index).first
     end    
     
     def is_root_page?
@@ -143,7 +142,7 @@ module Humpyard
     
     # Is the given page an ancestor of the actual page
     def is_ancestor_page_of? page
-      page.ancestor_pages.include? self
+      self.ancestor_pages.include? page
     end
     
     # Return the logical modification time for the page, suitable for http caching, generational cache keys, etc.
