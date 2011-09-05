@@ -142,7 +142,7 @@ module Humpyard
     
     # Is the given page an ancestor of the actual page
     def is_ancestor_page_of? page
-      self.ancestor_pages.include? page
+      page.ancestor_pages.include? self
     end
     
     # Return the logical modification time for the page, suitable for http caching, generational cache keys, etc.
