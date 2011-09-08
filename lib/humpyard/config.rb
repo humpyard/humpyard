@@ -76,10 +76,9 @@ module Humpyard
     
     def element_types #:nodoc:
       @element_types ||= {
-        'box_element' => Humpyard::Elements::BoxElement,
+        'container_element' => Humpyard::Elements::ContainerElement,
         'text_element' => Humpyard::Elements::TextElement,
         'media_element' => Humpyard::Elements::MediaElement,
-        'news_element' => Humpyard::Elements::NewsElement,
         'sitemap_element' => Humpyard::Elements::SitemapElement
       }
     end
@@ -87,8 +86,7 @@ module Humpyard
     def page_types #:nodoc:
       @page_types ||= {
         'static' => Humpyard::Pages::StaticPage,
-        'virtual' => Humpyard::Pages::VirtualPage,
-        'news' => Humpyard::Pages::NewsPage
+        'virtual' => Humpyard::Pages::VirtualPage
       }
     end
     

@@ -1,7 +1,11 @@
 module Humpyard
   module Elements 
     ####
-    # Humpyard::Elements::BoxElement is a model of a container element with a box frame.    
+    # Humpyard::Elements::BoxElement is deprecated   
+    #
+    # Use Humpyard::Elements::ContainerElement instead
+    #
+    # IMPORTANT: This element will be removed in a future version!
     class BoxElement < ::ActiveRecord::Base
       acts_as_humpyard_container_element system_element: true
       
