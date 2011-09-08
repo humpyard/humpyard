@@ -1,0 +1,12 @@
+- preset = Humpyard.config.container_element_presets[element.content_data.preset] || Humpyard.config.container_element_presets.first
+- active_slot = 0
+%div{class: preset[:css_class]}
+  - if preset[:title]
+    .container-element-title
+      = element.content_data.title
+  - preset[:slots].each do |slot|
+    .container-element-content{class: "container-slot-#{active_slot}"}
+      = render "/humpyard/elements/show_container", elements: element.content_data.elements.where('container_slot = ?', active_slot), active_slot: active_slot
+    - active_slot += 1
+  .container-element-end
+  

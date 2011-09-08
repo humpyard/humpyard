@@ -4,6 +4,7 @@ en:
       humpyard:
         element: "Element"
         elements:
+          container_element: 'Container'
           box_element: 'Box'
           text_element: 'Text'
           news_element: 'News'

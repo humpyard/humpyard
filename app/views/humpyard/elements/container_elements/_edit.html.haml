@@ -1,0 +1,5 @@
+.humpyard-tab
+  .humpyard-tab-title
+    Container
+  = form.input :preset, as: :select, collection: Humpyard.config.container_element_presets.map{|key,value| [value[:name], key]}
+  = form.input :title

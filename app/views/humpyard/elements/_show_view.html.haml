@@ -1,2 +1,2 @@
 %div{class: "#{element.content_data_type.split('::').last.underscore.gsub('_','-')}"}
-    =render partial: "/humpyard/elements/#{element.content_data_type.underscore.pluralize.gsub(/^humpyard\/elements/, '')}/show", locals: {element: element}
+  = render "/humpyard/elements/#{element.content_data_type.underscore.pluralize.gsub(/^humpyard\/elements/, '')}/show", element: element

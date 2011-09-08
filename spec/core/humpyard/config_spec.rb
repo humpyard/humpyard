@@ -83,6 +83,54 @@ describe Humpyard::Config do
     end
   end
   
+  describe 'container_element_presets' do
+    it "has default preset" do
+      Humpyard::config.container_element_presets.should == {
+        'box' => {
+          name: 'Box with Title',
+          slots: [:droppable],
+          css_class: 'box-element',
+          title: true
+        },
+        'two_columns' => {
+          name: '2 Columns',
+          slots: [:droppable, :droppable],
+          css_class: 'two-columns',
+          title: false
+        }
+      }
+    end
+    
+    it "should be able to add additional presets" do
+      Humpyard::config.container_element_presets['template'] = {
+        name: 'Template example',
+        slots: ['/template.html.haml', :droppable],
+        css_class: 'template',
+        title: true
+      }
+      Humpyard::config.container_element_presets.should == {
+        'box' => {
+          name: 'Box with Title',
+          slots: [:droppable],
+          css_class: 'box-element',
+          title: true
+        },
+        'two_columns' => {
+          name: '2 Columns',
+          slots: [:droppable, :droppable],
+          css_class: 'two-columns',
+          title: false
+        },
+        'template' => {
+          name: 'Template example',
+          slots: ['/template.html.haml', :droppable],
+          css_class: 'template',
+          title: true
+        }
+      }
+    end
+  end
+  
   describe 'configure' do
     it "does configure" do
       Humpyard.configure do |config|

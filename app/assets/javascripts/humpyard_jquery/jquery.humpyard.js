@@ -84,7 +84,7 @@
       
       params = {
         items: '> div[data-draggable=' + name+ ']',
-        
+        tolerance: 'pointer',
         connectWith: 'div[data-sortable=' + name+ ']',
         placeholder: 'ui-state-highlight',
         update: function(e, ui) {

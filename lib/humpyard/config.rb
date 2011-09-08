@@ -41,12 +41,27 @@ module Humpyard
   #    Setting this option will also alter the HumpyardForm.config.locales to the 
   #    given value
   #
-  #
   #    The default value is <tt>['en']</tt>
+  # +container_element_presets+:: 
+  #    The Presets for ContainerElements are stored in a Hash of Hashes.
+  #    The top level has defines different presets.
+  #    The second level defines the properties of the preset:
+  #
+  #    +name+:: 
+  #       Displayed name of the preset.
+  #    +slots+::
+  #       Array of slots used in this preset.
+  #       Possible values are thy Symbol <tt>:droppable</tt> for droppable areas or
+  #       a string with the view relative path to a HAML/ERB HTML partial.
+  #    +css_class+::
+  #       Give a CSS class name that will be attached to the ContainerElement.
+  #    +title+::
+  #       Bool value if the preset should feature a title field for the Container.
   class Config 
     attr_writer :table_name_prefix, :element_types, :page_types # :nodoc:
     attr_writer :templates, :default_template, :browser_title_prefix, :browser_title_postfix # :nodoc:
     attr_writer :users_framework, :js_framework, :compass_format, :compass_stylesheet_link_tag_path # :nodoc:
+    attr_writer :container_element_presets #:nodoc:
     
     def initialize(&block) #:nodoc:
       configure(&block) if block_given?
@@ -223,6 +238,24 @@ module Humpyard
     # Usage is e.g. in the routes.
     def page_formats_contraint
       Regexp.new page_formats * '|'
+    end
+    
+    # Presets for the ContainerElement.
+    def container_element_presets
+      @container_element_preset ||= {
+        'box' => {
+          name: 'Box with Title',
+          slots: [:droppable],
+          css_class: 'box-element',
+          title: true
+        },
+        'two_columns' => {
+          name: '2 Columns',
+          slots: [:droppable, :droppable],
+          css_class: 'two-columns',
+          title: false
+        }
+      }
     end
   end
 end

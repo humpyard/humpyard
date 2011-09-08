@@ -41,6 +41,7 @@ module Humpyard
       raise ::ActionController::RoutingError, 'Element type not found' if Humpyard::config.element_types[params[:type]].blank?
       
       @element = Humpyard::config.element_types[params[:type]].new params[:element]
+      @page = @element.page
             
       authorize! :create, @element.element
             
@@ -127,7 +128,8 @@ module Humpyard
       authorize! :update, @element
       
       @element.update_attributes(
-        container: Humpyard::Element.find_by_id(params[:container_id]), 
+        container: Humpyard::Element.find_by_id(params[:container_id]),
+        container_slot: params[:container_slot],
         page_yield_name: params[:yield_name]
       )
       @prev = Humpyard::Element.find_by_id(params[:prev_id])
