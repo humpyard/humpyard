@@ -286,8 +286,7 @@
           "themes" : {
             "theme" : "default",
             "dots" : true,
-            "icons" : true,
-            "url": "<%= stylesheet_path('jstree/style.css') %>"
+            "icons" : true
           },
           "ui" : {
             "select_limit": 1
