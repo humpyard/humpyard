@@ -20,7 +20,7 @@ namespace :doc do
     require 'yard'
   
     YARD::Rake::YardocTask.new(:yard) do |t|
-      t.files   = ['lib/**/*.rb', 'app/**/*.rb', '-', 'README.rdoc', 'MIT-LICENSE']
+      t.files   = ['lib/*.rb', 'lib/humpyard/*.rb', 'lib/humpyard/**/*.rb', 'app/**/*.rb', '-', 'README.rdoc', 'MIT-LICENSE']
       t.options = ['--title', 'API - Humpyard', '--private', '--protected'] 
     end
   rescue
