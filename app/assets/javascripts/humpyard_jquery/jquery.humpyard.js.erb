@@ -111,8 +111,6 @@
           csrf_param = $('meta[name=csrf-param]').attr('content');
       
       params[csrf_param] = csrf_token;
-      console.log("param: " + csrf_param);
-      console.log("token: " + params[csrf_param]);
       
       $.post(url, params)
     },
@@ -150,6 +148,7 @@
             page_id: $('#hy-body').attr('data-page-id'),
             yield_name: item.parents('.hy-content:first').attr('data-content-yield'),
             container_id: parent.attr('data-element-id'),
+            container_slot: sortable.attr('data-humpyard-slot'),
             prev_id: prev.attr('data-element-id'),
             next_id: next.attr('data-element-id')
           };
@@ -288,7 +287,7 @@
             "theme" : "default",
             "dots" : true,
             "icons" : true,
-            "url": "/assets/jstree/style.css"
+            "url": "<%= stylesheet_path('jstree/style.css') %>"
           },
           "ui" : {
             "select_limit": 1
@@ -657,8 +656,8 @@ jQuery(function($) {
 
   // Humpyard elements menu
 
-  $('.hy-el').live('mouseover', function(){
-    var el = $(this);
+  $('.hy-el').live('mouseover', function(e){
+    var el = $(this);  
     $('.hy-el').removeClass('hy-el-active');
     el.addClass('hy-el-active');
     $('.hy-el-menu', el).position({
@@ -671,6 +670,7 @@ jQuery(function($) {
     $('.hy-marker-frame.bottom', el).position({ my: 'left bottom', at: 'left bottom', of: el }).width(el.width()).height(1);
     $('.hy-marker-frame.left', el).position({ my: 'left top', at: 'left top', of: el }).width(1).height(el.height());
     $('.hy-marker-frame.right', el).position({ my: 'right top', at: 'right top', of: el }).width(1).height(el.height());
+    e.stopPropagation();
   }).live('mouseout', function(){
     $('.hy-el').removeClass('hy-el-active');
   });
