@@ -91,7 +91,7 @@ module Humpyard
     
     def element_types #:nodoc:
       @element_types ||= {
-        #'container_element' => Humpyard::Elements::ContainerElement,
+        'container_element' => Humpyard::Elements::ContainerElement,
         'text_element' => Humpyard::Elements::TextElement,
         'media_element' => Humpyard::Elements::MediaElement,
         'sitemap_element' => Humpyard::Elements::SitemapElement
