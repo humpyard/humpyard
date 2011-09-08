@@ -15,7 +15,7 @@ module Humpyard
   #    Humpyard::Page.human_url
   #    <tt>":locale"</tt>:: The current ::I18n.locale
   #
-  #    Leading slashes ("/") as it would result in invalid URLs and will be ignored.
+  #    Leading slashes ("/") would result in invalid URLs and will be dropped.
   #
   #    A tailing slash ("/") indicates, that the value should be a path.
   #    Without the tailing slash the last part would become a prefix
@@ -76,7 +76,7 @@ module Humpyard
     
     def element_types #:nodoc:
       @element_types ||= {
-        'container_element' => Humpyard::Elements::ContainerElement,
+        #'container_element' => Humpyard::Elements::ContainerElement,
         'text_element' => Humpyard::Elements::TextElement,
         'media_element' => Humpyard::Elements::MediaElement,
         'sitemap_element' => Humpyard::Elements::SitemapElement
