@@ -5,7 +5,7 @@
     .container-element-title
       = element.content_data.title
   - preset[:slots].each do |slot|
-    .container-element-content{class: "container-slot-#{active_slot}"}
+    .container-element-content{class: "#{preset[:css_class]}-#{active_slot}"}
       = render "/humpyard/elements/show_container", elements: element.content_data.elements.where('container_slot = ?', active_slot), active_slot: active_slot
     - active_slot += 1
   .container-element-end
