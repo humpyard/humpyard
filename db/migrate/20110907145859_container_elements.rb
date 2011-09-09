@@ -8,7 +8,7 @@ class ContainerElements < ActiveRecord::Migration
     create_table :elements_container_element_translations do |t|
       t.references :"#{Humpyard::config.table_name_prefix}elements_container_element"
       t.string :locale
-      t.string :title
+      t.text :additional_fields_json
       t.timestamps
     end
     

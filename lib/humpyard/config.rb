@@ -55,8 +55,8 @@ module Humpyard
   #       a string with the view relative path to a HAML/ERB HTML partial.
   #    +css_class+::
   #       Give a CSS class name that will be attached to the ContainerElement.
-  #    +title+::
-  #       Bool value if the preset should feature a title field for the Container.
+  #    +properties+::
+  #       Hash of properties (key -> class) specified for the preset (e.g. Title of a box).
   class Config 
     attr_writer :table_name_prefix, :element_types, :page_types # :nodoc:
     attr_writer :templates, :default_template, :browser_title_prefix, :browser_title_postfix # :nodoc:
@@ -247,15 +247,18 @@ module Humpyard
           name: 'Box with Title',
           slots: [:droppable],
           css_class: 'box-element',
-          title: true
+          additional_fields: { title: String }
         },
         'two_columns' => {
           name: '2 Columns',
           slots: [:droppable, :droppable],
-          css_class: 'two-columns',
-          title: false
+          css_class: 'two-columns'
         }
       }
+    end
+    
+    def container_element_presets_additional_fields
+      container_element_presets.map{|i,a| {section: i, fields: a[:additional_fields]} unless a[:additional_fields].blank? } - [nil]
     end
   end
 end
