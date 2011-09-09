@@ -30,7 +30,6 @@ de:
             news_page: "Nachrichtenseite"
           media_element:
             asset: "Medium"
-            float: "Schwebende Ausrichtung"
             uri: "Link Adresse"
         pages:
           title: "Überschrift"

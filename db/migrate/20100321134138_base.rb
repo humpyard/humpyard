@@ -106,7 +106,6 @@ class Base < ActiveRecord::Migration
     
     create_table :elements_media_elements do |t|
       t.references :asset
-      t.string     :float
       t.string     :uri
       t.timestamps
     end 

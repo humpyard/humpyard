@@ -74,7 +74,6 @@ ActiveRecord::Schema.define(:version => 0) do
 
   create_table "humpyard_elements_media_elements", :force => true do |t|
     t.integer  "asset_id"
-    t.string   "float"
     t.string   "uri"
     t.datetime "created_at"
     t.datetime "updated_at"

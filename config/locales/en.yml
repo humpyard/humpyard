@@ -30,7 +30,6 @@ en:
             news_page: "News page"    
           media_element:
             asset: "Media Asset"
-            float: "Float Alignment"
             uri: "URI"
         pages:
           title: "Title"
