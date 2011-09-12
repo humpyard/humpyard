@@ -5,7 +5,7 @@ module Humpyard
     
     def initialize fields, json_data=nil
       @fields = fields
-      @data = JSON.parse(json_data)
+      self.from_json(json_data) unless json_data.nil?
     end
     
     def from_json json
