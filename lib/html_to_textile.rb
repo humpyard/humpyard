@@ -92,7 +92,7 @@ class HtmlToTextile
       
       textile = ''
       if content.class == String
-        textile += "#{content}"
+        textile += CGI::escapeHTML "#{content}"
       elsif content.class == Hash
         if options[:allowed_tags].include? content['name']
           if %w(u b strong i em del ins sub sup).include? content['name']

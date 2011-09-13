@@ -62,5 +62,9 @@ describe HtmlToTextile do
     it 'should not accept p in td' do
       transform_html('A Table <table><tr><th><p>Head</p></th><td><p>Data</p></td></tr></table><p> is this.</p>').should == "p. A Table\n\n|_. Head | Data |\np. is this.\n\n"
     end
+    
+    it 'should preserve escaped tags in strings' do
+      transform_html("<p>\nThis is a '&lt;script&gt;do_evil();&lt;/script&gt;' css attack\n</p>").should == "p. This is a '&lt;script&gt;do_evil();&lt;/script&gt;' css attack\n\n"
+    end
   end
 end
