@@ -170,32 +170,6 @@
       $.humpyard.initEditButtons($('.hy-el-menu a', elem));
     },
 
-    initForm: function(elem) {
-      function detect_native(type) {
-        var i = document.createElement("input");
-        i.setAttribute("type", type);
-        return i.type !== "text";
-      }
-      
-      // configure date pickers
-      if(!detect_native('date')) {
-        $('input[data-type=date]', elem).datepicker({
-          showButtonPanel: true,
-          changeMonth: true,
-          changeYear: true,
-          dateFormat: 'yy-mm-dd'
-        });
-      }
-      if(!detect_native('datetime')) {
-        $('input[data-type=datetime]', elem).datepicker({
-          showButtonPanel: true,
-          changeMonth: true,
-          changeYear: true,
-          dateFormat: 'yy-mm-dd'
-        });
-      }
-    },
-
     initTabView: function(container) {
       var tabview = $('.humpyard-tabview', container);
       var tab_sources = $('.humpyard-tab', tabview);
@@ -405,7 +379,7 @@
           });
           $('.humpyard-dialog-title', dialog).remove();
 
-          $.humpyard.initForm(dialog);
+          new HumpyardForm($('form', dialog));
           $.humpyard.initPages(dialog);
           $.humpyard.initTabView(dialog);
           $.humpyard.initTreeView(dialog);
@@ -704,7 +678,7 @@ jQuery(function($) {
         });
         $('.humpyard-dialog-title', content).remove();
 
-        $.humpyard.initForm(content);
+        new HumpyardForm($('form', content));
         $.humpyard.initTabView(content);
         $.humpyard.initEditButtons($('.humpyard-form-buttons a, .humpyard-form-buttons button', content));
         
