@@ -82,7 +82,7 @@ class HtmlToTextile
     def _to_html_tag content, indent = 0
       if content.class == String
         #ActiveRecord::Base.logger.debug "#{('  ' * indent)}#{content.to_s.gsub("\n", "#{'  ' * indent}")}"
-        @html += "#{content}"
+        @html += CGI::escapeHTML "#{content}"
       elsif content.class == Hash
         if ['br','img'].include? content['name']
           #ActiveRecord::Base.logger.debug "#{('  ' * indent)}<#{content['name']} />"
