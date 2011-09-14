@@ -11,6 +11,10 @@ group :assets do
   gem 'uglifier'
 end
 
+# For testing different AssetTypes
+gem 'paperclip',       '>= 2.3.8'
+gem 'carrierwave'
+
 gem 'haml',               '>=3.0.0'
 gem 'jquery-rails'
 gem 'globalize3',         '>=0.0.7'
@@ -29,7 +33,6 @@ group :test do
   gem 'chronic'
   gem 'webrat'
   gem 'jasmine'
-  gem 'rcov'
   gem 'email_spec'
   gem 'spork'
   gem 'syntax'

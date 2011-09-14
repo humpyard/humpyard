@@ -106,10 +106,21 @@ module Humpyard
     end
     
     def asset_types #:nodoc:
-      @asset_types ||= {
-        'paperclip' => Humpyard::Assets::PaperclipAsset,
+      return @asset_types if @asset_types
+      
+      @asset_types = {
         'youtube' => Humpyard::Assets::YoutubeAsset
       }
+      
+      if defined? Paperclip
+        @asset_types['paperclip'] = Humpyard::Assets::PaperclipAsset
+      end
+      
+      if defined? CarrierWave
+        @asset_types['carrierwave'] = Humpyard::Assets::CarrierwaveAsset
+      end
+      
+      @asset_types
     end
     
     def templates #:nodoc:

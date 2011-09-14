@@ -276,35 +276,35 @@
       
     },
     
-    submitForm: function(form, dialog, targetForm) {
-      if(typeof(targetForm) == 'undefined') {
-        targetForm = form
-      }
-      var options = {
-        dataType: 'json',
-        complete: function(xhr, status) {
-          result = jQuery.parseJSON(xhr.responseText); 
-          // reset error messages
-          $('.field-highlight', form).removeClass("ui-state-error");
-          $('.field-errors', form).empty().hide();
-          // execute commands given by ajax call
-          $.each(result, function(attr, options) {
-            if($.humpyard.ajax_dialog_commands[attr]) {
-              $.humpyard.ajax_dialog_commands[attr](dialog, targetForm, options);
-            }
-          });
-        }
-      } 
-
-      if(form.find('input[type=file]').length > 0 || form.attr("enctype") == "multipart/form-data") {
-        options['data'] = { ul_quirk: 'true' };
-        options['iframe'] = true
-      }
-
-      if(form.trigger('humpyard:form:submit')) {
-        form.ajaxSubmit(options);
-      }
-    },
+    // submitForm: function(form, dialog, targetForm) {
+    //   if(typeof(targetForm) == 'undefined') {
+    //     targetForm = form
+    //   }
+    //   var options = {
+    //     dataType: 'json',
+    //     complete: function(xhr, status) {
+    //       result = jQuery.parseJSON(xhr.responseText); 
+    //       // reset error messages
+    //       $('.field-highlight', form).removeClass("ui-state-error");
+    //       $('.field-errors', form).empty().hide();
+    //       // execute commands given by ajax call
+    //       $.each(result, function(attr, options) {
+    //         if($.humpyard.ajax_dialog_commands[attr]) {
+    //           $.humpyard.ajax_dialog_commands[attr](dialog, targetForm, options);
+    //         }
+    //       });
+    //     }
+    //   } 
+    // 
+    //   if(form.find('input[type=file]').length > 0 || form.attr("enctype") == "multipart/form-data") {
+    //     options['data'] = { ul_quirk: 'true' };
+    //     options['iframe'] = true
+    //   }
+    // 
+    //   if(form.trigger('humpyard:form:submit')) {
+    //     form.ajaxSubmit(options);
+    //   }
+    // },
     
     dialogLink: function(link, dialog) {    
       var url = '' + link.attr('href');
@@ -393,7 +393,8 @@
             buttons = {};
             buttons['Ok'] = function() {
               var form = $('form[data-dialog-form]:first', $(this));
-              $.humpyard.submitForm(form, dialog);
+              // $.humpyard.submitForm(form, dialog);
+              form.data('humpyardForm').submit(dialog);
             };  
             buttons['Cancel'] = function() {
              $(this).dialog('close');
@@ -700,7 +701,8 @@ jQuery(function($) {
   
   
   $('form[data-dialog-remote]').live('submit', function(e) {
-      $.humpyard.submitForm($(this), $(this).parents('.ui-dialog-content:first'));
+      // $.humpyard.submitForm($(this), $(this).parents('.ui-dialog-content:first'));
+      $(this).data('humpyardForm').submit($(this).parents('.ui-dialog-content:first'));
       e.preventDefault();
   });
   
@@ -736,7 +738,9 @@ jQuery(function($) {
 
     e.preventDefault();
 
-    $.humpyard.submitForm(form, $(this).parents('.ui-dialog-content:first'), link.parents('form:first'));
+    // $.humpyard.submitForm(form, $(this).parents('.ui-dialog-content:first'), link.parents('form:first'));
+    form.data('humpyardForm').submit($(this).parents('.ui-dialog-content:first'), link.parents('form:first'));
+    
   });
 
   $('a[data-dialog-menu]').live('click', function(e) {
