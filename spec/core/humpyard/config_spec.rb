@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 describe Humpyard::Config do
-
-  describe 'www_prefix' do
+  context 'www_prefix' do
     it "has default www_prefix" do
       Humpyard::config.www_prefix.should eql ':locale/'
     end
@@ -18,7 +17,7 @@ describe Humpyard::Config do
     end
   end
   
-  describe 'admin_prefix' do  
+  context 'admin_prefix' do  
     it "has default admin_prefix" do
       Humpyard::config.admin_prefix.should eql 'admin'
     end
@@ -34,7 +33,7 @@ describe Humpyard::Config do
     end
   end
   
-  describe 'table_name_prefix' do
+  context 'table_name_prefix' do
     it "has default table_name_prefix" do
       Humpyard::config.table_name_prefix.should eql 'humpyard_'
     end
@@ -50,7 +49,7 @@ describe Humpyard::Config do
     end
   end
   
-  describe 'locales' do
+  context 'locales' do
     it "has default locales" do
       Humpyard::config.locales.should eql [:en]
     end
@@ -83,20 +82,19 @@ describe Humpyard::Config do
     end
   end
   
-  describe 'container_element_presets' do
+  context 'container_element_presets' do
     it "has default preset" do
       Humpyard::config.container_element_presets.should == {
         'box' => {
           name: 'Box with Title',
           slots: [:droppable],
           css_class: 'box-element',
-          title: true
+          additional_fields: {title: String}
         },
         'two_columns' => {
           name: '2 Columns',
           slots: [:droppable, :droppable],
-          css_class: 'two-columns',
-          title: false
+          css_class: 'two-columns'
         }
       }
     end
@@ -106,32 +104,86 @@ describe Humpyard::Config do
         name: 'Template example',
         slots: ['/template.html.haml', :droppable],
         css_class: 'template',
-        title: true
+        additional_fields: {title: String}
       }
       Humpyard::config.container_element_presets.should == {
         'box' => {
           name: 'Box with Title',
           slots: [:droppable],
           css_class: 'box-element',
-          title: true
+          additional_fields: {title: String}
         },
         'two_columns' => {
           name: '2 Columns',
           slots: [:droppable, :droppable],
-          css_class: 'two-columns',
-          title: false
+          css_class: 'two-columns'
         },
         'template' => {
           name: 'Template example',
           slots: ['/template.html.haml', :droppable],
           css_class: 'template',
-          title: true
+          additional_fields: {title: String}
         }
       }
     end
   end
   
-  describe 'configure' do
+  
+  
+  context 'asset_carrierwave_image_processor' do    
+    before :all do     
+      if defined? Magick
+        OriginalRMagick = Magick
+        Object.module_eval { remove_const :Magick }
+      end
+      
+      if defined? MiniMagick
+        OriginalMiniMagick = MiniMagick
+        Object.module_eval { remove_const :MiniMagick }
+      end
+    end
+    
+    before :each do
+      Humpyard::config.asset_carrierwave_image_processor = nil
+    end
+    
+    after :all do
+      Magick = OriginalRMagick if defined? OriginalRMagick
+      MiniMagick = OriginalMiniMagick if defined? OriginalMiniMagick
+    end
+    
+    it 'should detect RMagick' do   
+      Magick = OriginalRMagick
+      Humpyard::config.asset_carrierwave_image_processor.should == CarrierWave::RMagick   
+      Object.module_eval { remove_const :Magick }
+    end
+    
+    it 'should detect MiniMagick' do  
+      MiniMagick = OriginalMiniMagick
+      Humpyard::config.asset_carrierwave_image_processor.should == CarrierWave::MiniMagick
+      Object.module_eval { remove_const :MiniMagick }
+    end
+    
+    it 'should prefer RMagic over MiniMagick' do  
+      Magick = OriginalRMagick
+      MiniMagick = OriginalMiniMagick
+      Humpyard::config.asset_carrierwave_image_processor.should == CarrierWave::RMagick
+      Object.module_eval { remove_const :MiniMagick }
+      Object.module_eval { remove_const :Magick }
+    end    
+    
+    it 'should detect nothing if no image tool is installed' do   
+      Humpyard::config.asset_carrierwave_image_processor.should be_nil
+    end
+    
+    
+    it 'should accept custom processors' do
+      Humpyard::config.asset_carrierwave_image_processor = 'SomeModule'
+      Humpyard::config.asset_carrierwave_image_processor.should == 'SomeModule'
+    end
+  end
+  
+  context 'configure' do
     it "does configure" do
       Humpyard.configure do |config|
         config.www_prefix = 'cms/'

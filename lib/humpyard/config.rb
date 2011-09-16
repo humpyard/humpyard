@@ -62,6 +62,7 @@ module Humpyard
     attr_writer :templates, :default_template, :browser_title_prefix, :browser_title_postfix # :nodoc:
     attr_writer :users_framework, :js_framework, :compass_format, :compass_stylesheet_link_tag_path # :nodoc:
     attr_writer :container_element_presets #:nodoc:
+    attr_writer :asset_carrierwave_image_processor, :asset_carrierwave_image_versions #:nodoc:
     
     def initialize(&block) #:nodoc:
       configure(&block) if block_given?
@@ -121,6 +122,19 @@ module Humpyard
       end
       
       @asset_types
+    end
+    
+    def asset_carrierwave_image_processor
+      @asset_carrierwave_image_processor ||= 
+        if defined? Magick
+          CarrierWave::RMagick
+        elsif defined? MiniMagick
+          CarrierWave::MiniMagick
+        end
+    end
+    
+    def asset_carrierwave_image_versions
+      @asset_carrierwave_image_versions ||= {}
     end
     
     def templates #:nodoc:
@@ -217,19 +231,7 @@ module Humpyard
     def users_framework
       @users_framework ||= 'simple'
     end
-    
-    def js_framework
-      @js_framework ||= 'jquery-ui-18'
-    end
-    
-    def compass_format
-      @compass_format ||= 'scss'
-    end
-    
-    def compass_stylesheet_link_tag_path
-      @compass_stylesheet_link_tag_path ||= 'compiled/'
-    end
-    
+        
     def page_formats=(formats) #:nodoc:
       if formats.nil? 
         @page_formats = nil

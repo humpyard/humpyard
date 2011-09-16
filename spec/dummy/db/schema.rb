@@ -23,6 +23,15 @@ ActiveRecord::Schema.define(:version => 0) do
     t.datetime "updated_at"
   end
 
+  create_table "humpyard_assets_carrierwave_assets", :force => true do |t|
+    t.string   "file"
+    t.string   "name"
+    t.integer  "size"
+    t.string   "content_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "humpyard_assets_paperclip_assets", :force => true do |t|
     t.string   "media_file_name"
     t.integer  "media_file_size"
@@ -74,6 +83,7 @@ ActiveRecord::Schema.define(:version => 0) do
 
   create_table "humpyard_elements_media_elements", :force => true do |t|
     t.integer  "asset_id"
+    t.string   "float"
     t.string   "uri"
     t.datetime "created_at"
     t.datetime "updated_at"

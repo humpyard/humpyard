@@ -12,16 +12,19 @@ group :assets do
 end
 
 # For testing different AssetTypes
-gem 'paperclip',       '>= 2.3.8'
+gem 'paperclip',          '>= 2.3.8'
 gem 'carrierwave'
 
-gem 'haml',               '>=3.0.0'
+gem 'mini_magick'
+gem 'rmagick'
+
+gem 'haml-rails'          
 gem 'jquery-rails'
 gem 'globalize3',         '>=0.0.7'
 gem 'acts_as_tree',       '>=0.1.1'
 gem 'cancan',             '>=1.6.4'
-#gem 'humpyard_form',      path: '../humpyard_form'
-gem 'humpyard_form',      :git => 'http://github.com/humpyard/humpyard_form.git'
+gem 'humpyard_form',      path: '../humpyard_form'
+#gem 'humpyard_form',      git: 'http://github.com/humpyard/humpyard_form.git', branch: 'rails-3-1'
 
 group :test do
   gem 'ruby-debug19'
