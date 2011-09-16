@@ -23,7 +23,7 @@ module Humpyard
     end
     
     def new     
-      raise ::ActionController::RoutingError, 'Page type not found' if Humpyard::config.asset_types[params[:type]].blank?
+      raise ::ActionController::RoutingError, 'Asset type not found' if Humpyard::config.asset_types[params[:type]].blank?
       
       @asset = Humpyard::config.asset_types[params[:type]].new()
       
@@ -35,7 +35,7 @@ module Humpyard
     end
     
     def create  
-      raise ::ActionController::RoutingError, 'Page type not found' if Humpyard::config.asset_types[params[:type]].blank?
+      raise ::ActionController::RoutingError, 'Asset type not found' if Humpyard::config.asset_types[params[:type]].blank?
       
       @asset = Humpyard::config.asset_types[params[:type]].new params[:asset]
             
