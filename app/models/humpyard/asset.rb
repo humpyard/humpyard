@@ -10,7 +10,7 @@ module Humpyard
     delegate :url, :content_type, to: :content_data
     
     def title
-      self[:title] ||= content_data.try(:title)
+      self[:title] ||= content_data.try(:asset_name)
     end
     
     def versions

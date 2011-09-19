@@ -12,24 +12,30 @@ module Humpyard
     end
     
     def filename
-      File.basename to_s
+      model.name || File.basename(to_s)
     end
     
     if Humpyard::config.asset_carrierwave_image_processor
       Humpyard::config.asset_carrierwave_image_versions.each do |name, process_params|
-        version name do
-          cwparams = {}
-          cwparams["resize_to_#{process_params.shift}"] = process_params
-          process cwparams
+        version name, if: :sizeable? do
+          input_params = process_params.clone
+          cw_params = {}
+          cw_params["resize_to_#{input_params.shift}"] = input_params
+          process cw_params
         end
       end
     end
 
     process :detect_file_meta
     def detect_file_meta
-       model.name = filename
+       model.name = File.basename to_s
        model.size = size
        model.content_type = file.content_type
+       model.width, model.height = `identify -format "%wx %h" #{file.path}`.split(/x/)
+    end
+    
+    def sizeable?(new_file)
+      new_file.content_type =~ /^image/
     end
   end
 end

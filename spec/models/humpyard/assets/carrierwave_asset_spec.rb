@@ -38,25 +38,32 @@ describe Humpyard::Assets::CarrierwaveAsset do
       subject.versions.should == {:original=>[640, 240]}
     end
     
-    it 'should get scale to fit version configured' do
+    it 'should get scale to fit versions configured' do
       Humpyard::config.asset_carrierwave_image_versions = {icon: [:fit, 64, 80], large: [:fit, 1280, 1080], narrow: [:fit, 320, 25]}
       subject.versions.should == {original: [640, 240], icon: [64, 24], large: [1280, 480], narrow: [67, 25]}
     end
 
-    it 'should get scale to fill version configured' do
+    it 'should get scale to fill versions configured' do
       Humpyard::config.asset_carrierwave_image_versions = {icon: [:fill, 64, 80], large: [:fill, 1280, 1080], narrow: [:fill, 320, 24]}
       subject.versions.should == {original: [640, 240], icon: [64, 80], large: [1280, 1080], narrow: [320, 24]}
     end
 
-    it 'should get scale to limit version configured' do
+    it 'should get scale to limit versions configured' do
       Humpyard::config.asset_carrierwave_image_versions = {icon: [:limit, 64, 80], large: [:limit, 1280, 1080], narrow: [:limit, 320, 25]}
       subject.versions.should == {original: [640, 240], icon: [64, 24], narrow: [67, 25]}
     end
     
-    it 'should get scale to limit version configured (including dups)' do
+    it 'should get scale to limit versions configured (including dups)' do
       Humpyard::config.asset_carrierwave_image_versions = {icon: [:limit, 64, 80], large: [:limit, 1280, 1080], narrow: [:limit, 320, 25]}
       subject.versions(include_duplicates: true).should == {original: [640, 240], icon: [64, 24], large: [640, 240], narrow: [67, 25]}
     end
+    
+    it 'should get original version if no width or height given' do
+      subject.width = nil
+      Humpyard::config.asset_carrierwave_image_versions = {icon: [:limit, 64, 80], large: [:fill, 1280, 1080], narrow: [:fit, 320, 25]}
+      subject.versions(include_duplicates: true).should == {original: nil}
+    end
+    
     
   end
 end

@@ -7,5 +7,7 @@ class CreateHumpyardAssetsCarrierwaveAssets < ActiveRecord::Migration
       t.string     :content_type
       t.timestamps
     end
+    
+    add_column :elements_media_elements, :asset_version, :string, default: nil
   end
 end

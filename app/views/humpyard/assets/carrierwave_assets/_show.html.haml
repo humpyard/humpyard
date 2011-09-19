@@ -1,0 +1,14 @@
+- if asset.content_type.match /image\//
+  - asset_version = element.try(:content_data).try(:asset_version) || :original
+  - image_width, image_height = asset.image_size_of(asset_version)
+  - if element and element.content_data and not element.content_data.uri.blank?
+    = link_to element.content_data.uri do
+      = image_tag "#{asset.url(asset_version)}", width: image_width, height: image_height
+  - else   
+    = image_tag "#{asset.url(asset_version)}", width: image_width, height: image_height
+- elsif asset.media_content_type.match /audio\//
+  %div{align: "center"}
+    %object{type: "audio/mpeg", data: "#{asset.url}", width: 200, height: 20}
+      %param{name: "src", value: "#{asset.url}"}
+      %param{name: "autoplay", value: "true"}
+      %param{name: "autoStart", value: "1"}

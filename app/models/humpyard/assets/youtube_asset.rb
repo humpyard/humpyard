@@ -12,7 +12,7 @@ module Humpyard
         "http://www.youtube.com/watch?v=#{youtube_video_id}"
       end
       
-      def title
+      def asset_name
         youtube_title || "YouTube #{youtube_video_id}"
       end
       

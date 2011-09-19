@@ -6,10 +6,16 @@ class Humpyard::Assets::CarrierwaveAsset < ActiveRecord::Base
   mount_uploader :file, Humpyard::AssetUploader
 
   def url(version = :original)
-    file.url(version.to_sym == :original ? nil : version)
+    file.url(version.try(:to_sym) == :original ? nil : version)
+  end
+  
+  def asset_name
+    name
   end
   
   def versions options = {}
+    return {original: nil} unless asset.width and asset.height
+    
     res = {
       original: [asset.width, asset.height]
     }
@@ -20,23 +26,24 @@ class Humpyard::Assets::CarrierwaveAsset < ActiveRecord::Base
       scale_method = v.first.to_sym
       
       if scale_method == :fill
-        res[k] = [dest_width, dest_height]
+        res[k.to_sym] = [dest_width, dest_height]
       elsif [:fit, :limit].include? scale_method
         scale = [dest_width.to_f / asset.width,  dest_height.to_f / asset.height].min
         
         if scale > 1 and scale_method == :limit
           if options[:include_duplicates]
-            res[k] = [asset.width, asset.height]
+            res[k.to_sym] = [asset.width, asset.height]
           end
         else
-          res[k] = [(scale * asset.width).round, (scale * asset.height).round]
+          res[k.to_sym] = [(scale * asset.width).round, (scale * asset.height).round]
         end
-      else
-        res[k] = [nil, nil]
       end
     end
     
     return res
   end
   
+  def image_size_of(version)
+    versions(include_duplicates: true)[version.try(:to_sym)] || [asset.width, asset.height]
+  end
 end

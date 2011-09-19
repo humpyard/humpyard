@@ -21,7 +21,7 @@ module Humpyard
         puts "Paperclip not usable."
       end
     
-      def title
+      def asset_name
         media_file_name
       end
     
