@@ -112,7 +112,7 @@
       
       params[csrf_param] = csrf_token;
       
-      $.post(url, params)
+      return $.post(url, params)
     },
 
     initPages: function(elem) {

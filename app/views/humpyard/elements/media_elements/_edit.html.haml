@@ -1,6 +1,36 @@
 .humpyard-tab
   .humpyard-tab-title
     Media Content
-  = form.input :asset_id, as: :select, collection: Humpyard::Asset.all, required: true
+  %div{:'data_humpyard_asset_select' => 'media_element'}
+    = form.input :asset_id, as: :select, collection: Humpyard::Asset.all, required: true
+  %div{:'data_humpyard_asset_version_select' => 'media_element', style: 'display:none'}
+    = form.input :asset_version, as: :select, collection: []
+  
   = form.input :uri
   %small=t '.uri_description'
+  
+  :javascript
+    function getAssetVersion(asset_id) {
+      version_select = $('div[data_humpyard_asset_version_select] select');
+      $('div[data_humpyard_asset_version_select]').hide();
+      $.getJSON('#{versions_humpyard_asset_path('_asset_id_')}'.replace('_asset_id_', asset_id), function(data) {
+        if(data['status'] == 'ok') {  
+          version_select.html('');
+          $.each(data['versions'], function(i,v) {
+            version_select.append($('<option>').attr('value', v[1]).append(v[0]));
+          });
+            
+          if(data['versions'].length > 1) {
+            $('div[data_humpyard_asset_version_select]').show();
+          } else {
+            version_select.val(null);
+          }
+        }
+      });
+    }
+    
+    getAssetVersion($('div[data_humpyard_asset_select] select').val());
+    
+    $('div[data_humpyard_asset_select] select').live('change', function(){
+      getAssetVersion($(this).val());
+    });

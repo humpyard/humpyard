@@ -134,7 +134,7 @@ module Humpyard
       
       authorize! :show, asset
       
-      render json: {status: :ok, versions: asset.versions}
+      render json: {status: :ok, versions: asset.versions.map{|k,v| v ? ["#{k.to_s.camelcase} (#{v * 'x'})", k.to_s] : ['','']}}
     end
   end
 end

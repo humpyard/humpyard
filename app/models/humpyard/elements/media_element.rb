@@ -1,7 +1,7 @@
 module Humpyard
   module Elements
     class MediaElement < ::ActiveRecord::Base
-      attr_accessible :asset, :asset_id, :uri
+      attr_accessible :asset, :asset_id, :asset_version, :uri
       
       set_table_name "#{Humpyard::config.table_name_prefix}elements_media_elements"  
       
