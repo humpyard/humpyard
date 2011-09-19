@@ -18,7 +18,9 @@ module Humpyard
     if Humpyard::config.asset_carrierwave_image_processor
       Humpyard::config.asset_carrierwave_image_versions.each do |name, process_params|
         version name do
-          process process_params
+          cwparams = {}
+          cwparams["resize_to_#{process_params.shift}"] = process_params
+          process cwparams
         end
       end
     end

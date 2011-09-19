@@ -8,7 +8,7 @@ module Humpyard
       validates_presence_of :youtube_video_id
       before_save :update_youtube_data
       
-      def url
+      def url(version = 'original')
         "http://www.youtube.com/watch?v=#{youtube_video_id}"
       end
       
@@ -20,18 +20,21 @@ module Humpyard
         'video/youtube'
       end
       
-      def update_youtube_data
+      def update_youtube_data      
         begin
           require 'net/http'
 
           xml = Net::HTTP.get_response(URI.parse("http://gdata.youtube.com/feeds/api/videos/#{youtube_video_id}")).body
-
-          title = xml.force_encoding("UTF-8").scan(/<title.*>(.+?)<\/title>/).first.first
-        
-          self.youtube_title = title
+          self.youtube_title = xml.force_encoding("UTF-8").scan(/<title.*>(.+?)<\/title>/).first.first
         rescue
+          # Set to some sane default values if YouTube is not available
           self.youtube_title = "YouTube #{youtube_video_id}"
         end
+        
+        # As YouTube does not offer Video dimensions, always set to 480x360 (default thumbnail size)
+        self.asset.update_attributes width: 480, height: 360, title: youtube_title
+        
+        
       end
     end
   end

@@ -16,4 +16,8 @@ describe 'routes for asset admin backend' do
     
   it { humpyard_asset_path(42).should == '/admin/assets/42' }
   it { { get: '/admin/assets/42'}.should route_to(controller: 'humpyard/assets', action: 'show', id: '42') }
+  
+  it { versions_humpyard_asset_path(42).should == '/admin/assets/42/versions' }
+  it { { get: '/admin/assets/42/versions'}.should route_to(controller: 'humpyard/assets', action: 'versions', id: '42') }
+  
 end

@@ -128,5 +128,13 @@ module Humpyard
         status: :ok
       }
     end
+    
+    def versions
+      asset = Humpyard::Asset.find(params[:id])
+      
+      authorize! :show, asset
+      
+      render json: {status: :ok, versions: asset.versions}
+    end
   end
 end

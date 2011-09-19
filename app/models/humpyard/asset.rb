@@ -7,16 +7,16 @@ module Humpyard
     
     set_table_name "#{Humpyard::config.table_name_prefix}assets"
     
+    delegate :url, :content_type, to: :content_data
+    
     def title
-      content_data.title
+      self[:title] ||= content_data.try(:title)
     end
     
-    def url
-      content_data.url
-    end
-    
-    def content_type
-      content_data.content_type
+    def versions
+      content_data.try(:versions) || {
+        original: [width, height]
+      }
     end
   end
 end

@@ -290,4 +290,33 @@ describe Humpyard::AssetsController do
       response.should render_template(:show)
     end
   end
+  
+  context :versions do
+    let(:asset) { mock_model(Humpyard::Asset, content_data: 'asset_content') }
+    
+    before do
+      Humpyard::Asset.stub(:find).with('some_nonexisiting_asset') { raise ActiveRecord::RecordNotFound }
+      Humpyard::Asset.stub(:find).with('some_asset') {asset}
+    end
+    
+    it 'should get an 404 error on non existing assets' do
+      get :versions, id: 'some_nonexisiting_asset'
+      response.status.should == 404
+      response.body.should == '{"status":"failed"}'
+    end
+    
+    it 'should check for authorization' do
+      get :versions, id: 'some_asset'
+      response.status.should == 403
+      response.body.should == '{"status":"failed"}'
+    end
+    
+    it 'should get the versions available for the assets' do
+      controller.stub(:authorize!).with(:show, asset) {}
+      asset.should_receive(:versions) { {original: [480, 360], small: [240, 180]} }
+      get :versions, id: 'some_asset'
+      response.status.should == 200
+      response.body.should == '{"status":"ok","versions":{"original":[480,360],"small":[240,180]}}'
+    end
+  end
 end
