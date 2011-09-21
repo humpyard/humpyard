@@ -6,6 +6,8 @@ module Humpyard
       acts_as_humpyard_element system_element: true
   
       attr_accessible :levels, :show_description
+      
+      validates :levels, presence: true
     end
   end
 end
