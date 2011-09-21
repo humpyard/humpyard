@@ -12,4 +12,4 @@
   .dialog-buttons.humpyard-form-buttons
     = form.submit
     - if @asset.persisted? and can? :destroy, @asset.asset
-      = link_to "#{I18n.t("humpyard_form.actions.destroy", model: "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}", humpyard_asset_path(@asset), :'data-icon' => "ui-icon-trash", confirm: "Are you sure?", method: :delete, remote: true
+      = link_to "#{I18n.t("humpyard_form.actions.destroy", model: "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}", humpyard_asset_path(@asset.asset), :'data-icon' => "ui-icon-trash", confirm: "Are you sure?", method: :delete, remote: true

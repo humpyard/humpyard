@@ -9,15 +9,12 @@ class Humpyard::Assets::CarrierwaveAsset < ActiveRecord::Base
     file.url(version.try(:to_sym) == :original ? nil : version)
   end
   
-  def asset_name
-    name
-  end
-  
   def versions options = {}
     return {original: nil} unless asset.width and asset.height
     
     res = {
-      original: [asset.width, asset.height]
+      original: [asset.width, asset.height],
+      icon: [32, 32]
     }
     
     Humpyard::config.asset_carrierwave_image_versions.each do |k,v|
@@ -41,6 +38,10 @@ class Humpyard::Assets::CarrierwaveAsset < ActiveRecord::Base
     end
     
     return res
+  end
+  
+  def icon
+    url(:icon) if versions[:icon]
   end
   
   def image_size_of(version)

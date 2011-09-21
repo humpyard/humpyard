@@ -17,6 +17,7 @@
           if(k['url']) {
             elem.load(k['url'], function(r, s, x) {
               $.humpyard.initElements(elem);
+              $.humpyard.initEditButtons($('*[data-icon]', elem));
               elem.effect("highlight", {}, 2000);
             });
           }
@@ -101,7 +102,7 @@
         }
       };
       
-      if(options.handle) params.handle = options.handle;
+      if(options && options.handle) params.handle = options.handle;
       
       $('div[data-sortable=' + name+ ']', elem).sortable(params);
     },

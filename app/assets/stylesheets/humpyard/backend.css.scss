@@ -4,6 +4,7 @@ $left_dialog_column_width: 250px;
 $left_dialog_column_background: #dee4ea;
 $left_dialog_column_border_color: #b4b4b4;
 $left_dialog_column_border_width: 1px;
+$data_table_even_background_color: #fff;
 $data_table_odd_background_color: #eaf3fe;
 $data_table_border_color: #c0c0c0;
 
@@ -101,6 +102,11 @@ $data_table_border_color: #c0c0c0;
           margin: 0;
           padding: 5px;
           border-bottom: 1px solid #8196b9;
+          img {
+            float: left;
+            margin: -5px 0 -5px -5px;
+            padding: 0 5px 0 0;
+          }
           a {
             display:block;
             padding: 5px;
@@ -170,13 +176,19 @@ $data_table_border_color: #c0c0c0;
     margin-bottom: 10px;
     border-top: 1px solid $data_table_border_color;
     border-bottom: 1px solid $data_table_border_color;
+    font-size: 12px;
+    line-height: 16px;
     td, th {
       border-left: 1px solid $data_table_border_color;
       border-right: 1px solid $data_table_border_color;
       text-align: left;
-      padding: 0 4px;
+      vertical-align: top;
+      padding: 2px 4px;
       white-space: nowrap; 
       overflow: hidden;
+      &.wrap {
+        white-space: normal;
+      }
     }
     th {
       /*@include gradient(#fff, #ccc, #fff);*/
@@ -200,7 +212,10 @@ $data_table_border_color: #c0c0c0;
         background: image-url("table/desc.png") center right no-repeat;
       }
     }
-    tr:nth-child(2n)  {
+    tr:nth-child(even) {
+      background: $data_table_even_background_color;
+    }
+    tr:nth-child(odd)  {
       background: $data_table_odd_background_color;
     }
   }

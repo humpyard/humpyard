@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     resources :humpyard_assets, controller: 'humpyard/assets', path: "assets", only: [:index, :new, :create, :edit, :update, :show, :destroy] do
       member do
         get :versions
+        get :list
+        get :list_item
       end
     end
   end

@@ -42,12 +42,11 @@ module Humpyard
       authorize! :create, @asset.asset 
           
       if @asset.save
-        @assets = Humpyard::Asset.all
         render json: {
           status: :ok,
           replace: [{
             element: "hy-asset-listview",
-            content: render_to_string(partial: "list.html", locals: {assets: @assets, asset: @asset})
+            url: list_humpyard_asset_path(@asset.id)
           }],
           flash: {
             level: 'info',
@@ -87,7 +86,7 @@ module Humpyard
           replace: [
             { 
               element: "hy-asset-listview-text-#{@asset.id}",
-              content: render_to_string(partial:'list_item.html', locals: {asset: @asset, active: true})
+              url: list_item_humpyard_asset_path(@asset.id)
             }
           ],
           flash: {
@@ -135,6 +134,23 @@ module Humpyard
       authorize! :show, asset
       
       render json: {status: :ok, versions: asset.versions.map{|k,v| v ? ["#{k.to_s.camelcase} (#{v * 'x'})", k.to_s] : ['','']}}
+    end
+    
+    def list
+      @asset = Humpyard::Asset.find(params[:id])
+      @assets = Humpyard::Asset.scoped
+            
+      authorize! :create, @asset
+      
+      render partial: "list.html", locals: {assets: @assets, asset: @asset}
+    end
+    
+    def list_item
+      @asset = Humpyard::Asset.find(params[:id])
+
+      authorize! :update, @asset
+      
+      render partial:'list_item.html', locals: {asset: @asset, active: true}
     end
   end
 end

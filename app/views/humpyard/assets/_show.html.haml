@@ -19,6 +19,12 @@
           = Humpyard::Asset.human_attribute_name :height
         %td
           = @asset.height
+    - unless @asset.size.blank?
+      %tr
+        %td
+          = Humpyard::Assets::CarrierwaveAsset.human_attribute_name :size
+        %td
+          = number_to_human_size @asset.size
     %tr
       %td
         = Humpyard::Asset.human_attribute_name :url
@@ -32,7 +38,7 @@
   
 .dialog-buttons.humpyard-form-buttons
   - if can? :destroy, @asset.asset
-    = link_to "#{I18n.t("humpyard_form.actions.destroy", model: "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}", humpyard_asset_path(@asset), :'data-icon' => "ui-icon-trash", confirm: "Are you sure?", method: :delete, remote: true
+    = link_to "#{I18n.t("humpyard_form.actions.destroy", model: "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}", humpyard_asset_path(@asset.asset), :'data-icon' => "ui-icon-trash", confirm: "Are you sure?", method: :delete, remote: true
   - if can? :update, @asset.asset
-    = link_to "#{I18n.t("humpyard_form.actions.edit", model: "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}", edit_humpyard_asset_path(@asset), :'data-icon' => "ui-icon-pencil", :'data-dialog-link' => true
+    = link_to "#{I18n.t("humpyard_form.actions.edit", model: "#{Humpyard::Asset.model_name.human}#{@asset.title.blank? ? '' : " '#{@asset.title}'"}")}", edit_humpyard_asset_path(@asset.asset), :'data-icon' => "ui-icon-pencil", :'data-dialog-link' => true
 
