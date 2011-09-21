@@ -16,7 +16,15 @@ module Humpyard
     end
     
     def icon
-      content_data.try(:icon) || 'icons/32x32/unknown.png'
+      content_data.try(:icon) || generic_icon
+    end
+    
+    def generic_icon
+      return 'icons/32x32/text.png' if content_type =~ /^text/
+      return 'icons/32x32/audio.png' if content_type =~ /^audio/
+      return 'icons/32x32/video.png' if content_type =~ /^video/
+      
+      return 'icons/32x32/unknown.png'
     end
   end
 end

@@ -1,7 +1,6 @@
 = link_to asset, :'data-dialog-link' => true, class: (active ? 'active' : ''), id: "hy-asset-listview-link-#{asset.id}" do
   = image_tag asset.icon, width: 32, height: 32
-  %span= asset.content_data.title.gsub('"', '\'')
-  %br
+  %span= asset.content_data.title
   %small
     = asset.content_type
     - if asset.width

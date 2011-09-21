@@ -10,7 +10,7 @@ class Humpyard::Assets::CarrierwaveAsset < ActiveRecord::Base
   end
   
   def versions options = {}
-    return {original: nil} unless asset.width and asset.height
+    return {original: nil} unless asset.width.to_i > 0 and asset.height.to_i > 0
     
     res = {
       original: [asset.width, asset.height],

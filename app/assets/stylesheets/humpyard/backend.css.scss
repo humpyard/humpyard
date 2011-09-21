@@ -102,6 +102,12 @@ $data_table_border_color: #c0c0c0;
           margin: 0;
           padding: 5px;
           border-bottom: 1px solid #8196b9;
+          span {
+            white-space: nowrap;
+            overflow: hidden;
+            display: block;
+            max-width: $left_dialog_column_width - 37px;
+          }
           img {
             float: left;
             margin: -5px 0 -5px -5px;
