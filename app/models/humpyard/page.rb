@@ -10,7 +10,7 @@ module Humpyard
     
     attr_accessible :title, :title_for_url, :description
     attr_accessible :template_name, :content_data, :content_data_id, :content_data_type
-    attr_accessible :parent, :parent_id, :in_menu, :in_sitemap, :searchable
+    attr_accessible :parent, :parent_id, :in_menu, :in_sitemap, :searchable, :position
     attr_accessible :display_from, :display_until
     attr_accessible :modified_at, :refresh_scheduled_at
     attr_accessible :updated_at, :always_refresh
