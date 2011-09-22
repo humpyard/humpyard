@@ -46,15 +46,15 @@ module Humpyard
         def suggested_title_for_url(locale = I18n.locale)
           return nil if title.blank?
           
-          title_for_url = (self.title(locale) ? self.title(locale) : self.title).parameterize('_').to_s
+          title_for_url = (self.title(locale) ? self.title(locale) : self.title).parameterize('-').to_s
           
           # Check if parameterized totally failed
           if title_for_url == ''
-            title_for_url = CGI::escape(self.title.gsub(/[a-z0-9\-_\x00-\x7F]+/, '_'))
+            title_for_url = CGI::escape(self.title.gsub(/[a-z0-9\-_\x00-\x7F]+/, '-'))
           end 
           
           while obj = self.class.find_by_title_for_url(title_for_url, skip_fallbacks: true, locale: locale) and obj.id != self.id do
-            title_for_url += '_'
+            title_for_url += '-'
           end
           return title_for_url
         end

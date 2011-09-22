@@ -48,29 +48,34 @@ describe Humpyard::Page do
   end  
 
   describe "suggested_title_for_url" do
+    before :all do
+      Humpyard::Page.destroy_all
+      @root_page = Humpyard::Page.create! :title => 'Startpage'
+    end
+    
     it "should give itself sane names if uniqueness not met" do
       Humpyard::Page.destroy_all
       p = Factory :page, :title=>'My great page'
       p.title_for_url.should eql 'index'
       p = Factory :page, :title=>'My great page'
-      p.title_for_url.should eql 'my_great_page'
+      p.title_for_url.should eql 'my-great-page'
       p = Factory :page, :title=>'My great page'
-      p.title_for_url.should eql 'my_great_page_'
+      p.title_for_url.should eql 'my-great-page-'
     end
   
     it "should give itself names with some special chars" do
       p = Factory.build :page
       p.title = 'Das Überwebseite'
-      p.suggested_title_for_url.should eql 'das_uberwebseite'
+      p.suggested_title_for_url.should eql 'das-uberwebseite'
       p.title = 'Eine kleine Seite über mich'
-      p.suggested_title_for_url.should eql 'eine_kleine_seite_uber_mich'
+      p.suggested_title_for_url.should eql 'eine-kleine-seite-uber-mich'
       p.title = 'Smá síðu um mig'
-      p.suggested_title_for_url.should eql 'sma_sidu_um_mig'
+      p.suggested_title_for_url.should eql 'sma-sidu-um-mig'
       p.title = 'Hakkımda Biraz sayfa'
-      p.suggested_title_for_url.should eql 'hakkimda_biraz_sayfa'
+      p.suggested_title_for_url.should eql 'hakkimda-biraz-sayfa'
       # not really nice, but better than nothing
       p.title = 'Немного обо мне страницы'
-      p.suggested_title_for_url.should eql '%D0%9D%D0%B5%D0%BC%D0%BD%D0%BE%D0%B3%D0%BE_%D0%BE%D0%B1%D0%BE_%D0%BC%D0%BD%D0%B5_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D1%8B'
+      p.suggested_title_for_url.should eql '%D0%9D%D0%B5%D0%BC%D0%BD%D0%BE%D0%B3%D0%BE-%D0%BE%D0%B1%D0%BE-%D0%BC%D0%BD%D0%B5-%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D1%8B'
     end
     
     it "should give itself names in many locales" do
@@ -100,7 +105,7 @@ describe Humpyard::Page do
     before(:all) do
       I18n.locale = :en
       Humpyard::Page.destroy_all
-      @root_page = Factory(:page, :title => 'Startpage')
+      @root_page = Humpyard::Page.create! :title => 'Startpage'
       # FactoryGirl does not like to play in more than one language
       # @about_page = Factory(:page, :title => 'About', :parent => @root_page)
       @about_page = Humpyard::Page.create! :title => 'About', :parent => @root_page
