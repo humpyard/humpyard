@@ -109,7 +109,7 @@ module Humpyard
         content_data.child_pages
       else
         if options[:single_root] and is_root_page? 
-          Page.where(["parent_id = ? or parent_id IS NULL and NOT id = ?", id, id])
+          Page.where(["parent_id = ? or parent_id IS NULL and NOT id = ?", id, id]).order('position ASC')
         else
           children
         end
