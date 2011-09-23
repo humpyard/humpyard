@@ -149,10 +149,6 @@ module Humpyard
       authorize! :destroy, @element  
       
       @element.destroy
-      
-      render json: {
-        status: :ok
-      }
     end
         
     # Render a given element

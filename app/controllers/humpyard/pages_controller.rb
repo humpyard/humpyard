@@ -164,10 +164,6 @@ module Humpyard
       authorize! :destroy, @page  
       
       @page.destroy
-      
-      render json: {
-        status: :ok
-      }
     end
 
     

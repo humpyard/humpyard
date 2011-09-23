@@ -122,10 +122,6 @@ module Humpyard
       authorize! :destroy, @asset  
       
       @asset.destroy
-      
-      render json: {
-        status: :ok
-      }
     end
     
     def versions
