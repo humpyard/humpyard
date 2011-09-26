@@ -19,7 +19,7 @@ module Humpyard
           }, status: 404
         end
         format.html {
-          @page = Page.new()
+          @page = ::Humpyard::Page.new()
           render '/humpyard/pages/not_found', status: 404
         }
       end
