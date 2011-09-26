@@ -17,7 +17,7 @@ module Humpyard
           html = ''
         else
           if Object.const_defined?('RedCloth')
-            html = RedCloth.new(content).to_html
+            html = RedCloth.new(content, [:no_span_caps]).to_html
           else
             html = content.gsub("\n", "<br />")
           end
