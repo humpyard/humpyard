@@ -20,7 +20,7 @@ module Humpyard
         end
         format.html {
           @page = Page.new()
-          render '/humpyard/pages/not_found'
+          render '/humpyard/pages/not_found', status: 404
         }
       end
       return
