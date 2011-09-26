@@ -76,6 +76,8 @@ en:
       edit:
         title: "Manage Pages"
         add: "Add %{page_type}"
+      errors:
+        not_found: 'The page "%{path}" does not exist.'
 
   errors:
     messages:

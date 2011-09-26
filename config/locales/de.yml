@@ -79,6 +79,8 @@ de:
       edit:
         title: "Seiten bearbeiten"
         add: "%{page_type} hinzufügen"
+      errors:
+        not_found: 'Die Seite "%{path}" existiert nicht.'    
 
   errors:
     messages:

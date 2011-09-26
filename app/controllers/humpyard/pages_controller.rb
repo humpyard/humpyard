@@ -12,9 +12,17 @@ module Humpyard
     end
     
     rescue_from ::ActiveRecord::RecordNotFound, ::ActionController::RoutingError do |exception|
-      render json: {
-        status: :failed
-      }, status: 404
+      respond_to do |format|
+        format.json do
+          render json: {
+            status: :failed
+          }, status: 404
+        end
+        format.html {
+          @page = Page.new()
+          render '/humpyard/pages/not_found'
+        }
+      end
       return
     end
     
