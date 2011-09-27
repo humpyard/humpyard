@@ -149,7 +149,7 @@ class HtmlToTextile
                 textile += _to_textile_tag element, indent +2, options
               end
             end
-            textile += "\n"
+            textile += "\n\n"
           elsif %w(table).include? content['name'] 
             textile += "\n" unless textile.empty? and indent == 0
             content['content'].each do |row|

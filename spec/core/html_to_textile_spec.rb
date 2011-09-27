@@ -52,11 +52,11 @@ describe HtmlToTextile do
     end
     
     it 'should transform unordered lists' do
-      transform_html('<p>A list like</p><ul><li>One</li><li>Two</li></ul><p>should work</p>').should == "p. A list like\n\n\n * One\n * Two\np. should work\n\n"
+      transform_html('<p>A list like</p><ul><li>One</li><li>Two</li></ul><p>should work</p>').should == "p. A list like\n\n\n * One\n * Two\n\np. should work\n\n"
     end
     
     it 'should transform ordered lists' do
-      transform_html('<p>A list like</p><ol><li>One</li><li>Two</li></ol><p>should work</p>').should == "p. A list like\n\n\n # One\n # Two\np. should work\n\n"
+      transform_html('<p>A list like</p><ol><li>One</li><li>Two</li></ol><p>should work</p>').should == "p. A list like\n\n\n # One\n # Two\n\np. should work\n\n"
     end
     
     it 'should not accept p in td' do
