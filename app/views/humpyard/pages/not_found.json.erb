@@ -1,0 +1,6 @@
+<%=raw({
+  status: :failed,
+  error: "Resource not found",
+  details: I18n.t('humpyard_cms.pages.errors.not_found', path: request.path)
+}.to_json)
+%>
