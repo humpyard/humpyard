@@ -32,7 +32,7 @@ describe 'routes for page' do
         Rails.application.reload_routes!
       end
       
-      it { { get: '/'}.should route_to(controller: 'humpyard/pages', action: 'show', webpath: 'index') }
+      it { { get: '/'}.should route_to(controller: 'humpyard/pages', action: 'show', webpath: 'index', format: 'html') }
       it { { get: '/some_path/some_page.html'}.should route_to(controller: 'humpyard/pages', action: 'show', webpath: 'some_path/some_page', format: 'html') }
     end
     
@@ -42,7 +42,7 @@ describe 'routes for page' do
         Rails.application.reload_routes!
       end
       
-      it { { get: '/'}.should route_to(controller: 'humpyard/pages', action: 'show', webpath: 'index') }
+      it { { get: '/'}.should route_to(controller: 'humpyard/pages', action: 'show', webpath: 'index', format: 'html') }
       it { { get: '/en'}.should route_to(controller: 'humpyard/pages', action: 'show', webpath: 'index', locale: 'en') }
       it { { get: '/en/some_path/some_page.html'}.should route_to(controller: 'humpyard/pages', action: 'show', webpath: 'some_path/some_page', format: 'html', locale: 'en') }
     end

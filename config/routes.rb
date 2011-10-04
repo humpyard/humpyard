@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   end
   
   # Map "/" URL
-  root to: 'humpyard/pages#show', webpath: 'index'
+  root to: 'humpyard/pages#show', webpath: 'index', format: 'html'
   # Map sitemap.xml
   match "/sitemap.xml" => 'humpyard/pages#sitemap', as: 'humpyard_sitemap'
   # Map robots.txt
