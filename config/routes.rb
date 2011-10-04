@@ -28,6 +28,8 @@ Rails.application.routes.draw do
   root to: 'humpyard/pages#show', webpath: 'index'
   # Map sitemap.xml
   match "/sitemap.xml" => 'humpyard/pages#sitemap', as: 'humpyard_sitemap'
+  # Map robots.txt
+  match "/robots.txt" => 'humpyard/pages#robots', as: 'humpyard_robots'
   # Map human readable page URLs
   if Humpyard::config.www_prefix.match /:locale/
     match "/#{Humpyard::config.www_prefix}" => 'humpyard/pages#show', webpath: 'index', constraints: { locale: Humpyard.config.locales_contraint }

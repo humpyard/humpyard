@@ -275,8 +275,6 @@ module Humpyard
         'xsi:schemaLocation'=>"http://www.sitemaps.org/schemas/sitemap/0.9\nhttp://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
       } do
 
-        base_url = "#{request.protocol}#{request.host}#{request.port==80 ? '' : ":#{request.port}"}"
-
         if root_page = Page.root_page
           Humpyard.config.locales.each do |locale|
             add_to_sitemap xml, base_url, locale, [{
@@ -289,6 +287,27 @@ module Humpyard
         end
       end
       render xml: xml.target!
+    end
+    
+    def robots
+      robot_rules = "User-agent: *\n"
+
+      not_searchable = Page.where('searchable = ?', false)
+      if not_searchable.size > 0
+        not_searchable.each do |page|
+          Humpyard.config.locales.each do |locale|
+            url = page.human_url(locale: locale)
+            robot_rules += "Disallow: #{url}\n"
+            robot_rules += "Disallow: #{url.gsub(/.html$/, '/')}\n"
+          end
+        end
+      else
+        robot_rules += "Disallow:\n"
+      end
+      
+      robot_rules += "Sitemap: #{base_url}/sitemap.xml"
+      
+      render text: robot_rules, content_type: 'text/plain; charset=utf-8\n'
     end
 
     private
@@ -306,6 +325,10 @@ module Humpyard
           add_to_sitemap xml, base_url, locale, page[:children], priority/2
         end
       end
+    end
+    
+    def base_url 
+      "#{request.protocol}#{request.host}#{request.port==80 ? '' : ":#{request.port}"}"
     end
     
     def do_move(page, prev_page, next_page) #:nodoc#

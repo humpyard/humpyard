@@ -47,4 +47,12 @@ describe 'routes for page' do
       it { { get: '/en/some_path/some_page.html'}.should route_to(controller: 'humpyard/pages', action: 'show', webpath: 'some_path/some_page', format: 'html', locale: 'en') }
     end
   end
+  
+  context 'special paths' do
+    it { humpyard_robots_path.should == '/robots.txt' }
+    it { { get: '/robots.txt'}.should route_to(controller: 'humpyard/pages', action: 'robots') }
+    
+    it { humpyard_sitemap_path.should == '/sitemap.xml' }
+    it { { get: '/sitemap.xml'}.should route_to(controller: 'humpyard/pages', action: 'sitemap') }
+  end
 end
