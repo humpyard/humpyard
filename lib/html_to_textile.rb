@@ -107,6 +107,17 @@ class HtmlToTextile
         ##ActiveRecord::Base.logger.debug "Content: #{content}"
         textile += "#{content}"
       elsif content.class == Hash
+        
+        attrs = {}
+        #ActiveRecord::Base.logger.debug '###'
+        #ActiveRecord::Base.logger.debug content['attrs']
+        if content['attrs']
+          content['attrs'].keys.each do |attr|
+            attrs[attr[0]] = attr[1]
+          end
+        end
+        #ActiveRecord::Base.logger.debug attrs
+        
         if ['u','b','strong','i','em','del','ins', 'sub', 'sup'].include? content['name']
           literals = {
             'u' => '+',
@@ -131,7 +142,7 @@ class HtmlToTextile
           #ActiveRecord::Base.logger.debug "\n"
           textile += "\n"
         elsif ['p','h1','h2','h3'].include? content['name']
-          if content['attrs']['style'] and a = content['attrs']['style'][/text-align:[\ ]?([^;]*)/,1] and not a.nil?
+          if attrs['style'] and a = attrs['style'][/text-align:[\ ]?([^;]*)/,1] and not a.nil?
             #ActiveRecord::Base.logger.debug 'strip1'
             alignment = case a.strip.downcase
               when 'left' then '<'
@@ -152,8 +163,8 @@ class HtmlToTextile
             #ActiveRecord::Base.logger.debug "#{inner_parsed_textile[:leading]}#{inner_parsed_textile[:tailing]}"
             textile += "#{inner_parsed_textile[:leading]}#{inner_parsed_textile[:tailing]}"
           else
-            #ActiveRecord::Base.logger.debug "#{inner_parsed_textile[:leading]}[\"#{inner_parsed_textile[:content]}\":#{content['attrs']['href'].blank? ? '#' : content['attrs']['href']}]#{inner_parsed_textile[:tailing]}"
-            textile += "#{inner_parsed_textile[:leading]}[\"#{inner_parsed_textile[:content]}\":#{content['attrs']['href'].blank? ? '#' : content['attrs']['href']}]#{inner_parsed_textile[:tailing]}"
+            #ActiveRecord::Base.logger.debug "#{inner_parsed_textile[:leading]}[\"#{inner_parsed_textile[:content]}\":#{attrs['href'].blank? ? '#' : attrs['href']}]#{inner_parsed_textile[:tailing]}"
+            textile += "#{inner_parsed_textile[:leading]}[\"#{inner_parsed_textile[:content]}\":#{attrs['href'].blank? ? '#' : attrs['href']}]#{inner_parsed_textile[:tailing]}"
           end
         elsif ['ul','ol'].include? content['name']
           literals = {
