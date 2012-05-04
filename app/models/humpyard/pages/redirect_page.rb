@@ -1,16 +1,22 @@
 module Humpyard
   module Pages  
-    class VirtualPage < ::ActiveRecord::Base
+    class RedirectPage < ::ActiveRecord::Base
       acts_as_humpyard_page :system_page => true
       
-      set_table_name "#{Humpyard::config.table_name_prefix}pages_virtual_pages"  
+      attr_accessible :redirect_uri, :status_code
+      
+      set_table_name "#{Humpyard::config.table_name_prefix}pages_redirect_pages"  
     
       def is_humpyard_dynamic_page?
         false
       end
   
       def is_humpyard_virtual_page?
-        true
+        false
+      end
+      
+      def redirect_on_render
+        [redirect_uri, status_code]
       end
   
       def site_map(locale)
@@ -18,7 +24,6 @@ module Humpyard
           {
             url: page.human_url(locale: locale),
             lastmod: page.last_modified,
-            hidden: true,
             children: page.child_pages.map{ |p| p.content_data.site_map(locale) }
           }
         else

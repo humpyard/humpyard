@@ -36,6 +36,14 @@ module Humpyard
     def is_root_page?
       self.id and Humpyard::Page.root_page and self.id == Humpyard::Page.root_page.id
     end
+    
+    def neighbours
+      if parent
+        parent.child_pages
+      else
+        Humpyard::Page.where('parent_id IS NULL')
+      end
+    end
         
     # Return the elements on a yield container. Includes shared elemenents from siblings or parents
     #

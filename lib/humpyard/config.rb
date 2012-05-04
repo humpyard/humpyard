@@ -102,7 +102,8 @@ module Humpyard
     def page_types #:nodoc:
       @page_types ||= {
         'static' => Humpyard::Pages::StaticPage,
-        'virtual' => Humpyard::Pages::VirtualPage
+        'virtual' => Humpyard::Pages::VirtualPage,
+        'redir' => Humpyard::Pages::RedirectPage
       }
     end
     

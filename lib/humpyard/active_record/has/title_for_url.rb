@@ -53,7 +53,15 @@ module Humpyard
             title_for_url = CGI::escape(self.title.gsub(/[a-z0-9\-_\x00-\x7F]+/, '-'))
           end 
           
-          while obj = self.class.find_by_title_for_url(title_for_url, skip_fallbacks: true, locale: locale) and obj.id != self.id do
+          root_page = Humpyard::Page.root_page
+          
+          while obj = self.class.find_by_title_for_url(title_for_url, skip_fallbacks: true, locale: locale) and 
+            obj.id != self.id and 
+            (
+              obj.parent_id == self.parent_id or 
+              (obj.parent_id.nil? and self.parent_id == root_page.id) or 
+              (self.parent_id.nil? and obj.parent_id == root_page.id)
+            ) do
             title_for_url += '-'
           end
           return title_for_url

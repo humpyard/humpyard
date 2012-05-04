@@ -9,3 +9,6 @@ spec/dummy/tmp/**/*
 .DS_Store
 .yardoc
 .sass-cache
+spec/dummy/public/humpyard/uploads/humpyard.gif
+spec/dummy/public/humpyard/uploads/icon_humpyard.gif
+test/rails/log/test.log

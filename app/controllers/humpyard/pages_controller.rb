@@ -257,6 +257,11 @@ module Humpyard
       @local_vars ||= {page: @page}
 
       self.class.layout(@page.template_name)
+      
+      if @page.content_data.respond_to?(:redirect_on_render) and redir = @page.content_data.redirect_on_render
+        redirect_to redir[0], status: redir[1]
+        return
+      end
 
       if Rails.application.config.action_controller.perform_caching and not @page.always_refresh
         fresh_when etag: "#{humpyard_user.nil? ? '' : humpyard_user}p#{@page.id}m#{@page.last_modified}", last_modified: @page.last_modified(include_pages: true), public: @humpyard_user.nil?
@@ -332,11 +337,8 @@ module Humpyard
     end
     
     def do_move(page, prev_page, next_page) #:nodoc#
-      if page.parent
-        neighbours = page.parent.child_pages
-      else
-        neighbours = Humpyard::Page.where('parent_id IS NULL')
-      end
+      
+      neighbours = page.neighbours
 
       #p "before #{next_id} and after #{prev_id}"
 
@@ -360,6 +362,8 @@ module Humpyard
           position += 1
         end
       end
+      
+      page.update_attribute :title_for_url, page.suggested_title_for_url
     end  
   end
 end

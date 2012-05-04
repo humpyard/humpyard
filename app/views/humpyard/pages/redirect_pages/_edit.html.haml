@@ -1,0 +1,6 @@
+.humpyard-tab
+  .humpyard-tab-title
+    Redirect to
+  
+  = form.input :redirect_uri
+  = form.input :status_code, as: :select, collection: [['Moved Permanently (301)', 301], ['Found (302)', 302]], required: true
