@@ -214,7 +214,13 @@ module Humpyard
               dyn_page_path << path_part
             else     
               # Find page by name and parent; parent=nil means page on root level
-              @page = Page.with_translated_attribute(:title_for_url, CGI::escape(path_part), I18n.locale).first
+              if parent_page
+                pages = Page.where(parent_id: parent_page.id)
+              else
+                pages = Page.where(:parent_id => [nil, Page.root_page.id])
+              end
+              
+              @page = pages.with_translated_attribute(:title_for_url, CGI::escape(path_part), I18n.locale).first
               # Raise 404 if no page was found for the URL or subpart
               raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (X4201) [#{path_part}]" if @page.nil?
               raise ::ActionController::RoutingError, "No route matches \"#{request.path}\" (X4202)" if not (@page.parent == parent_page or @page.parent == Humpyard::Page.root_page)
