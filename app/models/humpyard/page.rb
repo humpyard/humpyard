@@ -30,7 +30,7 @@ module Humpyard
       if options[:force_reload]
         @root_page = nil
       end
-      @root_page ||= Humpyard::Page.with_translated_attribute(:title_for_url, :index).select(:id).first
+      @root_page ||= self.with_translated_attribute(:title_for_url, :index).select(:id).first
     end    
     
     def is_root_page?

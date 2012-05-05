@@ -20,7 +20,7 @@ gem 'rmagick'
 
 gem 'haml-rails'          
 gem 'jquery-rails'
-gem 'globalize3',         '>=0.0.7'
+gem 'globalize3',         '>=0.2.0'
 gem 'acts_as_tree',       '~>0.1'
 gem 'cancan',             '>=1.6.4'
 #gem 'humpyard_form',      path: '../humpyard_form'
