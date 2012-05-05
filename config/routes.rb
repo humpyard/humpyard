@@ -34,9 +34,15 @@ Rails.application.routes.draw do
   if Humpyard::config.www_prefix.match /:locale/
     match "/#{Humpyard::config.www_prefix}" => 'humpyard/pages#show', webpath: 'index', constraints: { locale: Humpyard.config.locales_contraint }
     match "/#{Humpyard::config.www_prefix}*webpath.:format" => 'humpyard/pages#show', constraints: { locale: Humpyard.config.locales_contraint, format: Humpyard.config.page_formats_contraint }
+    if Humpyard.config.allow_empty_page_format
+      match "/#{Humpyard::config.www_prefix}*webpath" => 'humpyard/pages#show', constraints: { locale: Humpyard.config.locales_contraint }
+    end
     match "/#{Humpyard::config.www_prefix}*path" => 'humpyard/errors#error404', constraints: { locale: Humpyard.config.locales_contraint }
   else
     match "/#{Humpyard::config.www_prefix}*webpath.:format" => 'humpyard/pages#show', constraints: { format: Humpyard.config.page_formats_contraint }
+    if Humpyard.config.allow_empty_page_format
+      match "/#{Humpyard::config.www_prefix}*webpath" => 'humpyard/pages#show'
+    end
     match "/#{Humpyard::config.www_prefix}*path" => 'humpyard/errors#error404'
   end
 end

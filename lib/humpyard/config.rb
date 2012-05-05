@@ -59,6 +59,7 @@ module Humpyard
   #       Hash of properties (key -> class) specified for the preset (e.g. Title of a box).
   class Config 
     attr_writer :table_name_prefix, :element_types, :page_types # :nodoc:
+    attr_accessor :allow_empty_page_format # :nodoc:
     attr_writer :templates, :default_template, :browser_title_prefix, :browser_title_postfix # :nodoc:
     attr_writer :users_framework, :js_framework, :compass_format, :compass_stylesheet_link_tag_path # :nodoc:
     attr_writer :container_element_presets #:nodoc:
