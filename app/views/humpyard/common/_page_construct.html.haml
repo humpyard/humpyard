@@ -15,6 +15,8 @@
               - tool_options[:'data-icon'] = action[:icon]       
             - unless action[:action].blank?
               - url = url_for(controller: action[:controller], action: action[:action], actual_page_id: @page ? @page.id : nil)
+            - unless action[:url].blank?
+              - url = action[:url]
             - unless action[:command].blank?
               - tool_options[:'data-command'] = action[:command]
             - unless action[:dialog].blank?
