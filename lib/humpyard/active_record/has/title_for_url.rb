@@ -58,6 +58,7 @@ module Humpyard
           while obj = self.class.find_by_title_for_url(title_for_url, skip_fallbacks: true, locale: locale) and 
             obj.id != self.id and 
             (
+              not obj.respond_to?(:parent_id) or
               obj.parent_id == self.parent_id or 
               (obj.parent_id.nil? and self.parent_id == root_page.id) or 
               (self.parent_id.nil? and obj.parent_id == root_page.id)
