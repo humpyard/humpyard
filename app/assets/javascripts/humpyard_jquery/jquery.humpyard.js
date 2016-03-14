@@ -439,7 +439,7 @@ jQuery(function($) {
   });
 
   // Dialog UJS
-  $('a[data-dialog]').live('click', function (e) {
+  $('a[data-dialog]').on('click', function (e) {
 	  var options = {};
   	var url = $(this).attr('href');
 	
@@ -631,7 +631,7 @@ jQuery(function($) {
 
   // Humpyard elements menu
 
-  $('.hy-el').live('mouseover', function(e){
+  $('.hy-el').on('mouseover', function(e){
     var el = $(this);  
     $('.hy-el').removeClass('hy-el-active');
     el.addClass('hy-el-active');
@@ -646,16 +646,16 @@ jQuery(function($) {
     $('.hy-marker-frame.left', el).position({ my: 'left top', at: 'left top', of: el }).width(1).height(el.height());
     $('.hy-marker-frame.right', el).position({ my: 'right top', at: 'right top', of: el }).width(1).height(el.height());
     e.stopPropagation();
-  }).live('mouseout', function(){
+  }).on('mouseout', function(){
     $('.hy-el').removeClass('hy-el-active');
   });
 
-  $('a[data-draghandle]').live('click',function(e){
+  $('a[data-draghandle]').on('click',function(e){
     e.preventDefault();
   });
   
   // dialog left column links
-  $('div[data-dialog-link] a, a[data-dialog-link]').live('click', function(e){
+  $('div[data-dialog-link] a, a[data-dialog-link]').on('click', function(e){
     var columns = $(this).parents('.dialog-columns:first');
     var content = columns.children('.right-dialog-column');
     $('a', columns).removeClass('active');
@@ -701,24 +701,24 @@ jQuery(function($) {
   }      
   
   
-  $('form[data-dialog-remote]').live('submit', function(e) {
+  $('form[data-dialog-remote]').on('submit', function(e) {
       // $.humpyard.submitForm($(this), $(this).parents('.ui-dialog-content:first'));
       $(this).data('humpyardForm').submit($(this).parents('.ui-dialog-content:first'));
       e.preventDefault();
   });
   
-  $('div[data-dialog-remote]:not([data-remote]) a, a[data-dialog-remote]:not([data-remote])').live('click', function(e) {
+  $('div[data-dialog-remote]:not([data-remote]) a, a[data-dialog-remote]:not([data-remote])').on('click', function(e) {
     $.humpyard.dialogLink($(this), $(this).parents('.ui-dialog-content:first'));
     e.preventDefault();
   });
   
 
-  $('a[data-command],input[data-command]').live('click', function (e) {
+  $('a[data-command],input[data-command]').on('click', function (e) {
     commands[$(this).attr('data-command')]($(this));
     e.preventDefault();
   });
   
-  $('a[data-dialog-method]').live('click', function(e) {
+  $('a[data-dialog-method]').on('click', function(e) {
     var link = $(this),
         href = link.attr('href'),
         method = link.attr('data-dialog-method'),
@@ -744,7 +744,7 @@ jQuery(function($) {
     
   });
 
-  $('a[data-dialog-menu]').live('click', function(e) {
+  $('a[data-dialog-menu]').on('click', function(e) {
     var link = $(this);
     
     $(link.attr('data-dialog-menu')).toggle();  
@@ -752,7 +752,7 @@ jQuery(function($) {
 	  e.preventDefault();
   });
   
-  $('.dialog-menu a').live('click', function(e) {
+  $('.dialog-menu a').on('click', function(e) {
     $('.dialog-menu').hide();
   });
 });

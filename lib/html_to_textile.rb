@@ -70,7 +70,7 @@ class HtmlToTextile
     private
     def _to_html_tag content, indent = 0
       if content.class == String
-        @html += "#{content}"
+        @html += CGI::escapeHTML "#{content}"
       elsif content.class == Hash
         if ['br','img'].include? content['name']
           @html += "<#{content['name']} />"

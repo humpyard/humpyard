@@ -31,6 +31,6 @@
     
     getAssetVersion($('div[data_humpyard_asset_select] select').val());
     
-    $('div[data_humpyard_asset_select] select').live('change', function(){
+    $('div[data_humpyard_asset_select] select').on('change', function(){
       getAssetVersion($(this).val());
     });
