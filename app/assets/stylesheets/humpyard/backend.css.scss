@@ -10,6 +10,10 @@ $data_table_border_color: #c0c0c0;
 
 .droparea {
   min-height: 20px; }
+  
+.ui-front { z-index: 1000 !important; }  
+.ui-dialog { z-index: 1001 !important ;}
+  
 .ui-dialog-content {
   label.required {
     font-weight: bold; 

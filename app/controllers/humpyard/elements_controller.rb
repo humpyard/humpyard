@@ -30,8 +30,8 @@ module Humpyard
       authorize! :create, @element.element 
       
       @element_type = params[:type]
-      @prev = Humpyard::Element.find_by_id(params[:prev_id])
-      @next = Humpyard::Element.find_by_id(params[:next_id])
+      @prev = Humpyard::Element.find_by_id(params[:prev_id].to_i)
+      @next = Humpyard::Element.find_by_id(params[:next_id].to_i)
       
       render partial: 'edit'
     end

@@ -473,10 +473,11 @@ jQuery(function($) {
     helper: 'clone',
     revert: 'invalid',
     start: function(event, ui) {
-      var inst = $(this).data("draggable"),	uiSortable = $.extend({}, ui, { item: inst.element });
+      var inst = $(this).data("uiDraggable"),	uiSortable = $.extend({}, ui, { item: inst.element });
       inst.sortables = [];
+            
       $('div[data-droppable=' + $(this).attr('data-draggable') + ']').each(function() {
-        var sortable = $.data(this, 'sortable');
+        var sortable = $(this).data('uiSortable');
         if (sortable && !sortable.options.disabled) {
           inst.sortables.push({
             instance: sortable,
@@ -489,7 +490,7 @@ jQuery(function($) {
     },
     stop: function(event, ui) {
       //If we are still over the sortable, we fake the stop event of the sortable, but also remove helper
-      var inst = $(this).data("draggable"),
+      var inst = $(this).data("uiDraggable"),
       uiSortable = $.extend({}, ui, { item: inst.element });
 
       $.each(inst.sortables, function() {
@@ -517,7 +518,8 @@ jQuery(function($) {
       });
     },
     drag: function(event, ui) {
-      var inst = $(this).data("draggable"), self = this;
+      var inst = $(this).data("uiDraggable");
+      var self = this;
       var checkPos = function(o) {
         var dyClick = this.offset.click.top, dxClick = this.offset.click.left;
         var helperTop = this.positionAbs.top, helperLeft = this.positionAbs.left;
@@ -586,8 +588,8 @@ jQuery(function($) {
       var intersections = [];
 
       $.each(inst.sortables, function(i) {
-        // console.log(this);
-        
+        //console.log(this);
+
         //Copy over some variables to allow calling the sortable's native _intersectsWith
         this.instance.positionAbs = inst.positionAbs;
         this.instance.helperProportions = inst.helperProportions;
