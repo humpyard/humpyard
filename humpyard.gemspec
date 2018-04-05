@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.authors = ["Sven G. Broenstrup", "Andreas Pieper"]
   s.email = 'info@humpyard.org'
   s.homepage = 'http://humpyard.org/'
-  s.files = Dir["lib/**/*"] + Dir["app/**/*"] + Dir["config/**/*"] + Dir["db/migrate/*"], ["MIT-LICENSE", "Rakefile", "README.rdoc", "script/rails"]
+  s.files = Dir.glob("lib/**/*") + Dir.glob("app/**/*") + Dir.glob("config/**/*") + Dir.glob("db/migrate/*") + ["MIT-LICENSE", "Rakefile", "README.rdoc", "script/rails"]
   s.add_dependency 'rails', '>= 3.1.0'
   s.add_dependency 'coffee-script', '>= 2.2.0'
   s.add_dependency 'sass-rails', '>= 3.1.0'
